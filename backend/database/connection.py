@@ -10,13 +10,15 @@ from typing import Generator
 
 logger = logging.getLogger(__name__)
 
-# Configuration
-DB_PATH = os.getenv("DB_PATH", "./data/metrics.db")
+# Configuration - read from environment variable
+def get_db_path() -> str:
+    """Get the database file path from environment variable."""
+    return os.getenv("DB_PATH", "./data/metrics.db")
 
 
 def ensure_data_directory():
     """Ensure the data directory exists."""
-    data_dir = os.path.dirname(DB_PATH)
+    data_dir = os.path.dirname(get_db_path())
     if data_dir and not os.path.exists(data_dir):
         os.makedirs(data_dir)
         logger.info(f"Created data directory: {data_dir}")
@@ -32,13 +34,10 @@ def get_db_connection() -> Generator[sqlite3.Connection, None, None]:
             cursor.execute("SELECT * FROM table")
     """
     ensure_data_directory()
-    conn = sqlite3.connect(DB_PATH)
+    db_path = get_db_path()
+    logger.debug(f"Connecting to database: {db_path}")
+    conn = sqlite3.connect(db_path)
     try:
         yield conn
     finally:
         conn.close()
-
-
-def get_db_path() -> str:
-    """Get the database file path."""
-    return DB_PATH

@@ -1,21 +1,21 @@
 #!/usr/bin/env python3
 """
-OpenAI LLM Metrics Proxy - Main Application
+OpenAI LLM Metrics Proxy
 
-A simple reverse proxy that monitors OpenAI-compatible API requests and provides metrics.
-This server only exposes the OpenAI API endpoints for security.
+This service proxies requests to the OpenAI backend while collecting
+detailed metrics about each request for analysis and monitoring.
 """
 
 import time
 import logging
-from datetime import datetime
-from fastapi import FastAPI, Request, HTTPException, Response
-import uvicorn
 import httpx
+from fastapi import FastAPI, Request, HTTPException, Response
+from fastapi.middleware.cors import CORSMiddleware
+import uvicorn
 
-from backend.database.migrations import run_migrations
 from backend.services.proxy_service import ProxyService
 from backend.utils.config import Config
+from backend.database.safe_migrations import run_safe_migrations
 
 # Configure logging
 logging.basicConfig(
@@ -27,6 +27,15 @@ logger = logging.getLogger(__name__)
 # Initialize FastAPI app
 app = FastAPI(title="OpenAI LLM Metrics Proxy", version="1.0.0")
 
+# Enable CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # In production, restrict this to your frontend domain
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 # Initialize proxy service
 proxy_service = ProxyService(Config.get_backend_url())
 
@@ -34,8 +43,17 @@ proxy_service = ProxyService(Config.get_backend_url())
 @app.on_event("startup")
 async def startup_event():
     """Initialize application on startup."""
-    # Run database migrations
-    run_migrations()
+    # Run database migrations with full safety measures
+    if run_safe_migrations():
+        logger.info("Database migrations completed successfully")
+    else:
+        logger.error("CRITICAL: Database migrations failed")
+        logger.error("System cannot start without backup capability")
+        logger.error("Please fix backup permissions and restart")
+        
+        # Exit the application - we cannot run without backup capability
+        import sys
+        sys.exit(1)
     
     logger.info(f"OpenAI LLM Metrics Proxy started")
     logger.info(f"Proxying to: {Config.get_backend_url()}")
@@ -70,7 +88,7 @@ async def proxy_chat_completions(request: Request):
     request_metrics = proxy_service.extract_request_metrics(request, body)
     
     logger.info(f"[{request_id}] Request details - Model: {request_metrics['model']}, "
-                f"User: {request_metrics['user']}, Origin: {request_metrics['origin']}, "
+                f"Origin: {request_metrics['origin']}, "
                 f"Streaming: {request_metrics['is_streaming']}, Messages: {request_metrics['message_count']}")
     
     try:
@@ -141,6 +159,7 @@ async def proxy_models():
 @app.get("/health")
 async def health_check():
     """Health check endpoint."""
+    from datetime import datetime
     return {"status": "healthy", "timestamp": datetime.now().isoformat()}
 
 

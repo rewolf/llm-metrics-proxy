@@ -3,7 +3,7 @@ Shared type definitions for the OpenAI LLM Metrics Proxy.
 These types are used by both backend and frontend.
 """
 
-from typing import List, Optional
+from typing import List, Optional, Dict
 from dataclasses import dataclass
 
 
@@ -46,6 +46,7 @@ class CompletionRequestData:
     message_count: Optional[int]
     prompt_tokens: Optional[int]
     tokens: dict[str, Optional[int]]  # total, prompt, completion
+    model: Optional[str] = None
 
 
 @dataclass
@@ -55,6 +56,9 @@ class Metrics:
     successful_requests: int
     failed_requests: int
     recent_requests_24h: int
+    
+    # Success rate
+    success_rate: float
     
     # Streaming stats
     streaming_requests: int
@@ -73,14 +77,19 @@ class Metrics:
     avg_time_to_last_token_ms: Optional[float]
     avg_completion_duration_ms: Optional[float]
     
-    # Model usage
-    top_models: List[ModelUsage]
+    # Model usage (as dictionary for backward compatibility)
+    model_distribution: Dict[str, int]
     
     # Origin usage
     top_origins: List[OriginUsage]
     
-    # Completion analysis
-    finish_reasons: List[FinishReason]
-    error_types: List[ErrorType]
+    # Completion analysis (as dictionaries for backward compatibility)
+    finish_reasons: Dict[str, int]
+    error_types: Dict[str, int]
+    
+    # Token averages
+    avg_prompt_tokens: Optional[float]
+    avg_completion_tokens: Optional[float]
+    avg_total_tokens: Optional[float]
     
     timestamp: str
