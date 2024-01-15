@@ -183,7 +183,7 @@ def get_completion_requests(start_date: Optional[str] = None, end_date: Optional
             date_params.append(end_date)
             print(f"Added end filter: datetime(timestamp) <= datetime('{end_date}')")
         
-        # Query completion requests
+        # Query completion requests with explicit column names to avoid misalignment
         cursor.execute(f"""
             SELECT 
                 timestamp,
@@ -220,6 +220,24 @@ def get_completion_requests(start_date: Optional[str] = None, end_date: Optional
                 # Fallback to current time in ISO format
                 formatted_timestamp = datetime.now().isoformat()
             
+            # Validate token values to ensure they're numeric
+            def validate_token_value(value, field_name):
+                if value is not None:
+                    if isinstance(value, str) and value.isdigit():
+                        # If it's a string that looks like a number, convert it
+                        return int(value)
+                    elif isinstance(value, (int, float)):
+                        return int(value)
+                    else:
+                        # If it's not a valid token value, log and return None
+                        print(f"Warning: Invalid {field_name} value: {value} (type: {type(value)})")
+                        return None
+                return None
+            
+            validated_prompt_tokens = validate_token_value(prompt_tokens, "prompt_tokens")
+            validated_completion_tokens = validate_token_value(completion_tokens, "completion_tokens")
+            validated_total_tokens = validate_token_value(total_tokens, "total_tokens")
+            
             completion_request = CompletionRequestData(
                 timestamp=formatted_timestamp,
                 time_to_first_token_ms=time_to_first_token_ms,
@@ -227,11 +245,11 @@ def get_completion_requests(start_date: Optional[str] = None, end_date: Optional
                 is_streaming=bool(is_streaming),
                 success=bool(success),
                 message_count=message_count,
-                prompt_tokens=prompt_tokens,
+                prompt_tokens=validated_prompt_tokens,
                 tokens={
-                    "total": total_tokens,
-                    "prompt": prompt_tokens,
-                    "completion": completion_tokens
+                    "total": validated_total_tokens,
+                    "prompt": validated_prompt_tokens,
+                    "completion": validated_completion_tokens
                 }
             )
             results.append(completion_request)

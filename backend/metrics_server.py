@@ -4,6 +4,7 @@ Metrics API Server
 
 Separate server that exposes metrics data for the frontend.
 This runs on a different port than the main proxy for security.
+This server is READ-ONLY and does not perform any database writes or migrations.
 """
 
 from fastapi import FastAPI
@@ -12,7 +13,6 @@ import uvicorn
 
 from backend.api.metrics import router as metrics_router
 from backend.utils.config import Config
-from backend.database.migrations import run_migrations
 
 app = FastAPI(title="Metrics API", version="1.0.0")
 
@@ -31,8 +31,10 @@ app.include_router(metrics_router)
 
 @app.on_event("startup")
 async def startup_event():
-    """Run database migrations on startup."""
-    run_migrations()
+    """Initialize metrics server on startup."""
+    print(f"Metrics API Server started on port {Config.get_metrics_port()}")
+    print(f"Database path: {Config.get_db_path()}")
+    print("This server is READ-ONLY - no database migrations or writes performed")
 
 
 @app.get("/")
@@ -41,6 +43,7 @@ async def root():
     return {
         "service": "Metrics API",
         "version": "1.0.0",
+        "mode": "read-only",
         "endpoints": {
             "/metrics": "Get current metrics with optional date filtering",
             "/completion_requests": "Get completion requests with optional date filtering",
