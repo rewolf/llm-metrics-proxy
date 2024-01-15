@@ -68,6 +68,11 @@ class Metrics:
     avg_response_time_ms: float
     avg_tokens_per_second: Optional[float]
     
+    # Streaming-specific metrics
+    avg_time_to_first_token_ms: Optional[float]
+    avg_time_to_last_token_ms: Optional[float]
+    avg_completion_duration_ms: Optional[float]
+    
     # Model usage
     top_models: List[ModelUsage]
     

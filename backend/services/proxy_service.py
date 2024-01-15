@@ -25,7 +25,6 @@ class ProxyService:
         """Extract metrics from the incoming request."""
         metrics = {
             "model": None,
-            "user": None,
             "origin": None,
             "is_streaming": False,
             "max_tokens": None,
@@ -41,7 +40,6 @@ class ProxyService:
         try:
             body_dict = json.loads(body)
             metrics["model"] = body_dict.get("model")
-            metrics["user"] = body_dict.get("user")
             metrics["is_streaming"] = body_dict.get("stream", False)
             metrics["max_tokens"] = body_dict.get("max_tokens")
             metrics["temperature"] = body_dict.get("temperature")
@@ -279,7 +277,6 @@ class ProxyService:
             status_code=200,
             response_time_ms=total_time_ms,
             model=request_metrics["model"],
-            user=request_metrics["user"],
             origin=request_metrics["origin"],
             is_streaming=request_metrics["is_streaming"],
             max_tokens=request_metrics["max_tokens"],
@@ -323,7 +320,6 @@ class ProxyService:
             status_code=status_code,
             response_time_ms=response_time_ms,
             model=request_metrics["model"],
-            user=request_metrics["user"],
             origin=request_metrics["origin"],
             is_streaming=request_metrics["is_streaming"],
             max_tokens=request_metrics["max_tokens"],
@@ -357,7 +353,6 @@ class ProxyService:
             status_code=status_code,
             response_time_ms=response_time_ms,
             model=request_metrics["model"],
-            user=request_metrics["user"],
             origin=request_metrics["origin"],
             is_streaming=request_metrics["is_streaming"],
             max_tokens=request_metrics["max_tokens"],

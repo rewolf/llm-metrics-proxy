@@ -80,6 +80,22 @@ def get_metrics(start_date: Optional[str] = None, end_date: Optional[str] = None
         cursor.execute(f"SELECT AVG(tokens_per_second) FROM completion_requests WHERE tokens_per_second IS NOT NULL{date_filter}", date_params)
         avg_tokens_per_second = cursor.fetchone()[0] or 0
         
+        # Streaming-specific metrics
+        cursor.execute(f"SELECT AVG(time_to_first_token_ms) FROM completion_requests WHERE time_to_first_token_ms IS NOT NULL AND is_streaming = 1{date_filter}", date_params)
+        avg_time_to_first_token_ms = cursor.fetchone()[0] or None
+        
+        cursor.execute(f"SELECT AVG(time_to_last_token_ms) FROM completion_requests WHERE time_to_last_token_ms IS NOT NULL AND is_streaming = 1{date_filter}", date_params)
+        avg_time_to_last_token_ms = cursor.fetchone()[0] or None
+        
+        # Calculate completion duration (time to last token - time to first token)
+        cursor.execute(f"""
+            SELECT AVG(time_to_last_token_ms - time_to_first_token_ms) 
+            FROM completion_requests 
+            WHERE time_to_first_token_ms IS NOT NULL AND time_to_last_token_ms IS NOT NULL 
+            AND is_streaming = 1{date_filter}
+        """, date_params)
+        avg_completion_duration_ms = cursor.fetchone()[0] or None
+        
         # Model usage
         cursor.execute(f"""
             SELECT model, COUNT(*) as count 
@@ -106,8 +122,9 @@ def get_metrics(start_date: Optional[str] = None, end_date: Optional[str] = None
         cursor.execute(f"""
             SELECT finish_reason, COUNT(*) as count 
             FROM completion_requests 
-            WHERE finish_reason IS NOT NULL {date_filter}
+            WHERE finish_reason IS NOT NULL AND finish_reason != '' {date_filter}
             GROUP BY finish_reason
+            ORDER BY count DESC
         """, date_params)
         finish_reasons = [FinishReason(reason=row[0], count=row[1]) for row in cursor.fetchall()]
         
@@ -115,8 +132,9 @@ def get_metrics(start_date: Optional[str] = None, end_date: Optional[str] = None
         cursor.execute(f"""
             SELECT error_type, COUNT(*) as count 
             FROM completion_requests 
-            WHERE error_type IS NOT NULL {date_filter}
+            WHERE error_type IS NOT NULL AND error_type != '' {date_filter}
             GROUP BY error_type
+            ORDER BY count DESC
         """, date_params)
         error_types = [ErrorType(type=row[0], count=row[1]) for row in cursor.fetchall()]
         
@@ -131,6 +149,9 @@ def get_metrics(start_date: Optional[str] = None, end_date: Optional[str] = None
             avg_tokens_per_request=round(avg_tokens_per_request, 2) if avg_tokens_per_request else None,
             avg_response_time_ms=round(avg_response_time_ms, 2),
             avg_tokens_per_second=round(avg_tokens_per_second, 2) if avg_tokens_per_second else None,
+            avg_time_to_first_token_ms=round(avg_time_to_first_token_ms, 2) if avg_time_to_first_token_ms else None,
+            avg_time_to_last_token_ms=round(avg_time_to_last_token_ms, 2) if avg_time_to_last_token_ms else None,
+            avg_completion_duration_ms=round(avg_completion_duration_ms, 2) if avg_completion_duration_ms else None,
             top_models=top_models,
             top_origins=top_origins,
             finish_reasons=finish_reasons,
@@ -183,11 +204,21 @@ def get_completion_requests(start_date: Optional[str] = None, end_date: Optional
         for row in cursor.fetchall():
             timestamp, time_to_first_token_ms, time_to_last_token_ms, is_streaming, success, message_count, prompt_tokens, total_tokens, completion_tokens = row
             
-            # Convert timestamp to ISO format if it's a string
+            # Ensure timestamp is in ISO format with timezone information
             if isinstance(timestamp, str):
-                formatted_timestamp = timestamp
+                # If it's already a string, try to parse and format it
+                try:
+                    parsed_time = datetime.fromisoformat(timestamp.replace('Z', '+00:00'))
+                    formatted_timestamp = parsed_time.isoformat()
+                except ValueError:
+                    # If parsing fails, use as-is
+                    formatted_timestamp = timestamp
+            elif timestamp:
+                # If it's a datetime object, format it with timezone
+                formatted_timestamp = timestamp.isoformat()
             else:
-                formatted_timestamp = timestamp.isoformat() if timestamp else datetime.now().isoformat()
+                # Fallback to current time in ISO format
+                formatted_timestamp = datetime.now().isoformat()
             
             completion_request = CompletionRequestData(
                 timestamp=formatted_timestamp,

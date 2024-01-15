@@ -15,7 +15,6 @@ def record_request(
     status_code: int,
     response_time_ms: int,
     model: Optional[str] = None,
-    user: Optional[str] = None,
     origin: Optional[str] = None,
     is_streaming: bool = False,
     max_tokens: Optional[int] = None,
@@ -39,15 +38,15 @@ def record_request(
             
             cursor.execute('''
                 INSERT INTO completion_requests (
-                    success, status_code, response_time_ms, model, user,
+                    success, status_code, response_time_ms, model,
                     origin, is_streaming, max_tokens, temperature, top_p, message_count,
                     prompt_tokens, completion_tokens, total_tokens, finish_reason,
                     time_to_first_token_ms, time_to_last_token_ms, tokens_per_second,
                     error_type, error_message
                 )
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ''', (
-                success, status_code, response_time_ms, model, user,
+                success, status_code, response_time_ms, model,
                 origin, is_streaming, max_tokens, temperature, top_p, message_count,
                 prompt_tokens, completion_tokens, total_tokens, finish_reason,
                 time_to_first_token_ms, time_to_last_token_ms, tokens_per_second,
@@ -67,7 +66,6 @@ def record_request_from_model(request: CompletionRequest) -> None:
         status_code=request.status_code,
         response_time_ms=request.response_time_ms,
         model=request.model,
-        user=request.user,
         origin=request.origin,
         is_streaming=request.is_streaming,
         max_tokens=request.max_tokens,
