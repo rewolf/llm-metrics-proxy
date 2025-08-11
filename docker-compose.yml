@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  # OpenAI LLM Metrics Proxy - proxies OpenAI API requests and tracks metrics
+  openai-llm-metrics-proxy:
+    build: .
+    container_name: openai-llm-metrics-proxy
+    ports:
+      - "8000:8000"
+    environment:
+      - BACKEND_HOST=ollama
+      - BACKEND_PORT=11434
+      - PROXY_PORT=8000
+      - DB_PATH=./data/metrics.db
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      - ollama
+    restart: unless-stopped
+
+  # Metrics API Server - exposes metrics data for frontend
+  metrics-api:
+    build: .
+    container_name: metrics-api
+    ports:
+      - "8002:8002"
+    environment:
+      - METRICS_PORT=8002
+      - DB_PATH=./data/metrics.db
+    volumes:
+      - ./data:/app/data
+    command: ["python", "metrics_api.py"]
+    depends_on:
+      - openai-llm-metrics-proxy
+    restart: unless-stopped
+
+  # React Frontend - displays metrics dashboard
+  frontend:
+    build: ./frontend
+    container_name: metrics-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - metrics-api
+    restart: unless-stopped
+
+  # Example Ollama service for testing
+  ollama:
+    image: ollama/ollama:latest
+    container_name: test-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    restart: unless-stopped
+
+volumes:
+  ollama_data:
