@@ -118,3 +118,16 @@ h1 {
 .refresh-btn:active {
   background: #004085;
 }
+
+.metric-note {
+  margin-top: 15px;
+  padding: 10px 15px;
+  background: #f8f9fa;
+  border-radius: 6px;
+  border-left: 3px solid #ffc107;
+}
+
+.metric-note small {
+  color: #6c757d;
+  font-style: italic;
+}

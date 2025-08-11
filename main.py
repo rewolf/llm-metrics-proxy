@@ -37,52 +37,122 @@ BACKEND_BASE_URL = f"http://{BACKEND_HOST}:{BACKEND_PORT}"
 app = FastAPI(title="OpenAI LLM Metrics Proxy", version="1.0.0")
 
 def init_database():
-    """Initialize the SQLite database with enhanced metrics table."""
+    """Initialize the SQLite database with enhanced metrics table.
+    
+    Note: chat_id field was removed in v2.0.0 as it was unreliable
+    and added complexity without providing real value.
+    """
     logger.info(f"Initializing database at {DB_PATH}")
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS completion_requests (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-            success BOOLEAN NOT NULL,
-            status_code INTEGER,
-            response_time_ms INTEGER,
-            
-            -- Request details
-            model TEXT,
-            user TEXT,
-            chat_id TEXT,
-            is_streaming BOOLEAN,
-            max_tokens INTEGER,
-            temperature REAL,
-            top_p REAL,
-            message_count INTEGER,
-            
-            -- Response details  
-            prompt_tokens INTEGER,
-            completion_tokens INTEGER,
-            total_tokens INTEGER,
-            finish_reason TEXT,
-            
-            -- Performance metrics
-            time_to_first_token_ms INTEGER,
-            time_to_last_token_ms INTEGER,
-            tokens_per_second REAL,
-            
-            -- Error details
-            error_type TEXT,
-            error_message TEXT
-        )
-    ''')
+    # Check if old table exists with chat_id column
+    cursor.execute("PRAGMA table_info(completion_requests)")
+    columns = [column[1] for column in cursor.fetchall()]
+    
+    if 'chat_id' in columns:
+        # Migrate existing table by creating new one without chat_id
+        logger.info("Migrating existing database schema - removing chat_id column")
+        cursor.execute("ALTER TABLE completion_requests RENAME TO completion_requests_old")
+        
+        # Create new table without chat_id
+        cursor.execute('''
+            CREATE TABLE completion_requests (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+                success BOOLEAN NOT NULL,
+                status_code INTEGER,
+                response_time_ms INTEGER,
+                
+                -- Request details
+                model TEXT,
+                user TEXT,
+                is_streaming BOOLEAN,
+                max_tokens INTEGER,
+                temperature REAL,
+                top_p REAL,
+                message_count INTEGER,
+                
+                -- Response details  
+                prompt_tokens INTEGER,
+                completion_tokens INTEGER,
+                total_tokens INTEGER,
+                finish_reason TEXT,
+                
+                -- Performance metrics
+                time_to_first_token_ms INTEGER,
+                time_to_last_token_ms INTEGER,
+                tokens_per_second REAL,
+                
+                -- Error details
+                error_type TEXT,
+                error_message TEXT
+            )
+        ''')
+        
+        # Copy data from old table (excluding chat_id)
+        cursor.execute('''
+            INSERT INTO completion_requests (
+                id, timestamp, success, status_code, response_time_ms,
+                model, user, is_streaming, max_tokens, temperature, top_p, message_count,
+                prompt_tokens, completion_tokens, total_tokens, finish_reason,
+                time_to_first_token_ms, time_to_last_token_ms, tokens_per_second,
+                error_type, error_message
+            )
+            SELECT 
+                id, timestamp, success, status_code, response_time_ms,
+                model, user, is_streaming, max_tokens, temperature, top_p, message_count,
+                prompt_tokens, completion_tokens, total_tokens, finish_reason,
+                time_to_first_token_ms, time_to_last_token_ms, tokens_per_second,
+                error_type, error_message
+            FROM completion_requests_old
+        ''')
+        
+        # Drop old table
+        cursor.execute("DROP TABLE completion_requests_old")
+        logger.info("Database migration completed successfully")
+    else:
+        # Create new table if it doesn't exist
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS completion_requests (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+                success BOOLEAN NOT NULL,
+                status_code INTEGER,
+                response_time_ms INTEGER,
+                
+                -- Request details
+                model TEXT,
+                user TEXT,
+                is_streaming BOOLEAN,
+                max_tokens INTEGER,
+                temperature REAL,
+                top_p REAL,
+                message_count INTEGER,
+                
+                -- Response details  
+                prompt_tokens INTEGER,
+                completion_tokens INTEGER,
+                total_tokens INTEGER,
+                finish_reason TEXT,
+                
+                -- Performance metrics
+                time_to_first_token_ms INTEGER,
+                time_to_last_token_ms INTEGER,
+                tokens_per_second REAL,
+                
+                -- Error details
+                error_type TEXT,
+                error_message TEXT
+            )
+        ''')
     
     logger.info("Database initialized successfully")
     conn.commit()
     conn.close()
 
 def record_request(success: bool, status_code: int, response_time_ms: int, 
-                  model: str = None, user: str = None, chat_id: str = None,
+                  model: str = None, user: str = None,
                   is_streaming: bool = False, max_tokens: int = None,
                   temperature: float = None, top_p: float = None,
                   message_count: int = None, prompt_tokens: int = None,
@@ -97,14 +167,14 @@ def record_request(success: bool, status_code: int, response_time_ms: int,
         
         cursor.execute('''
             INSERT INTO completion_requests (
-                success, status_code, response_time_ms, model, user, chat_id,
+                success, status_code, response_time_ms, model, user,
                 is_streaming, max_tokens, temperature, top_p, message_count,
                 prompt_tokens, completion_tokens, total_tokens, finish_reason,
                 time_to_first_token_ms, time_to_last_token_ms, tokens_per_second,
                 error_type, error_message
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (success, status_code, response_time_ms, model, user, chat_id,
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (success, status_code, response_time_ms, model, user,
               is_streaming, max_tokens, temperature, top_p, message_count,
               prompt_tokens, completion_tokens, total_tokens, finish_reason,
               time_to_first_token_ms, time_to_last_token_ms, tokens_per_second,
@@ -150,7 +220,6 @@ async def proxy_chat_completions(request: Request):
     # Extract request parameters for metrics
     model = None
     user = None
-    chat_id = None
     is_streaming = False
     max_tokens = None
     temperature = None
@@ -162,7 +231,6 @@ async def proxy_chat_completions(request: Request):
         body_dict = json.loads(body)
         model = body_dict.get("model")
         user = body_dict.get("user")
-        chat_id = body_dict.get("chat_id") or body_dict.get("conversation_id") or body_dict.get("session_id")
         is_streaming = body_dict.get("stream", False)
         max_tokens = body_dict.get("max_tokens")
         temperature = body_dict.get("temperature")
@@ -186,13 +254,13 @@ async def proxy_chat_completions(request: Request):
                 # Handle streaming responses
                 logger.info(f"[{request_id}] Handling streaming response")
                 return await handle_streaming_response(client, body, headers, start_time, 
-                                                   model, user, chat_id, is_streaming, 
+                                                   model, user, is_streaming, 
                                                    max_tokens, temperature, top_p, message_count, request_id)
             else:
                 # Handle non-streaming responses
                 logger.info(f"[{request_id}] Handling non-streaming response")
                 return await handle_non_streaming_response(client, body, headers, start_time,
-                                                        model, user, chat_id, is_streaming,
+                                                        model, user, is_streaming,
                                                         max_tokens, temperature, top_p, message_count, request_id)
             
     except httpx.RequestError as e:
@@ -204,7 +272,7 @@ async def proxy_chat_completions(request: Request):
             success=False,
             status_code=500,
             response_time_ms=response_time_ms,
-            model=model, user=user, chat_id=chat_id, is_streaming=is_streaming,
+            model=model, user=user, is_streaming=is_streaming,
             max_tokens=max_tokens, temperature=temperature, top_p=top_p,
             message_count=message_count, error_type="connection_error",
             error_message=str(e)
@@ -216,7 +284,7 @@ async def proxy_chat_completions(request: Request):
         )
 
 async def handle_streaming_response(client, body, headers, start_time, 
-                                 model, user, chat_id, is_streaming, 
+                                 model, user, is_streaming, 
                                  max_tokens, temperature, top_p, message_count, request_id):
     """Handle streaming responses with real-time token forwarding."""
     from fastapi.responses import StreamingResponse
@@ -245,7 +313,7 @@ async def handle_streaming_response(client, body, headers, start_time,
                             success=False,
                             status_code=response.status_code,
                             response_time_ms=int((time.time() - start_time) * 1000),
-                            model=model, user=user, chat_id=chat_id, is_streaming=is_streaming,
+                            model=model, user=user, is_streaming=is_streaming,
                             max_tokens=max_tokens, temperature=temperature, top_p=top_p,
                             message_count=message_count, error_type="http_error",
                             error_message=f"Backend returned {response.status_code}"
@@ -254,8 +322,46 @@ async def handle_streaming_response(client, body, headers, start_time,
                         return
                     
                     logger.info(f"[{request_id}] Starting to stream response chunks")
+                    
+                    # Variables to capture usage from stream
+                    final_usage = None
+                    finish_reason = "stream_complete"
+                    
                     # Stream tokens as they arrive
                     async for chunk in response.aiter_bytes():
+                        chunk_text = chunk.decode('utf-8', errors='ignore')
+                        
+                        # Check if this is the final usage chunk (before data: [DONE])
+                        if chunk_text.strip() == "data: [DONE]":
+                            logger.info(f"[{request_id}] Stream ended with [DONE] marker")
+                            continue
+                        
+                        # Try to parse chunk for usage information
+                        if chunk_text.startswith("data: "):
+                            try:
+                                import json
+                                # Extract the JSON part after "data: "
+                                json_str = chunk_text[6:]  # Remove "data: " prefix
+                                if json_str.strip() and json_str.strip() != "[DONE]":
+                                    chunk_data = json.loads(json_str)
+                                    
+                                    # Check if this chunk contains usage info
+                                    if 'usage' in chunk_data and chunk_data['usage']:
+                                        usage = chunk_data['usage']
+                                        if usage.get('prompt_tokens') or usage.get('completion_tokens') or usage.get('total_tokens'):
+                                            final_usage = usage
+                                            logger.info(f"[{request_id}] Captured usage from stream: {usage}")
+                                    
+                                    # Check for finish reason
+                                    if 'choices' in chunk_data and chunk_data['choices']:
+                                        choice = chunk_data['choices'][0]
+                                        if 'finish_reason' in choice and choice['finish_reason']:
+                                            finish_reason = choice['finish_reason']
+                                            logger.info(f"[{request_id}] Captured finish reason: {finish_reason}")
+                            except (json.JSONDecodeError, KeyError) as e:
+                                # Not a JSON chunk or missing expected fields, continue
+                                pass
+                        
                         if not first_token_received:
                             first_token_received = True
                             first_token_time = time.time()
@@ -273,21 +379,26 @@ async def handle_streaming_response(client, body, headers, start_time,
                         time_to_first_token_ms = int((first_token_time - start_time) * 1000)
                         time_to_last_token_ms = total_time_ms
                         
-                        # For streaming, we can't easily count tokens without parsing the stream
-                        # So we'll estimate based on response size and time
-                        estimated_tokens = max(1, total_time_ms // 100)  # Rough estimate
-                        tokens_per_second = (estimated_tokens / (total_time_ms / 1000)) if total_time_ms > 0 else None
+                        # Extract token usage if available
+                        prompt_tokens = final_usage.get('prompt_tokens') if final_usage else None
+                        completion_tokens = final_usage.get('completion_tokens') if final_usage else None
+                        total_tokens = final_usage.get('total_tokens') if final_usage else None
                         
-                        logger.info(f"[{request_id}] Recording streaming metrics - Total time: {total_time_ms}ms, First token: {time_to_first_token_ms}ms")
+                        # Calculate tokens per second if we have the data
+                        tokens_per_second = None
+                        if completion_tokens and time_to_last_token_ms:
+                            tokens_per_second = (completion_tokens / (time_to_last_token_ms / 1000))
+                        
+                        logger.info(f"[{request_id}] Recording streaming metrics - Total time: {total_time_ms}ms, First token: {time_to_first_token_ms}ms, Tokens: {total_tokens}")
                         
                         record_request(
                             success=True,
                             status_code=200,
                             response_time_ms=total_time_ms,
-                            model=model, user=user, chat_id=chat_id, is_streaming=is_streaming,
+                            model=model, user=user, is_streaming=is_streaming,
                             max_tokens=max_tokens, temperature=temperature, top_p=top_p,
-                            message_count=message_count, prompt_tokens=None, completion_tokens=estimated_tokens,
-                            total_tokens=estimated_tokens, finish_reason="stream_complete",
+                            message_count=message_count, prompt_tokens=prompt_tokens, completion_tokens=completion_tokens,
+                            total_tokens=total_tokens, finish_reason=finish_reason,
                             time_to_first_token_ms=time_to_first_token_ms,
                             time_to_last_token_ms=time_to_last_token_ms,
                             tokens_per_second=tokens_per_second
@@ -300,7 +411,7 @@ async def handle_streaming_response(client, body, headers, start_time,
                             success=False,
                             status_code=500,
                             response_time_ms=response_time_ms,
-                            model=model, user=user, chat_id=chat_id, is_streaming=is_streaming,
+                            model=model, user=user, is_streaming=is_streaming,
                             max_tokens=max_tokens, temperature=temperature, top_p=top_p,
                             message_count=message_count, error_type="streaming_incomplete",
                             error_message="Streaming did not complete successfully"
@@ -314,7 +425,7 @@ async def handle_streaming_response(client, body, headers, start_time,
                 success=False,
                 status_code=500,
                 response_time_ms=response_time_ms,
-                model=model, user=user, chat_id=chat_id, is_streaming=is_streaming,
+                model=model, user=user, is_streaming=is_streaming,
                 max_tokens=max_tokens, temperature=temperature, top_p=top_p,
                 message_count=message_count, error_type="streaming_error",
                 error_message=str(e)
@@ -330,7 +441,7 @@ async def handle_streaming_response(client, body, headers, start_time,
     )
 
 async def handle_non_streaming_response(client, body, headers, start_time,
-                                     model, user, chat_id, is_streaming,
+                                     model, user, is_streaming,
                                      max_tokens, temperature, top_p, message_count, request_id):
     """Handle non-streaming responses."""
     logger.info(f"[{request_id}] Sending non-streaming request to backend")
@@ -388,7 +499,7 @@ async def handle_non_streaming_response(client, body, headers, start_time,
         success=response.status_code == 200,
         status_code=response.status_code,
         response_time_ms=response_time_ms,
-        model=model, user=user, chat_id=chat_id, is_streaming=is_streaming,
+        model=model, user=user, is_streaming=is_streaming,
         max_tokens=max_tokens, temperature=temperature, top_p=top_p,
         message_count=message_count, prompt_tokens=prompt_tokens,
         completion_tokens=completion_tokens, total_tokens=total_tokens,
@@ -408,6 +519,8 @@ async def handle_non_streaming_response(client, body, headers, start_time,
 async def health_check():
     """Health check endpoint."""
     return {"status": "healthy", "timestamp": datetime.now().isoformat()}
+
+
 
 @app.get("/test-stream")
 async def test_stream():

@@ -1,13 +1,19 @@
 # OpenAI LLM Metrics Frontend
 
-A simple React-based dashboard for displaying metrics from the OpenAI LLM Metrics Proxy.
+A React TypeScript frontend for displaying metrics from the OpenAI LLM Metrics Proxy.
 
 ## Features
 
-- **Real-time Metrics**: Displays current request counts and success rates
-- **Auto-refresh**: Updates every 30 seconds automatically
-- **Simple Interface**: Clean, text-based design
-- **Responsive**: Works on desktop and mobile devices
+- **TypeScript**: Full type safety with interfaces for all metrics data
+- **Real-time Updates**: Auto-refreshes metrics every 30 seconds
+- **Responsive Design**: Clean, modern UI that works on all devices
+- **Comprehensive Metrics**: Displays all available proxy metrics including:
+  - Basic statistics (requests, success rates)
+  - Streaming vs non-streaming analysis
+  - Token usage (when available)
+  - Performance metrics
+  - Model usage patterns
+  - Error analysis
 
 ## Development
 
@@ -24,42 +30,56 @@ npm install
 
 # Start development server
 npm start
-```
 
-The app will open at http://localhost:3000
-
-### Building for Production
-
-```bash
-# Build the app
+# Build for production
 npm run build
 
-# The build folder will contain the production-ready files
+# Run tests
+npm test
 ```
 
-## Architecture
+### TypeScript
 
-- **Frontend**: React app running on port 3000
-- **Backend**: Metrics API server on port 8002
-- **Proxy**: OpenAI API proxy on port 8001
-- **Database**: SQLite database shared between proxy and metrics API
+The project uses TypeScript for better type safety and developer experience:
+
+- **Strict Mode**: Enabled for maximum type safety
+- **Interfaces**: Well-defined types for all metrics data
+- **Type Guards**: Proper null checking and error handling
+- **Modern React**: Uses React 18+ with hooks and TypeScript
+
+### Project Structure
+
+```
+src/
+├── App.tsx          # Main application component
+├── index.tsx        # Application entry point
+├── types.ts         # TypeScript interfaces
+├── App.css          # Styles
+└── react-app-env.d.ts # React environment types
+```
 
 ## Configuration
 
-The frontend is configured to proxy API requests to the metrics API server. This is set in `package.json`:
-
-```json
-{
-  "proxy": "http://localhost:8002"
-}
-```
-
-## Docker
+The frontend connects to the metrics API via the `REACT_APP_METRICS_API_URL` environment variable:
 
 ```bash
-# Build the frontend image
-docker build -t metrics-frontend .
+# Default: http://localhost:8002
+REACT_APP_METRICS_API_URL=http://your-metrics-api:8002
+```
 
-# Run the container
+## Building for Production
+
+The Dockerfile automatically handles TypeScript compilation and builds the production bundle:
+
+```bash
+docker build -t metrics-frontend .
 docker run -p 3000:3000 metrics-frontend
 ```
+
+## Metrics Display
+
+The frontend intelligently handles different types of metrics:
+
+- **Token Usage**: Only shown when data is available (non-streaming requests)
+- **Performance**: Adapts display based on available data
+- **Conditional Rendering**: Sections only appear when they have data to show

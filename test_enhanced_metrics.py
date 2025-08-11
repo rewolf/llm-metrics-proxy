@@ -24,8 +24,7 @@ def test_basic_completion():
         "temperature": 0.7,
         "top_p": 0.9,
         "stream": False,
-        "user": "test_user_1",
-        "chat_id": "chat_001"
+        "user": "test_user_1"
     }
     
     try:
@@ -49,8 +48,7 @@ def test_streaming_completion():
         "temperature": 0.8,
         "top_p": 0.95,
         "stream": True,
-        "user": "test_user_2",
-        "chat_id": "chat_002"
+        "user": "test_user_2"
     }
     
     try:
@@ -77,8 +75,7 @@ def test_long_conversation():
         "temperature": 0.5,
         "top_p": 0.8,
         "stream": False,
-        "user": "test_user_3",
-        "chat_id": "chat_003"
+        "user": "test_user_3"
     }
     
     try:

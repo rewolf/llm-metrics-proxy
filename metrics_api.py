@@ -45,8 +45,6 @@ def get_metrics() -> Dict[str, Any]:
     cursor.execute("SELECT COUNT(*) FROM completion_requests WHERE success = 0")
     failed_requests = cursor.fetchone()[0]
     
-    success_rate = (successful_requests / total_requests * 100) if total_requests > 0 else 0
-    
     # Recent requests (last 24 hours)
     cursor.execute("""
         SELECT COUNT(*) FROM completion_requests 
@@ -110,13 +108,13 @@ def get_metrics() -> Dict[str, Any]:
         "total_requests": total_requests,
         "successful_requests": successful_requests,
         "failed_requests": failed_requests,
-        "success_rate": round(success_rate, 2),
+
         "recent_requests_24h": recent_requests,
         
         # Streaming stats
         "streaming_requests": streaming_requests,
         "non_streaming_requests": non_streaming_requests,
-        "streaming_percentage": round((streaming_requests / total_requests * 100) if total_requests > 0 else 0, 2),
+
         
         # Token usage
         "total_tokens_used": total_tokens_used,
