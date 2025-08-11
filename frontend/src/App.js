@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 
+// Use environment variable or default to localhost since browser runs on host
+const METRICS_API_URL = process.env.REACT_APP_METRICS_API_URL || 'http://localhost:8002';
+
 function App() {
   const [metrics, setMetrics] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -8,7 +11,7 @@ function App() {
 
   const fetchMetrics = async () => {
     try {
-      const response = await fetch('/metrics');
+      const response = await fetch(`${METRICS_API_URL}/metrics`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }

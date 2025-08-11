@@ -221,6 +221,8 @@ This will start all three services:
 - **Metrics API**: http://localhost:8002 (internal)
 - **Frontend**: http://localhost:3000 (dashboard)
 
+For more deployment examples and configurations, see [EXAMPLES.md](EXAMPLES.md).
+
 ### Individual Services
 
 ```bash
