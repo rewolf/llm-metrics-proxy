@@ -31,23 +31,20 @@ app.add_middleware(
 )
 
 def get_metrics() -> Dict[str, Any]:
-    """Get current metrics from the database."""
+    """Get enhanced metrics from the database."""
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     
-    # Total requests
+    # Basic request counts
     cursor.execute("SELECT COUNT(*) FROM completion_requests")
     total_requests = cursor.fetchone()[0]
     
-    # Successful requests
     cursor.execute("SELECT COUNT(*) FROM completion_requests WHERE success = 1")
     successful_requests = cursor.fetchone()[0]
     
-    # Failed requests
     cursor.execute("SELECT COUNT(*) FROM completion_requests WHERE success = 0")
     failed_requests = cursor.fetchone()[0]
     
-    # Success rate
     success_rate = (successful_requests / total_requests * 100) if total_requests > 0 else 0
     
     # Recent requests (last 24 hours)
@@ -57,6 +54,56 @@ def get_metrics() -> Dict[str, Any]:
     """)
     recent_requests = cursor.fetchone()[0]
     
+    # Streaming stats
+    cursor.execute("SELECT COUNT(*) FROM completion_requests WHERE is_streaming = 1")
+    streaming_requests = cursor.fetchone()[0]
+    
+    cursor.execute("SELECT COUNT(*) FROM completion_requests WHERE is_streaming = 0")
+    non_streaming_requests = cursor.fetchone()[0]
+    
+    # Token usage
+    cursor.execute("SELECT SUM(total_tokens) FROM completion_requests WHERE total_tokens IS NOT NULL")
+    total_tokens_used = cursor.fetchone()[0] or 0
+    
+    cursor.execute("SELECT AVG(total_tokens) FROM completion_requests WHERE total_tokens IS NOT NULL")
+    avg_tokens_per_request = cursor.fetchone()[0] or 0
+    
+    # Performance metrics
+    cursor.execute("SELECT AVG(response_time_ms) FROM completion_requests WHERE success = 1")
+    avg_response_time_ms = cursor.fetchone()[0] or 0
+    
+    cursor.execute("SELECT AVG(tokens_per_second) FROM completion_requests WHERE tokens_per_second IS NOT NULL")
+    avg_tokens_per_second = cursor.fetchone()[0] or 0
+    
+    # Model usage
+    cursor.execute("""
+        SELECT model, COUNT(*) as count 
+        FROM completion_requests 
+        WHERE model IS NOT NULL 
+        GROUP BY model 
+        ORDER BY count DESC 
+        LIMIT 5
+    """)
+    top_models = [{"model": row[0], "count": row[1]} for row in cursor.fetchall()]
+    
+    # Finish reasons
+    cursor.execute("""
+        SELECT finish_reason, COUNT(*) as count 
+        FROM completion_requests 
+        WHERE finish_reason IS NOT NULL 
+        GROUP BY finish_reason
+    """)
+    finish_reasons = [{"reason": row[0], "count": row[1]} for row in cursor.fetchall()]
+    
+    # Error analysis
+    cursor.execute("""
+        SELECT error_type, COUNT(*) as count 
+        FROM completion_requests 
+        WHERE error_type IS NOT NULL 
+        GROUP BY error_type
+    """)
+    error_types = [{"type": row[0], "count": row[1]} for row in cursor.fetchall()]
+    
     conn.close()
     
     return {
@@ -65,6 +112,27 @@ def get_metrics() -> Dict[str, Any]:
         "failed_requests": failed_requests,
         "success_rate": round(success_rate, 2),
         "recent_requests_24h": recent_requests,
+        
+        # Streaming stats
+        "streaming_requests": streaming_requests,
+        "non_streaming_requests": non_streaming_requests,
+        "streaming_percentage": round((streaming_requests / total_requests * 100) if total_requests > 0 else 0, 2),
+        
+        # Token usage
+        "total_tokens_used": total_tokens_used,
+        "avg_tokens_per_request": round(avg_tokens_per_request, 2),
+        
+        # Performance
+        "avg_response_time_ms": round(avg_response_time_ms, 2),
+        "avg_tokens_per_second": round(avg_tokens_per_second, 2),
+        
+        # Model usage
+        "top_models": top_models,
+        
+        # Completion analysis
+        "finish_reasons": finish_reasons,
+        "error_types": error_types,
+        
         "timestamp": datetime.now().isoformat()
     }
 
