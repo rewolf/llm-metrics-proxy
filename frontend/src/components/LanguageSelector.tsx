@@ -22,7 +22,10 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
     { value: 'es', label: 'Español' },
     { value: 'fr', label: 'Français' },
     { value: 'de', label: 'Deutsch' },
-    { value: 'ja', label: '日本語' }
+    { value: 'ja', label: '日本語' },
+    { value: 'zh', label: '中文' },
+    { value: 'ru', label: 'Русский' },
+    { value: 'ko', label: '한국어' }
   ];
 
   const currentLanguageLabel = languages.find(lang => lang.value === currentLanguage)?.label || 'English';

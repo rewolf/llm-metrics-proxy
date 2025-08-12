@@ -40,6 +40,9 @@ export const es: Translation = {
   french: 'Français',
   german: 'Deutsch',
   japanese: '日本語',
+  chinese: '中文',
+  russian: 'Русский',
+  korean: '한국어',
   
   // Notes and warnings
   tokenUsageNote: '⚠️ El uso de tokens solo está disponible para solicitudes no-streaming. Las solicitudes de streaming muestran métricas de tiempo en su lugar.',

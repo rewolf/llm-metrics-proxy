@@ -14,7 +14,7 @@ export interface ErrorType {
 }
 
 // i18n types
-export type Language = 'en' | 'es' | 'fr' | 'de' | 'ja';
+export type Language = 'en' | 'es' | 'fr' | 'de' | 'ja' | 'zh' | 'ru' | 'ko';
 
 export interface Translation {
   // App title
@@ -56,6 +56,9 @@ export interface Translation {
   french: string;
   german: string;
   japanese: string;
+  chinese: string;
+  russian: string;
+  korean: string;
   
   // Notes and warnings
   tokenUsageNote: string;

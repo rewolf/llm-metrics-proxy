@@ -40,6 +40,9 @@ export const ja: Translation = {
   french: 'Français',
   german: 'Deutsch',
   japanese: '日本語',
+  chinese: '中文',
+  russian: 'Русский',
+  korean: '한국어',
   
   // Notes and warnings
   tokenUsageNote: '⚠️ トークン使用量は非ストリーミングリクエストでのみ利用可能です。ストリーミングリクエストでは時間メトリクスが表示されます。',
