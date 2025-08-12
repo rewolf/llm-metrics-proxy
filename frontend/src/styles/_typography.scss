@@ -1,0 +1,48 @@
+// Typography styles
+
+h1 {
+  color: var(--color-text, $color-text);
+  margin-bottom: $spacing-xl;
+}
+
+.metric-section h2 {
+  color: var(--color-textSecondary, $color-textSecondary);
+  margin-bottom: $spacing-lg;
+  font-size: $font-size-large;
+  border-bottom: 2px solid var(--color-border, $color-border);
+  padding-bottom: $spacing-sm;
+}
+
+.metric h3 {
+  margin: 0 0 $spacing-lg 0;
+  color: var(--color-textSecondary, $color-textSecondary);
+  font-size: $font-size-small;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.metric .value {
+  font-size: $font-size-xl;
+  font-weight: bold;
+  color: var(--color-text, $color-text);
+}
+
+.metric-item .model-name,
+.metric-item .reason-name,
+.metric-item .error-name {
+  font-weight: 600;
+  color: var(--color-text, $color-text);
+}
+
+.metric-item .model-count,
+.metric-item .reason-count,
+.metric-item .error-count {
+  color: var(--color-textSecondary, $color-textSecondary);
+  font-size: $font-size-small;
+}
+
+.metric-note small {
+  color: var(--color-textSecondary, $color-textSecondary);
+  font-style: italic;
+}

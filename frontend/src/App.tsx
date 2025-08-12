@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './App.css';
+import './styles/main.scss';
 import { Metrics } from './types';
 import { calculatePercentage, formatNumber, formatResponseTime } from './utils';
 import { ThemeSelector } from './components/ThemeSelector';

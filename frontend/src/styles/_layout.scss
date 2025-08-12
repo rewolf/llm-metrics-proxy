@@ -1,0 +1,36 @@
+// Layout styles for the main application
+
+.App {
+  text-align: center;
+  padding: $container-padding;
+  font-family: $font-family-base;
+  max-width: $max-width;
+  margin: 0 auto;
+  background-color: var(--color-background, $color-background);
+  color: var(--color-text, $color-text);
+  min-height: 100vh;
+}
+
+// Footer Styles
+.app-footer {
+  margin-top: $spacing-xxl;
+  padding: $spacing-lg 0;
+  border-top: 1px solid var(--color-borderLight, $color-borderLight);
+  background: var(--color-surface, $color-surface);
+  border-radius: var(--border-radius, $border-radius);
+  box-shadow: var(--shadow-small, $shadow-small);
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: $max-width;
+  margin: 0 auto;
+  padding: 0 $container-padding;
+}
+
+.footer-left .footer-text {
+  color: var(--color-textSecondary, $color-textSecondary);
+  font-size: $font-size-small;
+}

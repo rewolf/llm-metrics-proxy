@@ -1,0 +1,60 @@
+// Theme system implementation
+// This file handles CSS custom properties and theme application
+
+:root {
+  // Apply default theme colors
+  --color-primary: #{$color-primary};
+  --color-secondary: #{$color-secondary};
+  --color-accent: #{$color-accent};
+  --color-background: #{$color-background};
+  --color-surface: #{$color-surface};
+  --color-text: #{$color-text};
+  --color-textSecondary: #{$color-textSecondary};
+  --color-border: #{$color-border};
+  --color-borderLight: #{$color-borderLight};
+  --color-success: #{$color-success};
+  --color-warning: #{$color-warning};
+  --color-error: #{$color-error};
+  --color-metricBackground: #{$color-metricBackground};
+  --color-metricBorder: #{$color-metricBorder};
+  --color-metricSuccess: #{$color-metricSuccess};
+  --color-metricFailed: #{$color-metricFailed};
+
+  // Apply default border properties
+  --border-radius: #{$border-radius};
+  --border-width: #{$border-width};
+  --border-style: #{$border-style};
+
+  // Apply default shadow properties
+  --shadow-small: #{$shadow-small};
+  --shadow-medium: #{$shadow-medium};
+  --shadow-large: #{$shadow-large};
+}
+
+// Theme utility classes
+.theme-light {
+  --color-primary: #007bff;
+  --color-secondary: #6c757d;
+  --color-accent: #28a745;
+  --color-background: #f8f9fa;
+  --color-surface: #ffffff;
+  --color-text: #212529;
+  --color-textSecondary: #6c757d;
+  --color-border: #dee2e6;
+  --color-borderLight: #e9ecef;
+  --color-success: #28a745;
+  --color-warning: #ffc107;
+  --color-error: #dc3545;
+  --color-metricBackground: #f8f9fa;
+  --color-metricBorder: #007bff;
+  --color-metricSuccess: #28a745;
+  --color-metricFailed: #dc3545;
+  
+  --border-radius: 12px;
+  --border-width: 1px;
+  --border-style: solid;
+  
+  --shadow-small: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-medium: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-large: 0 4px 12px rgba(0, 0, 0, 0.15);
+}

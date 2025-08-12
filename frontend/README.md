@@ -55,7 +55,16 @@ src/
 ├── App.tsx          # Main application component
 ├── index.tsx        # Application entry point
 ├── types.ts         # TypeScript interfaces
-├── App.css          # Styles
+├── styles/          # SCSS styles organized by component
+│   ├── main.scss    # Main stylesheet that imports all partials
+│   ├── _variables.scss # SCSS variables and constants
+│   ├── _themes.scss # Theme system and CSS custom properties
+│   ├── _layout.scss # Layout and footer styles
+│   ├── _typography.scss # Typography styles
+│   ├── _metrics.scss # Metric component styles
+│   ├── _buttons.scss # Button styles
+│   ├── _theme-selector.scss # Theme selector styles
+│   └── _utilities.scss # Utility classes and mixins
 ├── components/      # Reusable components
 │   └── ThemeSelector.tsx # Theme selection component
 ├── core/            # Core functionality
@@ -87,6 +96,23 @@ The frontend includes a dynamic theming system:
 
 ### Adding Themes
 See `docs/ai-context/frontend-theming.md` for detailed implementation guide.
+
+## SCSS Architecture
+
+The styles are organized using SCSS for better maintainability:
+
+- **Modular Structure**: Styles split into logical component files
+- **Variables**: Centralized SCSS variables for consistency
+- **Mixins**: Responsive design utilities and reusable patterns
+- **Organization**: Clear separation between layout, components, and utilities
+
+### Style Organization
+- **`_variables.scss`**: Colors, spacing, typography constants
+- **`_themes.scss`**: Theme system and CSS custom properties
+- **Component files**: Dedicated files for metrics, buttons, theme selector
+- **`_utilities.scss`**: Responsive mixins and utility classes
+
+See `src/styles/README.md` for detailed style organization guide.
 
 ## Building for Production
 
