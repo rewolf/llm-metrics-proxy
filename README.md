@@ -51,6 +51,11 @@ docker-compose up -d
 - **[Technical Documentation](docs/technical/)** - Architecture, API reference, and deployment guides
 - **[Examples](EXAMPLES.md)** - Deployment examples and configurations
 
+### For Developers
+- **[Frontend Architecture](docs/technical/frontend-architecture.md)** - React, SCSS, and theming system details
+- **[API Reference](docs/technical/api.md)** - Complete API documentation
+- **[Development Guide](docs/technical/development.md)** - Local setup and development workflow
+
 ## 🔄 Streaming with Usage
 
 The proxy can capture token usage from streaming responses when clients enable it:

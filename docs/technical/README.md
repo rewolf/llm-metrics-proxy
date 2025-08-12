@@ -32,6 +32,11 @@ Welcome to the technical documentation for the OpenAI LLM Metrics Proxy project.
 - Code structure and patterns
 - Testing and debugging
 
+### [Frontend Architecture](./frontend-architecture.md)
+- React component architecture
+- SCSS organization and theming system
+- Component development patterns
+
 ### [Configuration](./configuration.md)
 - Environment variables
 - Database configuration
