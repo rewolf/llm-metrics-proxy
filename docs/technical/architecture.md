@@ -60,7 +60,7 @@ The system is designed with **separation of concerns** and **security** as prima
 ```
 Client Request → Proxy Server → Backend LLM → Response → Client
                 ↓
-            Metrics Collection
+            Metrics Collection (for /v1/chat/completions only)
                 ↓
             Database Storage
 ```
@@ -84,10 +84,11 @@ The system uses a single SQLite table `completion_requests` with comprehensive m
 
 ### Proxy Server (`metrics_proxy.py`)
 - **Primary Function**: Reverse proxy for OpenAI API requests
-- **Metrics Collection**: Captures request/response data
-- **Database Operations**: Stores metrics in SQLite
+- **Metrics Collection**: Captures request/response data for chat completions
+- **Database Operations**: Stores metrics in SQLite for tracked endpoints
 - **Error Handling**: Graceful fallback and logging
 - **Streaming Support**: Handles both streaming and non-streaming requests
+- **API Coverage**: Proxies `/v1/chat/completions` (with metrics) and `/v1/models` (without metrics)
 
 ### Metrics API (`metrics_server.py`)
 - **Data Exposure**: RESTful API for metrics retrieval

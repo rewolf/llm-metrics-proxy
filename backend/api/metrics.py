@@ -10,7 +10,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from backend.database.connection import get_db_connection
 from shared.types import Metrics, ModelUsage, FinishReason, ErrorType, OriginUsage
 
-router = APIRouter(prefix="/api", tags=["metrics"])
+router = APIRouter(tags=["metrics"])
 
 
 def get_metrics() -> Metrics:

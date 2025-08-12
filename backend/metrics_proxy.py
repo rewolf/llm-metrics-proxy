@@ -9,8 +9,9 @@ This server only exposes the OpenAI API endpoints for security.
 import time
 import logging
 from datetime import datetime
-from fastapi import FastAPI, Request, HTTPException
+from fastapi import FastAPI, Request, HTTPException, Response
 import uvicorn
+import httpx
 
 from backend.database.migrations import run_migrations
 from backend.services.proxy_service import ProxyService
@@ -97,6 +98,39 @@ async def proxy_chat_completions(request: Request):
         proxy_service._record_failed_request(
             start_time, request_metrics, 500, "connection_error", str(e)
         )
+        
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to connect to backend: {str(e)}"
+        )
+
+
+@app.get("/v1/models")
+async def proxy_models():
+    """Proxy models list requests to backend without logging to database."""
+    logger.info("Models list request received")
+    
+    try:
+        # Forward request to backend
+        logger.info(f"Forwarding models request to backend: {Config.get_backend_url()}/v1/models")
+        
+        async with httpx.AsyncClient() as client:
+            response = await client.get(
+                f"{Config.get_backend_url()}/v1/models",
+                timeout=30.0
+            )
+            
+            logger.info(f"Backend models response - Status: {response.status_code}")
+            
+            # Return the response from backend
+            return Response(
+                content=response.content,
+                status_code=response.status_code,
+                headers=dict(response.headers)
+            )
+            
+    except Exception as e:
+        logger.error(f"Models request failed with error: {e}")
         
         raise HTTPException(
             status_code=500,

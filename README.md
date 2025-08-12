@@ -203,6 +203,7 @@ docker run -d \
 
 ### Proxy Server (port 8001)
 - `POST /v1/chat/completions` - Proxies requests to backend and tracks metrics
+- `GET /v1/models` - Proxies requests to backend (no metrics tracking)
 - `GET /health` - Health check
 
 ### Metrics API (port 8002)

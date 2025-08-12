@@ -35,8 +35,8 @@ async def root():
         "service": "Metrics API",
         "version": "1.0.0",
         "endpoints": {
-            "/api/metrics": "Get current metrics",
-            "/api/health": "Health check"
+            "/metrics": "Get current metrics",
+            "/health": "Health check"
         }
     }
 

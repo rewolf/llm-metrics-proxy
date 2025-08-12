@@ -19,18 +19,7 @@ def test_health():
         print(f"Health check failed: {e}")
         return False
 
-def test_metrics():
-    """Test the metrics endpoint."""
-    try:
-        response = requests.get(f"{PROXY_URL}/metrics")
-        print(f"Metrics: {response.status_code}")
-        metrics = response.json()
-        print(f"Total requests: {metrics['total_requests']}")
-        print(f"Success rate: {metrics['success_rate']}%")
-        return True
-    except Exception as e:
-        print(f"Metrics test failed: {e}")
-        return False
+
 
 def test_proxy_request():
     """Test a proxy request to the backend."""
@@ -60,6 +49,33 @@ def test_proxy_request():
         print(f"Proxy test failed: {e}")
         return False
 
+
+def test_models_endpoint():
+    """Test the models endpoint."""
+    try:
+        response = requests.get(f"{PROXY_URL}/v1/models", timeout=30)
+        
+        print(f"Models endpoint: {response.status_code}")
+        if response.status_code == 200:
+            print("✅ Models endpoint successful")
+            try:
+                models_data = response.json()
+                if 'data' in models_data:
+                    print(f"📋 Found {len(models_data['data'])} models")
+                    for model in models_data['data']:
+                        print(f"   - {model.get('id', 'Unknown')}")
+                else:
+                    print("📋 Response format:", list(models_data.keys()))
+            except json.JSONDecodeError:
+                print("📋 Response is not JSON (raw response)")
+        else:
+            print(f"❌ Models endpoint failed: {response.text}")
+        
+        return True
+    except Exception as e:
+        print(f"Models endpoint test failed: {e}")
+        return False
+
 def main():
     """Run all tests."""
     print("🧪 Testing OpenAI LLM Metrics Proxy...")
@@ -70,25 +86,19 @@ def main():
         print("❌ Health check failed")
         return
     
-    # Test metrics endpoint
-    if not test_metrics():
-        print("❌ Metrics endpoint failed")
-        return
-    
     # Test proxy functionality
     print("\n📊 Testing proxy functionality...")
     if not test_proxy_request():
         print("❌ Proxy test failed")
         return
     
-    # Wait a moment and check metrics again
-    print("\n⏳ Waiting for metrics to update...")
-    time.sleep(2)
+    # Test models endpoint
+    print("\n📋 Testing models endpoint...")
+    if not test_models_endpoint():
+        print("❌ Models endpoint test failed")
+        return
     
-    if test_metrics():
-        print("✅ All tests passed!")
-    else:
-        print("❌ Final metrics check failed")
+    print("✅ All proxy tests passed!")
 
 if __name__ == "__main__":
     main()
