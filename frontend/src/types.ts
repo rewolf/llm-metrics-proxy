@@ -13,6 +13,64 @@ export interface ErrorType {
   count: number;
 }
 
+// i18n types
+export type Language = 'en' | 'es' | 'fr' | 'de' | 'ja';
+
+export interface Translation {
+  // App title
+  appTitle: string;
+  
+  // Section headers
+  basicStatistics: string;
+  streamingStatistics: string;
+  tokenUsage: string;
+  performanceMetrics: string;
+  modelUsage: string;
+  completionAnalysis: string;
+  errorAnalysis: string;
+  
+  // Metric labels
+  totalCompletionRequests: string;
+  successfulRequests: string;
+  failedRequests: string;
+  successRate: string;
+  requestsLast24h: string;
+  streamingRequests: string;
+  nonStreamingRequests: string;
+  streamingPercentage: string;
+  totalTokensUsed: string;
+  avgTokensPerRequest: string;
+  avgResponseTime: string;
+  avgTokensPerSecond: string;
+  lastUpdated: string;
+  
+  // Button text
+  refreshNow: string;
+  
+  // Footer
+  footerText: string;
+  
+  // Language names
+  english: string;
+  spanish: string;
+  french: string;
+  german: string;
+  japanese: string;
+  
+  // Notes and warnings
+  tokenUsageNote: string;
+  performanceNote: string;
+  requests: string;
+  times: string;
+  tokensPerSecond: string;
+  naStreaming: string;
+  
+  // Loading and error states
+  loadingMetrics: string;
+  errorLoadingMetrics: string;
+  noMetricsData: string;
+}
+
 export interface Metrics {
   total_requests: number;
   successful_requests: number;

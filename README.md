@@ -49,6 +49,7 @@ docker-compose up -d
 ## 📚 Documentation
 
 - **[Technical Documentation](docs/technical/)** - Architecture, API reference, and deployment guides
+- **[AI Context Documentation](docs/ai-context/)** - For AI assistants and developers
 - **[Examples](EXAMPLES.md)** - Deployment examples and configurations
 
 ### For Developers

@@ -3,6 +3,7 @@
 .App {
   text-align: center;
   padding: $container-padding;
+  padding-bottom: calc($container-padding + 80px); // Account for sticky footer
   font-family: $font-family-base;
   max-width: $max-width;
   margin: 0 auto;
@@ -13,12 +14,16 @@
 
 // Footer Styles
 .app-footer {
-  margin-top: $spacing-xxl;
-  padding: $spacing-lg 0;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin-top: 0;
+  padding: $spacing-sm 0;
   border-top: 1px solid var(--color-borderLight, $color-borderLight);
   background: var(--color-surface, $color-surface);
-  border-radius: var(--border-radius, $border-radius);
-  box-shadow: var(--shadow-small, $shadow-small);
+  box-shadow: var(--shadow-medium, 0 -2px 8px rgba(0, 0, 0, 0.1));
+  z-index: 100;
 }
 
 .footer-content {
@@ -28,6 +33,12 @@
   max-width: $max-width;
   margin: 0 auto;
   padding: 0 $container-padding;
+}
+
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
 }
 
 .footer-left .footer-text {

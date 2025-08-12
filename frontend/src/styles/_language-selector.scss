@@ -1,0 +1,93 @@
+// Language selector styles
+.language-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.language-dropdown-button {
+  background: var(--color-surface, #ffffff);
+  border: 1px solid var(--color-borderLight, #e1e5e9);
+  border-radius: var(--border-radius, 6px);
+  padding: 8px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--color-text, #1a1a1a);
+  transition: all 0.2s ease;
+  min-width: 120px;
+  justify-content: space-between;
+
+  &:hover {
+    background: var(--color-surfaceHover, #f8f9fa);
+    border-color: var(--color-border, #c1c7cd);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--color-primary, #007bff);
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+  }
+}
+
+.language-dropdown-button-text {
+  font-weight: 500;
+}
+
+.language-dropdown-arrow {
+  font-size: 10px;
+  color: var(--color-textSecondary, #6c757d);
+  transition: transform 0.2s ease;
+  transform: rotate(180deg); /* Point up by default since dropdown opens upward */
+}
+
+.language-dropdown-button[aria-expanded="true"] .language-dropdown-arrow {
+  transform: rotate(0deg); /* Point down when open */
+}
+
+.language-dropdown-menu {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  right: 0;
+  background: var(--color-surface, #ffffff);
+  border: 1px solid var(--color-borderLight, #e1e5e9);
+  border-radius: var(--border-radius, 6px);
+  box-shadow: var(--shadow-medium, 0 -4px 6px rgba(0, 0, 0, 0.1));
+  z-index: 1000;
+  margin-bottom: 4px;
+  overflow: hidden;
+}
+
+.language-dropdown-item {
+  width: 100%;
+  padding: 10px 12px;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--color-text, #1a1a1a);
+  transition: background-color 0.2s ease;
+  border-bottom: 1px solid var(--color-borderLight, #e1e5e9);
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background: var(--color-surfaceHover, #f8f9fa);
+  }
+
+  &.selected {
+    background: var(--color-primary, #007bff);
+    color: white;
+    font-weight: 500;
+  }
+
+  &:focus {
+    outline: none;
+    background: var(--color-surfaceHover, #f8f9fa);
+  }
+}
