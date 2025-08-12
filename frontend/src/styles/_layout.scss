@@ -5,11 +5,12 @@
   padding: $container-padding;
   padding-bottom: calc($container-padding + 80px); // Account for sticky footer
   font-family: $font-family-base;
-  max-width: $max-width;
-  margin: 0 auto;
+  width: 100%;
+  margin: 0;
   background-color: var(--color-background, $color-background);
   color: var(--color-text, $color-text);
   min-height: 100vh;
+  box-sizing: border-box;
 }
 
 // Footer Styles
@@ -30,9 +31,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: $max-width;
-  margin: 0 auto;
+  width: 100%;
+  margin: 0;
   padding: 0 $container-padding;
+  box-sizing: border-box;
 }
 
 .footer-right {
@@ -44,4 +46,33 @@
 .footer-left .footer-text {
   color: var(--color-textSecondary, $color-textSecondary);
   font-size: $font-size-small;
+}
+
+// Responsive breakpoints
+@media (max-width: 768px) {
+  .App {
+    padding: $spacing-md;
+    padding-bottom: calc($spacing-md + 80px);
+  }
+  
+  .footer-content {
+    padding: 0 $spacing-md;
+    flex-direction: column;
+    gap: $spacing-sm;
+  }
+  
+  .footer-right {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .App {
+    padding: $spacing-sm;
+    padding-bottom: calc($spacing-sm + 80px);
+  }
+  
+  .footer-content {
+    padding: 0 $spacing-sm;
+  }
 }

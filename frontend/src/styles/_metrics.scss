@@ -4,6 +4,7 @@
   display: flex;
   flex-direction: column;
   gap: $spacing-xl;
+  width: 100%;
 }
 
 .metric-section {
@@ -11,12 +12,15 @@
   border-radius: var(--border-radius, $border-radius);
   padding: $spacing-lg;
   box-shadow: var(--shadow-medium, $shadow-medium);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .metric-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: $spacing-lg;
+  width: 100%;
 }
 
 .metric {
@@ -25,6 +29,10 @@
   border-radius: calc(var(--border-radius, $border-radius) - 4px);
   box-shadow: var(--shadow-small, $shadow-small);
   border-left: 4px solid var(--color-metricBorder, $color-metricBorder);
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   
   &.success {
     border-left-color: var(--color-metricSuccess, $color-metricSuccess);
@@ -33,12 +41,24 @@
   &.failed {
     border-left-color: var(--color-metricFailed, $color-metricFailed);
   }
+  
+  h3 {
+    margin: 0 0 $spacing-sm 0;
+    font-size: $font-size-base;
+  }
+  
+  .value {
+    font-size: $font-size-large;
+    font-weight: bold;
+    margin: 0;
+  }
 }
 
 .metric-list {
   display: flex;
   flex-direction: column;
   gap: $spacing-sm;
+  width: 100%;
 }
 
 .metric-item {
@@ -49,6 +69,8 @@
   padding: 15px $spacing-lg;
   border-radius: calc(var(--border-radius, $border-radius) - 6px);
   box-shadow: var(--shadow-small, $shadow-small);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .metric-note {
@@ -57,4 +79,83 @@
   background: var(--color-metricBackground, $color-metricBackground);
   border-radius: calc(var(--border-radius, $border-radius) - 6px);
   border-left: 3px solid var(--color-warning, $color-warning);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+// Responsive breakpoints for metrics
+@media (max-width: 1024px) {
+  .metric-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: $spacing-md;
+  }
+  
+  .metric {
+    min-height: 100px;
+    padding: $spacing-md;
+    
+    h3 {
+      font-size: $font-size-small;
+    }
+    
+    .value {
+      font-size: $font-size-base;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .metrics {
+    gap: $spacing-lg;
+  }
+  
+  .metric-section {
+    padding: $spacing-md;
+  }
+  
+  .metric-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: $spacing-sm;
+  }
+  
+  .metric {
+    min-height: 80px;
+    padding: $spacing-sm;
+    
+    h3 {
+      font-size: $font-size-small;
+      margin-bottom: $spacing-xs;
+    }
+    
+    .value {
+      font-size: $font-size-base;
+    }
+  }
+  
+  .metric-item {
+    padding: 12px $spacing-md;
+  }
+}
+
+@media (max-width: 480px) {
+  .metric-grid {
+    grid-template-columns: 1fr;
+    gap: $spacing-sm;
+  }
+  
+  .metric {
+    min-height: 70px;
+    
+    h3 {
+      font-size: $font-size-small;
+    }
+    
+    .value {
+      font-size: $font-size-base;
+    }
+  }
+  
+  .metric-section {
+    padding: $spacing-sm;
+  }
 }

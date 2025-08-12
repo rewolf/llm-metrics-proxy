@@ -81,3 +81,36 @@
   font-size: 0.8em;
   opacity: 0.8;
 }
+
+// Responsive styles for theme selector
+@media (max-width: 768px) {
+  .theme-selector-button {
+    padding: $spacing-xs $spacing-sm;
+    font-size: $font-size-small;
+  }
+  
+  .theme-selector-menu {
+    min-width: 180px;
+    right: -20px;
+  }
+  
+  .theme-selector-item {
+    padding: 10px $spacing-sm;
+  }
+}
+
+@media (max-width: 480px) {
+  .theme-selector-button {
+    padding: $spacing-xs;
+    font-size: $font-size-small;
+  }
+  
+  .theme-selector-menu {
+    min-width: 160px;
+    right: -10px;
+  }
+  
+  .theme-selector-item {
+    padding: 8px $spacing-xs;
+  }
+}

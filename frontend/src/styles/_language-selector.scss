@@ -91,3 +91,30 @@
     background: var(--color-surfaceHover, #f8f9fa);
   }
 }
+
+// Responsive styles for language selector
+@media (max-width: 768px) {
+  .language-dropdown-button {
+    padding: 6px 10px;
+    font-size: 13px;
+    min-width: 100px;
+  }
+  
+  .language-dropdown-item {
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .language-dropdown-button {
+    padding: 5px 8px;
+    font-size: 12px;
+    min-width: 80px;
+  }
+  
+  .language-dropdown-item {
+    padding: 6px 8px;
+    font-size: 12px;
+  }
+}

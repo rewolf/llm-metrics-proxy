@@ -3,6 +3,9 @@
 h1 {
   color: var(--color-text, $color-text);
   margin-bottom: $spacing-xl;
+  font-size: $font-size-xl;
+  text-align: center;
+  width: 100%;
 }
 
 .metric-section h2 {
@@ -11,6 +14,7 @@ h1 {
   font-size: $font-size-large;
   border-bottom: 2px solid var(--color-border, $color-border);
   padding-bottom: $spacing-sm;
+  text-align: left;
 }
 
 .metric h3 {
@@ -20,12 +24,14 @@ h1 {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  text-align: center;
 }
 
 .metric .value {
   font-size: $font-size-xl;
   font-weight: bold;
   color: var(--color-text, $color-text);
+  text-align: center;
 }
 
 .metric-item .model-name,
@@ -33,6 +39,7 @@ h1 {
 .metric-item .error-name {
   font-weight: 600;
   color: var(--color-text, $color-text);
+  text-align: left;
 }
 
 .metric-item .model-count,
@@ -40,9 +47,54 @@ h1 {
 .metric-item .error-count {
   color: var(--color-textSecondary, $color-textSecondary);
   font-size: $font-size-small;
+  text-align: right;
 }
 
 .metric-note small {
   color: var(--color-textSecondary, $color-textSecondary);
   font-style: italic;
+  text-align: left;
+}
+
+// Responsive typography
+@media (max-width: 768px) {
+  h1 {
+    font-size: $font-size-large;
+    margin-bottom: $spacing-lg;
+  }
+  
+  .metric-section h2 {
+    font-size: $font-size-base;
+    margin-bottom: $spacing-md;
+  }
+  
+  .metric h3 {
+    font-size: $font-size-small;
+    margin-bottom: $spacing-md;
+  }
+  
+  .metric .value {
+    font-size: $font-size-large;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: $font-size-base;
+    margin-bottom: $spacing-md;
+  }
+  
+  .metric-section h2 {
+    font-size: $font-size-base;
+    margin-bottom: $spacing-sm;
+  }
+  
+  .metric h3 {
+    font-size: $font-size-small;
+    margin-bottom: $spacing-sm;
+  }
+  
+  .metric .value {
+    font-size: $font-size-base;
+  }
 }
