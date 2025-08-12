@@ -259,10 +259,10 @@ npm start
 
 ```bash
 # Run proxy server
-python main.py
+python -m backend.metrics_proxy
 
 # Run metrics API server
-python metrics_api.py
+python -m backend.metrics_server
 ```
 
 ### Building Docker Images

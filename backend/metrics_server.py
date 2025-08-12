@@ -10,8 +10,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
-from .api.metrics import router as metrics_router
-from .utils.config import Config
+from backend.api.metrics import router as metrics_router
+from backend.utils.config import Config
 
 app = FastAPI(title="Metrics API", version="1.0.0")
 

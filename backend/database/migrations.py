@@ -4,8 +4,8 @@ Database migration logic for the OpenAI LLM Metrics Proxy.
 
 import logging
 import sqlite3
-from .connection import get_db_connection
-from .models import COMPLETION_REQUESTS_SCHEMA
+from backend.database.connection import get_db_connection
+from backend.database.models import COMPLETION_REQUESTS_SCHEMA
 
 logger = logging.getLogger(__name__)
 

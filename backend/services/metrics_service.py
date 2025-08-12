@@ -4,8 +4,8 @@ Metrics service for recording and managing completion request metrics.
 
 import logging
 from typing import Optional
-from ..database.connection import get_db_connection
-from ..database.models import CompletionRequest
+from backend.database.connection import get_db_connection
+from backend.database.models import CompletionRequest
 
 logger = logging.getLogger(__name__)
 

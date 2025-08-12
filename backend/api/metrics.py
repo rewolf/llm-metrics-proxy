@@ -7,19 +7,10 @@ from datetime import datetime
 from typing import Dict, Any
 from fastapi import APIRouter
 from fastapi.middleware.cors import CORSMiddleware
-from ..database.connection import get_db_connection
-from ...shared.types import Metrics, ModelUsage, FinishReason, ErrorType, OriginUsage
+from backend.database.connection import get_db_connection
+from shared.types import Metrics, ModelUsage, FinishReason, ErrorType, OriginUsage
 
 router = APIRouter(prefix="/api", tags=["metrics"])
-
-# Enable CORS for frontend
-router.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # In production, restrict this to your frontend domain
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 
 def get_metrics() -> Metrics:

@@ -82,14 +82,14 @@ The system uses a single SQLite table `completion_requests` with comprehensive m
 
 ## 🔄 Component Responsibilities
 
-### Proxy Server (`main.py`)
+### Proxy Server (`metrics_proxy.py`)
 - **Primary Function**: Reverse proxy for OpenAI API requests
 - **Metrics Collection**: Captures request/response data
 - **Database Operations**: Stores metrics in SQLite
 - **Error Handling**: Graceful fallback and logging
 - **Streaming Support**: Handles both streaming and non-streaming requests
 
-### Metrics API (`metrics_api.py`)
+### Metrics API (`metrics_server.py`)
 - **Data Exposure**: RESTful API for metrics retrieval
 - **Aggregation**: Calculates summary statistics
 - **CORS Support**: Enables frontend communication

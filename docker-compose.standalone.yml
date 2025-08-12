@@ -29,7 +29,7 @@ services:
       - DB_PATH=./data/metrics.db
     volumes:
       - ./data:/app/data
-    command: ["python", "metrics_api.py"]
+    command: ["python", "-m", "backend.metrics_server"]
     depends_on:
       - ollama-metrics-proxy
     restart: unless-stopped

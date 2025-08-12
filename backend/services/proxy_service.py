@@ -9,8 +9,8 @@ from typing import Dict, Any, Optional
 import httpx
 from fastapi import Request, Response, HTTPException
 from fastapi.responses import StreamingResponse
-from ..database.models import CompletionRequest
-from .metrics_service import record_request_from_model
+from backend.database.models import CompletionRequest
+from backend.services.metrics_service import record_request_from_model
 
 logger = logging.getLogger(__name__)
 

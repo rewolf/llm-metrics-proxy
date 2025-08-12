@@ -12,9 +12,9 @@ from datetime import datetime
 from fastapi import FastAPI, Request, HTTPException
 import uvicorn
 
-from .database.migrations import run_migrations
-from .services.proxy_service import ProxyService
-from .utils.config import Config
+from backend.database.migrations import run_migrations
+from backend.services.proxy_service import ProxyService
+from backend.utils.config import Config
 
 # Configure logging
 logging.basicConfig(
