@@ -67,6 +67,7 @@ def init_database():
                 -- Request details
                 model TEXT,
                 user TEXT,
+                origin TEXT,
                 is_streaming BOOLEAN,
                 max_tokens INTEGER,
                 temperature REAL,
@@ -94,14 +95,14 @@ def init_database():
         cursor.execute('''
             INSERT INTO completion_requests (
                 id, timestamp, success, status_code, response_time_ms,
-                model, user, is_streaming, max_tokens, temperature, top_p, message_count,
+                model, user, origin, is_streaming, max_tokens, temperature, top_p, message_count,
                 prompt_tokens, completion_tokens, total_tokens, finish_reason,
                 time_to_first_token_ms, time_to_last_token_ms, tokens_per_second,
                 error_type, error_message
             )
             SELECT 
                 id, timestamp, success, status_code, response_time_ms,
-                model, user, is_streaming, max_tokens, temperature, top_p, message_count,
+                model, user, NULL, is_streaming, max_tokens, temperature, top_p, message_count,
                 prompt_tokens, completion_tokens, total_tokens, finish_reason,
                 time_to_first_token_ms, time_to_last_token_ms, tokens_per_second,
                 error_type, error_message
@@ -112,40 +113,48 @@ def init_database():
         cursor.execute("DROP TABLE completion_requests_old")
         logger.info("Database migration completed successfully")
     else:
-        # Create new table if it doesn't exist
-        cursor.execute('''
-            CREATE TABLE IF NOT EXISTS completion_requests (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-                success BOOLEAN NOT NULL,
-                status_code INTEGER,
-                response_time_ms INTEGER,
-                
-                -- Request details
-                model TEXT,
-                user TEXT,
-                is_streaming BOOLEAN,
-                max_tokens INTEGER,
-                temperature REAL,
-                top_p REAL,
-                message_count INTEGER,
-                
-                -- Response details  
-                prompt_tokens INTEGER,
-                completion_tokens INTEGER,
-                total_tokens INTEGER,
-                finish_reason TEXT,
-                
-                -- Performance metrics
-                time_to_first_token_ms INTEGER,
-                time_to_last_token_ms INTEGER,
-                tokens_per_second REAL,
-                
-                -- Error details
-                error_type TEXT,
-                error_message TEXT
-            )
-        ''')
+        # Check if origin column exists
+        if 'origin' not in columns:
+            # Add origin column to existing table
+            logger.info("Adding origin column to existing database schema")
+            cursor.execute("ALTER TABLE completion_requests ADD COLUMN origin TEXT")
+            logger.info("Origin column added successfully")
+        else:
+            # Create new table if it doesn't exist
+            cursor.execute('''
+                CREATE TABLE IF NOT EXISTS completion_requests (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    success BOOLEAN NOT NULL,
+                    status_code INTEGER,
+                    response_time_ms INTEGER,
+                    
+                    -- Request details
+                    model TEXT,
+                    user TEXT,
+                    origin TEXT,
+                    is_streaming BOOLEAN,
+                    max_tokens INTEGER,
+                    temperature REAL,
+                    top_p REAL,
+                    message_count INTEGER,
+                    
+                    -- Response details  
+                    prompt_tokens INTEGER,
+                    completion_tokens INTEGER,
+                    total_tokens INTEGER,
+                    finish_reason TEXT,
+                    
+                    -- Performance metrics
+                    time_to_first_token_ms INTEGER,
+                    time_to_last_token_ms INTEGER,
+                    tokens_per_second REAL,
+                    
+                    -- Error details
+                    error_type TEXT,
+                    error_message TEXT
+                )
+            ''')
     
     logger.info("Database initialized successfully")
     conn.commit()
@@ -159,7 +168,7 @@ def record_request(success: bool, status_code: int, response_time_ms: int,
                   completion_tokens: int = None, total_tokens: int = None,
                   finish_reason: str = None, time_to_first_token_ms: int = None,
                   time_to_last_token_ms: int = None, tokens_per_second: float = None,
-                  error_type: str = None, error_message: str = None):
+                  error_type: str = None, error_message: str = None, origin: str = None):
     """Record a completion request with enhanced metrics in the database."""
     try:
         conn = sqlite3.connect(DB_PATH)
@@ -168,14 +177,14 @@ def record_request(success: bool, status_code: int, response_time_ms: int,
         cursor.execute('''
             INSERT INTO completion_requests (
                 success, status_code, response_time_ms, model, user,
-                is_streaming, max_tokens, temperature, top_p, message_count,
+                origin, is_streaming, max_tokens, temperature, top_p, message_count,
                 prompt_tokens, completion_tokens, total_tokens, finish_reason,
                 time_to_first_token_ms, time_to_last_token_ms, tokens_per_second,
                 error_type, error_message
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ''', (success, status_code, response_time_ms, model, user,
-              is_streaming, max_tokens, temperature, top_p, message_count,
+              origin, is_streaming, max_tokens, temperature, top_p, message_count,
               prompt_tokens, completion_tokens, total_tokens, finish_reason,
               time_to_first_token_ms, time_to_last_token_ms, tokens_per_second,
               error_type, error_message))
@@ -220,11 +229,15 @@ async def proxy_chat_completions(request: Request):
     # Extract request parameters for metrics
     model = None
     user = None
+    origin = None
     is_streaming = False
     max_tokens = None
     temperature = None
     top_p = None
     message_count = None
+    
+    # Extract Origin header
+    origin = headers.get("origin")
     
     try:
         import json
@@ -240,7 +253,7 @@ async def proxy_chat_completions(request: Request):
         messages = body_dict.get("messages", [])
         message_count = len(messages) if messages else None
         
-        logger.info(f"[{request_id}] Request details - Model: {model}, User: {user}, Streaming: {is_streaming}, Messages: {message_count}")
+        logger.info(f"[{request_id}] Request details - Model: {model}, User: {user}, Origin: {origin}, Streaming: {is_streaming}, Messages: {message_count}")
         
     except Exception as e:
         logger.error(f"[{request_id}] Error parsing request body: {e}")
@@ -254,13 +267,13 @@ async def proxy_chat_completions(request: Request):
                 # Handle streaming responses
                 logger.info(f"[{request_id}] Handling streaming response")
                 return await handle_streaming_response(client, body, headers, start_time, 
-                                                   model, user, is_streaming, 
+                                                   model, user, origin, is_streaming, 
                                                    max_tokens, temperature, top_p, message_count, request_id)
             else:
                 # Handle non-streaming responses
                 logger.info(f"[{request_id}] Handling non-streaming response")
                 return await handle_non_streaming_response(client, body, headers, start_time,
-                                                        model, user, is_streaming,
+                                                        model, user, origin, is_streaming,
                                                         max_tokens, temperature, top_p, message_count, request_id)
             
     except httpx.RequestError as e:
@@ -272,7 +285,7 @@ async def proxy_chat_completions(request: Request):
             success=False,
             status_code=500,
             response_time_ms=response_time_ms,
-            model=model, user=user, is_streaming=is_streaming,
+            model=model, user=user, origin=origin, is_streaming=is_streaming,
             max_tokens=max_tokens, temperature=temperature, top_p=top_p,
             message_count=message_count, error_type="connection_error",
             error_message=str(e)
@@ -284,7 +297,7 @@ async def proxy_chat_completions(request: Request):
         )
 
 async def handle_streaming_response(client, body, headers, start_time, 
-                                 model, user, is_streaming, 
+                                 model, user, origin, is_streaming, 
                                  max_tokens, temperature, top_p, message_count, request_id):
     """Handle streaming responses with real-time token forwarding."""
     from fastapi.responses import StreamingResponse
@@ -313,7 +326,7 @@ async def handle_streaming_response(client, body, headers, start_time,
                             success=False,
                             status_code=response.status_code,
                             response_time_ms=int((time.time() - start_time) * 1000),
-                            model=model, user=user, is_streaming=is_streaming,
+                            model=model, user=user, origin=origin, is_streaming=is_streaming,
                             max_tokens=max_tokens, temperature=temperature, top_p=top_p,
                             message_count=message_count, error_type="http_error",
                             error_message=f"Backend returned {response.status_code}"
@@ -395,7 +408,7 @@ async def handle_streaming_response(client, body, headers, start_time,
                             success=True,
                             status_code=200,
                             response_time_ms=total_time_ms,
-                            model=model, user=user, is_streaming=is_streaming,
+                            model=model, user=user, origin=origin, is_streaming=is_streaming,
                             max_tokens=max_tokens, temperature=temperature, top_p=top_p,
                             message_count=message_count, prompt_tokens=prompt_tokens, completion_tokens=completion_tokens,
                             total_tokens=total_tokens, finish_reason=finish_reason,
