@@ -4,6 +4,11 @@ export const en: Translation = {
   // App title
   appTitle: 'OpenAI LLM Metrics Dashboard',
   
+  // Tab labels
+  overview: 'Overview',
+  streamedRequests: 'Streamed Requests',
+  nonStreamedRequests: 'Non-streamed Requests',
+  
   // Section headers
   basicStatistics: 'Basic Statistics',
   streamingStatistics: 'Streaming Statistics',
@@ -12,13 +17,13 @@ export const en: Translation = {
   modelUsage: 'Model Usage',
   completionAnalysis: 'Completion Analysis',
   errorAnalysis: 'Error Analysis',
+  requestSources: 'Request Sources',
   
   // Metric labels
   totalCompletionRequests: 'Total Completion Requests',
   successfulRequests: 'Successful Requests',
   failedRequests: 'Failed Requests',
   successRate: 'Success Rate',
-  requestsLast24h: 'Requests (Last 24h)',
   streamingRequests: 'Streaming Requests',
   nonStreamingRequests: 'Non-Streaming Requests',
   streamingPercentage: 'Streaming Percentage',
@@ -27,6 +32,18 @@ export const en: Translation = {
   avgResponseTime: 'Average Response Time',
   avgTokensPerSecond: 'Average Tokens per Second',
   lastUpdated: 'Last Updated',
+  
+  // Streaming-specific metrics
+  timeToFirstToken: 'Time to First Token',
+  timeToLastToken: 'Time to Last Token',
+  completionDuration: 'Completion Duration',
+  streamedRequestsCount: 'Streamed Requests',
+  streamedRequestsPercent: 'Percent of Total',
+  
+  // Non-streaming specific metrics
+  nonStreamedRequestsCount: 'Non-streamed Requests',
+  nonStreamedRequestsPercent: 'Percent of Total',
+  tokensPerRequest: 'Tokens per Request',
   
   // Button text
   refreshNow: 'Refresh Now',
@@ -46,7 +63,8 @@ export const en: Translation = {
   
   // Notes and warnings
   tokenUsageNote: '⚠️ Token usage is only available for non-streaming requests. Streaming requests show timing metrics instead.',
-  performanceNote: '📊 Response time includes both streaming and non-streaming requests. Tokens per second only available for non-streaming.',
+  performanceNote: '📊 Response time includes both streaming and non-streaming requests. Time to first token shows streaming performance.',
+  streamingPerformanceNote: '📊 These metrics are only available for requests explicitly requesting usage metrics.',
   requests: 'requests',
   times: 'times',
   tokensPerSecond: 'tokens/s',
@@ -55,5 +73,15 @@ export const en: Translation = {
   // Loading and error states
   loadingMetrics: 'Loading metrics...',
   errorLoadingMetrics: 'Error loading metrics:',
-  noMetricsData: 'No metrics data available'
+  noMetricsData: 'No metrics data available',
+  
+  // Timeframe selector
+  selectTimeframe: 'Select Timeframe',
+  timeframe1h: '1 Hour',
+  timeframe6h: '6 Hours',
+  timeframe12h: '12 Hours',
+  timeframe1d: '1 Day',
+  timeframe1w: '1 Week',
+  timeframe1mo: '1 Month',
+  timeframeAll: 'All Time'
 };

@@ -1,16 +1,56 @@
 // Layout styles for the main application
 
 .App {
-  text-align: center;
-  padding: $container-padding;
-  padding-bottom: calc($container-padding + 80px); // Account for sticky footer
-  font-family: $font-family-base;
-  width: 100%;
-  margin: 0;
-  background-color: var(--color-background, $color-background);
-  color: var(--color-text, $color-text);
   min-height: 100vh;
-  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: $container-padding;
+  background: var(--color-background, $color-background);
+  color: var(--color-text, $color-text);
+}
+
+// App Header
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: $spacing-lg 0 $spacing-xl 0; // Reduced from $spacing-xl to $spacing-lg
+  
+  h1 {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    margin: 0; // Remove margin from h1 since header has margin
+    font-size: $font-size-xl;
+    text-align: left; // Left align since it's in a flex container
+    
+    svg {
+      width: 32px;
+      height: 32px;
+      color: var(--color-primary, $color-primary);
+    }
+  }
+}
+
+// Responsive header
+@media (max-width: 768px) {
+  .app-header {
+    flex-direction: column;
+    gap: $spacing-md;
+    margin: $spacing-md 0 $spacing-lg 0;
+    
+    h1 {
+      font-size: $font-size-large;
+      
+      svg {
+        width: 28px;
+        height: 28px;
+      }
+    }
+  }
 }
 
 // Footer Styles

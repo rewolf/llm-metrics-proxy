@@ -18,7 +18,6 @@ class CompletionRequest:
     
     # Request details
     model: Optional[str] = None
-    user: Optional[str] = None
     origin: Optional[str] = None
     is_streaming: bool = False
     max_tokens: Optional[int] = None
@@ -53,7 +52,6 @@ CREATE TABLE IF NOT EXISTS completion_requests (
     
     -- Request details
     model TEXT,
-    user TEXT,
     origin TEXT,
     is_streaming BOOLEAN,
     max_tokens INTEGER,

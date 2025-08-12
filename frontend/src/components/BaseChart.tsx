@@ -1,0 +1,273 @@
+import React, { useEffect, useRef } from 'react';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ChartOptions } from 'chart.js';
+import { Bar } from 'react-chartjs-2';
+
+// Register Chart.js components
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+
+export interface ChartDataPoint {
+  timestamp: string;
+  value: number;
+}
+
+export interface BaseChartProps {
+  data: ChartDataPoint[];
+  title: string;
+  yAxisLabel?: string;
+  timeframe: string;
+  height?: number;
+  className?: string;
+}
+
+export const BaseChart: React.FC<BaseChartProps> = ({
+  data,
+  title,
+  yAxisLabel,
+  timeframe,
+  height = 300,
+  className = ''
+}) => {
+  const chartRef = useRef<ChartJS<'bar'> | null>(null);
+
+  // Format timestamps for display with improved formatting
+  const labels = data.map(point => formatChartTimestamp(point.timestamp, timeframe));
+  const values = data.map(point => point.value);
+
+  // Get computed CSS custom properties for theme-aware colors
+  const getComputedColor = (property: string, fallback: string): string => {
+    if (typeof window !== 'undefined') {
+      const computed = getComputedStyle(document.documentElement).getPropertyValue(property);
+      return computed.trim() || fallback;
+    }
+    return fallback;
+  };
+
+  const textColor = getComputedColor('--color-text', '#212529');
+  const backgroundColor = getComputedColor('--color-background', '#ffffff');
+  const borderColor = getComputedColor('--color-border', '#dee2e6');
+
+  const chartData = {
+    labels,
+    datasets: [
+      {
+        label: yAxisLabel || 'Value',
+        data: values,
+        backgroundColor: 'rgba(54, 162, 235, 0.6)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const options: ChartOptions<'bar'> = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: false, // Hide legend for single dataset
+      },
+      title: {
+        display: true,
+        text: title,
+        color: textColor,
+        font: {
+          size: 16,
+          weight: 'bold',
+        },
+      },
+      tooltip: {
+        mode: 'index',
+        intersect: false,
+        backgroundColor: backgroundColor,
+        titleColor: textColor,
+        bodyColor: textColor,
+        borderColor: borderColor,
+        borderWidth: 1,
+        callbacks: {
+          title: (tooltipItems) => {
+            const index = tooltipItems[0].dataIndex;
+            return data[index]?.timestamp ? 
+              new Date(data[index].timestamp).toLocaleString() : 
+              tooltipItems[0].label;
+          },
+        },
+      },
+    },
+    scales: {
+      x: {
+        grid: {
+          color: borderColor,
+        },
+        ticks: {
+          color: textColor,
+          maxRotation: 45,
+          minRotation: 0,
+          // Sparse labeling - show fewer labels for better readability
+          callback: function(val, index) {
+            // Show labels for every nth tick based on timeframe
+            const labelInterval = getLabelInterval(timeframe);
+            return index % labelInterval === 0 ? this.getLabelForValue(Number(val)) : '';
+          },
+          // Ensure labels are on nice boundaries
+          source: 'auto',
+          autoSkip: true,
+          autoSkipPadding: 20,
+        },
+      },
+      y: {
+        beginAtZero: true,
+        grid: {
+          color: borderColor,
+        },
+        ticks: {
+          color: textColor,
+        },
+        title: {
+          display: !!yAxisLabel,
+          text: yAxisLabel,
+          color: textColor,
+        },
+      },
+    },
+    interaction: {
+      mode: 'nearest',
+      axis: 'x',
+      intersect: false,
+    },
+  };
+
+  // Handle theme changes by updating chart colors
+  useEffect(() => {
+    if (chartRef.current) {
+      const chart = chartRef.current;
+      
+      // Update colors when theme changes
+      const updateColors = () => {
+        const newTextColor = getComputedColor('--color-text', '#212529');
+        const newBackgroundColor = getComputedColor('--color-background', '#ffffff');
+        const newBorderColor = getComputedColor('--color-border', '#dee2e6');
+
+        // Update chart options
+        if (chart.options.plugins?.title) {
+          chart.options.plugins.title.color = newTextColor;
+        }
+        if (chart.options.plugins?.tooltip) {
+          chart.options.plugins.tooltip.backgroundColor = newBackgroundColor;
+          chart.options.plugins.tooltip.titleColor = newTextColor;
+          chart.options.plugins.tooltip.bodyColor = newTextColor;
+          chart.options.plugins.tooltip.borderColor = newBorderColor;
+        }
+        if (chart.options.scales?.x) {
+          chart.options.scales.x.grid!.color = newBorderColor;
+          chart.options.scales.x.ticks!.color = newTextColor;
+        }
+        if (chart.options.scales?.y) {
+          chart.options.scales.y.grid!.color = newBorderColor;
+          chart.options.scales.y.ticks!.color = newTextColor;
+          if (chart.options.scales.y.title) {
+            chart.options.scales.y.title.color = newTextColor;
+          }
+        }
+
+        chart.update('none'); // Update without animation
+      };
+
+      // Listen for theme changes (CSS custom property changes)
+      const observer = new MutationObserver(updateColors);
+      observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['style', 'class']
+      });
+
+      // Initial color update
+      updateColors();
+
+      return () => observer.disconnect();
+    }
+  }, [data, timeframe]); // Re-run when data or timeframe changes
+
+  if (data.length === 0) {
+    return (
+      <div className={`chart-container empty ${className}`} style={{ height }}>
+        <div className="chart-placeholder">
+          <p>No data available for the selected timeframe</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className={`chart-container ${className}`} style={{ height }}>
+      <Bar 
+        ref={chartRef}
+        data={chartData} 
+        options={options} 
+      />
+    </div>
+  );
+};
+
+// Helper function to determine label interval based on timeframe
+const getLabelInterval = (timeframe: string): number => {
+  switch (timeframe) {
+    case '1h':
+      return 4; // Show every 4th label (every 2 minutes)
+    case '6h':
+      return 15; // Show every 15th label (every 30 minutes)
+    case '12h':
+      return 12; // Show every 12th label (every 1 hour)
+    case '1d':
+      return 6; // Show every 6th label (every 1 hour)
+    case '1w':
+      return 4; // Show every 4th label (every 4 hours)
+    case '1mo':
+      return 4; // Show every 4th label (every 1 day)
+    default:
+      return 10; // Default to every 10th label
+  }
+};
+
+// Helper function to format chart timestamps with improved formatting
+const formatChartTimestamp = (timestamp: string, timeframe: string): string => {
+  const date = new Date(timestamp);
+  
+  switch (timeframe) {
+    case '1h':
+      return date.toLocaleTimeString('en-US', { 
+        hour: '2-digit', 
+        minute: '2-digit',
+        hour12: false 
+      });
+    case '6h':
+    case '12h':
+      return date.toLocaleTimeString('en-US', { 
+        hour: '2-digit', 
+        minute: '2-digit',
+        hour12: false 
+      });
+    case '1d':
+      return date.toLocaleDateString('en-US', { 
+        month: 'numeric',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+      }).replace(',', '');
+    case '1w':
+      return date.toLocaleDateString('en-US', { 
+        month: 'numeric', 
+        day: 'numeric'
+      });
+    case '1mo':
+      return date.toLocaleDateString('en-US', { 
+        month: 'short', 
+        day: 'numeric' 
+      });
+    default:
+      return date.toLocaleDateString('en-US', { 
+        month: 'numeric', 
+        day: 'numeric',
+        year: 'numeric'
+      });
+  }
+};

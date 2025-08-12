@@ -36,6 +36,19 @@ class OriginUsage:
 
 
 @dataclass
+class CompletionRequestData:
+    """Individual completion request data for the /completion_requests endpoint."""
+    timestamp: str
+    time_to_first_token_ms: Optional[int]
+    time_to_last_token_ms: Optional[int]
+    is_streaming: bool
+    success: bool
+    message_count: Optional[int]
+    prompt_tokens: Optional[int]
+    tokens: dict[str, Optional[int]]  # total, prompt, completion
+
+
+@dataclass
 class Metrics:
     """Complete metrics data structure."""
     total_requests: int

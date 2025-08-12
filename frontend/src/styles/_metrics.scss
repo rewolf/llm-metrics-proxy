@@ -1,3 +1,49 @@
+// Tab selector styles
+.tab-selector {
+  display: flex;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-xl;
+  border-bottom: 2px solid var(--color-border, $color-border);
+  padding-bottom: $spacing-sm;
+}
+
+.tab-button {
+  background: var(--color-surface, $color-surface);
+  border: none;
+  padding: $spacing-md $spacing-lg;
+  border-radius: var(--border-radius, $border-radius) var(--border-radius, $border-radius) 0 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  font-size: $font-size-base;
+  color: var(--color-text, $color-text);
+  
+  &:hover {
+    background: var(--color-hover, $color-hover);
+  }
+  
+  &.active {
+    background: var(--color-primary, $color-primary);
+    color: var(--color-primaryText, $color-primaryText);
+    font-weight: bold;
+  }
+  
+  .tab-icon {
+    font-size: $font-size-large;
+    
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+  
+  .tab-label {
+    font-weight: 500;
+  }
+}
+
 // Metrics component styles
 
 .metrics {
@@ -14,6 +60,60 @@
   box-shadow: var(--shadow-medium, $shadow-medium);
   width: 100%;
   box-sizing: border-box;
+  
+  h2 {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    margin: 0 0 $spacing-lg 0;
+    
+    svg {
+      width: 24px;
+      height: 24px;
+      color: var(--color-primary, $color-primary);
+    }
+  }
+}
+
+.metric-split-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-lg;
+  width: 100%;
+}
+
+.metric-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.metric-right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chart-placeholder {
+  background: var(--color-surface, $color-surface);
+  border: 2px dashed var(--color-border, $color-border);
+  border-radius: calc(var(--border-radius, $border-radius) - 4px);
+  min-height: 200px;
+  
+  .placeholder-content {
+    text-align: center;
+    color: var(--color-textSecondary, $color-textSecondary);
+    
+    h3 {
+      margin: 0 0 $spacing-sm 0;
+      font-size: $font-size-base;
+      color: var(--color-text, $color-text);
+    }
+    
+    p {
+      margin: 0;
+      font-size: $font-size-small;
+    }
+  }
 }
 
 .metric-grid {
@@ -59,6 +159,8 @@
   flex-direction: column;
   gap: $spacing-sm;
   width: 100%;
+  max-width: 600px; // Limit width for better readability
+  margin: 0 auto; // Center the list
 }
 
 .metric-item {
@@ -66,11 +168,45 @@
   justify-content: space-between;
   align-items: center;
   background: var(--color-surface, $color-surface);
-  padding: 15px $spacing-lg;
+  padding: $spacing-md $spacing-lg;
   border-radius: calc(var(--border-radius, $border-radius) - 6px);
   box-shadow: var(--shadow-small, $shadow-small);
   width: 100%;
   box-sizing: border-box;
+  min-height: 50px; // Ensure consistent height
+  transition: all 0.2s ease; // Smooth transitions
+  
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-medium, $shadow-medium);
+  }
+  
+  .model-name,
+  .origin-name,
+  .reason-name,
+  .error-name {
+    font-weight: 500;
+    color: var(--color-text, $color-text);
+    flex: 1;
+    margin-right: $spacing-md;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  .model-count,
+  .origin-count,
+  .reason-count,
+  .error-count {
+    font-weight: 600;
+    color: var(--color-primary, $color-primary);
+    text-align: right;
+    min-width: 80px; // Ensure consistent width for counts
+    background: var(--color-metricBackground, $color-metricBackground);
+    padding: $spacing-xs $spacing-sm;
+    border-radius: calc(var(--border-radius, $border-radius) - 8px);
+    font-size: $font-size-small;
+  }
 }
 
 .metric-note {
@@ -113,6 +249,20 @@
     padding: $spacing-md;
   }
   
+  .metric-split-layout {
+    grid-template-columns: 1fr;
+    gap: $spacing-lg;
+  }
+  
+  .chart-placeholder {
+    min-height: 150px;
+  }
+  
+  .metric-list {
+    max-width: 100%; // Full width on mobile for better space usage
+    margin: 0;
+  }
+  
   .metric-grid {
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: $spacing-sm;
@@ -134,6 +284,22 @@
   
   .metric-item {
     padding: 12px $spacing-md;
+    
+    .model-name,
+    .origin-name,
+    .reason-name,
+    .error-name {
+      font-size: $font-size-small;
+      margin-right: $spacing-sm;
+    }
+    
+    .model-count,
+    .origin-count,
+    .reason-count,
+    .error-count {
+      font-size: $font-size-small;
+      min-width: 60px; // Smaller minimum width on mobile
+    }
   }
 }
 
@@ -157,5 +323,145 @@
   
   .metric-section {
     padding: $spacing-sm;
+  }
+  
+  .chart-placeholder {
+    min-height: 120px;
+    
+    .placeholder-content {
+      h3 {
+        font-size: $font-size-small;
+      }
+      
+      p {
+        font-size: $font-size-small;
+      }
+    }
+  }
+  
+  // Tab selector responsive styles
+  .tab-selector {
+    flex-direction: column;
+    gap: $spacing-xs;
+    margin-bottom: $spacing-lg;
+  }
+  
+  .tab-button {
+    width: 100%;
+    justify-content: center;
+    border-radius: var(--border-radius, $border-radius);
+    
+    .tab-label {
+      font-size: $font-size-small;
+    }
+  }
+}
+
+// Chart styles
+.chart-container {
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+  position: relative;
+  
+  &.empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-background);
+    border: 2px dashed var(--color-border);
+    border-radius: 8px;
+    
+    .chart-placeholder {
+      text-align: center;
+      color: var(--color-text-muted);
+      
+      p {
+        margin: 0;
+        font-size: 14px;
+      }
+    }
+  }
+  
+  // Ensure Chart.js canvas is responsive
+  canvas {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+}
+
+// Chart tooltip customization
+.chartjs-tooltip {
+  background: var(--color-background) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: 6px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  color: var(--color-text) !important;
+  font-family: inherit !important;
+  font-size: 12px !important;
+  padding: 8px 12px !important;
+  
+  .tooltip-title {
+    font-weight: 600 !important;
+    margin-bottom: 4px !important;
+  }
+  
+  .tooltip-body {
+    color: var(--color-text-muted) !important;
+  }
+}
+
+// Chart legend customization
+.chartjs-legend {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 16px !important;
+  margin-top: 16px !important;
+  justify-content: center !important;
+  
+  .legend-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    font-size: 12px !important;
+    color: var(--color-text) !important;
+    
+    .legend-color {
+      width: 12px !important;
+      height: 12px !important;
+      border-radius: 2px !important;
+    }
+  }
+}
+
+// Responsive chart adjustments
+@media (max-width: 768px) {
+  .chart-container {
+    min-height: 250px;
+    
+    &.empty {
+      .chart-placeholder p {
+        font-size: 12px;
+      }
+    }
+  }
+  
+  .chartjs-legend {
+    gap: 12px !important;
+    
+    .legend-item {
+      font-size: 11px !important;
+      
+      .legend-color {
+        width: 10px !important;
+        height: 10px !important;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .chart-container {
+    min-height: 200px;
   }
 }

@@ -12,6 +12,7 @@ import uvicorn
 
 from backend.api.metrics import router as metrics_router
 from backend.utils.config import Config
+from backend.database.migrations import run_migrations
 
 app = FastAPI(title="Metrics API", version="1.0.0")
 
@@ -28,6 +29,12 @@ app.add_middleware(
 app.include_router(metrics_router)
 
 
+@app.on_event("startup")
+async def startup_event():
+    """Run database migrations on startup."""
+    run_migrations()
+
+
 @app.get("/")
 async def root():
     """Root endpoint with API info."""
@@ -35,7 +42,8 @@ async def root():
         "service": "Metrics API",
         "version": "1.0.0",
         "endpoints": {
-            "/metrics": "Get current metrics",
+            "/metrics": "Get current metrics with optional date filtering",
+            "/completion_requests": "Get completion requests with optional date filtering",
             "/health": "Health check"
         }
     }

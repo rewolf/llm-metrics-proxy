@@ -9,13 +9,14 @@ The OpenAI LLM Metrics Proxy solves a critical need for organizations deploying 
 ## ✨ Key Features
 
 - **🔒 Secure by Design**: Proxy server can be safely exposed to the internet while keeping metrics internal
-- **📊 Real-time Metrics**: Track request success rates, response times, and usage patterns
+- **📊 Real-time Metrics**: Track request success rates, response times, and usage patterns with date filtering
 - **🌐 Universal Compatibility**: Works with any OpenAI-spec compliant service (Ollama, vLLM, LocalAI, etc.)
-- **📱 Beautiful Dashboard**: Modern React frontend with theming system for visualizing metrics and trends
+- **📱 Beautiful Dashboard**: Modern React frontend with timeframe selector and theming system
 - **🐳 Docker Ready**: Simple deployment with Docker Compose
 - **💾 Lightweight Storage**: SQLite-based metrics storage with minimal overhead
-- **🔌 API-First**: RESTful metrics API for integration with existing monitoring systems
+- **🔌 API-First**: RESTful metrics API with completion requests endpoint for detailed analysis
 - **⚡ High Performance**: Minimal latency overhead for your LLM requests
+- **📅 Time-based Filtering**: Filter metrics and requests by time periods (1h, 6h, 12h, 1d, 1w, 1mo, All)
 
 ## 📊 Metrics Coverage
 
@@ -207,7 +208,8 @@ docker run -d \
 - `GET /health` - Health check
 
 ### Metrics API (port 8002)
-- `GET /metrics` - Returns current metrics as JSON
+- `GET /metrics` - Returns current metrics as JSON with optional date filtering
+- `GET /completion_requests` - Returns individual completion requests with optional date filtering
 - `GET /health` - Health check
 
 ### Frontend (port 3000)
