@@ -5,7 +5,7 @@ import { calculatePercentage, formatNumber, formatResponseTime } from './utils';
 import { ThemeSelector } from './components/ThemeSelector';
 import { LanguageSelector } from './components/LanguageSelector';
 import { getAllThemes, applyTheme, getDefaultThemeId } from './core/themes';
-import { getTranslation, getDefaultLanguage } from './core/i18n';
+import { getTranslation, getDefaultLanguage, saveLanguagePreference, debugLanguageDetection } from './core/i18n';
 
 // Use environment variable or default to localhost since browser runs on host
 const METRICS_API_URL = process.env.REACT_APP_METRICS_API_URL || 'http://localhost:8002';
@@ -19,6 +19,12 @@ function App(): JSX.Element {
   
   // Get current translations
   const t = getTranslation(currentLanguage);
+  
+  // Handle language change and persist preference
+  const handleLanguageChange = (language: Language) => {
+    setCurrentLanguage(language);
+    saveLanguagePreference(language);
+  };
 
   const fetchMetrics = async (): Promise<void> => {
     try {
@@ -41,6 +47,9 @@ function App(): JSX.Element {
     
     // Auto-refresh every 30 seconds
     const interval = setInterval(fetchMetrics, 30000);
+    
+    // Log language detection results for debugging
+    console.log('🌐 Language Detection Results:', debugLanguageDetection());
     
     return () => clearInterval(interval);
   }, []);
@@ -231,7 +240,7 @@ function App(): JSX.Element {
           <div className="footer-right">
             <LanguageSelector
               currentLanguage={currentLanguage}
-              onLanguageChange={setCurrentLanguage}
+              onLanguageChange={handleLanguageChange}
             />
             <ThemeSelector
               currentThemeId={currentThemeId}
