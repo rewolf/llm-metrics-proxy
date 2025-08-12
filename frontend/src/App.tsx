@@ -192,6 +192,21 @@ function App(): JSX.Element {
           </div>
         )}
 
+        {/* Origin Usage */}
+        {metrics.top_origins && metrics.top_origins.length > 0 && (
+          <div className="metric-section">
+            <h2>🌐 Origin Usage</h2>
+            <div className="metric-list">
+              {metrics.top_origins.map((origin, index) => (
+                <div key={index} className="metric-item">
+                  <span className="origin-name">{origin.origin}</span>
+                  <span className="origin-count">{origin.count} {t.requests}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Finish Reasons */}
         {metrics.finish_reasons && metrics.finish_reasons.length > 0 && (
           <div className="metric-section">

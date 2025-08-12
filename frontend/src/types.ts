@@ -74,6 +74,11 @@ export interface Translation {
   noMetricsData: string;
 }
 
+export interface OriginUsage {
+  origin: string;
+  count: number;
+}
+
 export interface Metrics {
   total_requests: number;
   successful_requests: number;
@@ -94,6 +99,9 @@ export interface Metrics {
   
   // Model usage
   top_models: ModelUsage[];
+  
+  // Origin usage
+  top_origins: OriginUsage[];
   
   // Completion analysis
   finish_reasons: FinishReason[];

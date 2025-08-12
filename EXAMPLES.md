@@ -52,7 +52,7 @@ services:
       - DB_PATH=./data/metrics.db
     volumes:
       - ./data:/app/data
-    command: ["python", "metrics_api.py"]
+    command: ["python", "-m", "backend.metrics_server"]
     depends_on:
       - ollama-metrics-proxy
     restart: unless-stopped
@@ -109,7 +109,13 @@ Client → Port 8001 (Proxy) → Ollama → Response
 
 ### Just the Proxy
 
+**Important**: Build the Docker image first before running individual services.
+
 ```bash
+# First, build the Docker image
+docker build -t openai-llm-metrics-proxy .
+
+# Then run the proxy service
 docker run -d \
   --name ollama-metrics-proxy \
   -p 8001:8000 \
@@ -121,7 +127,13 @@ docker run -d \
 
 ### Just the Metrics API
 
+**Important**: Build the Docker image first before running individual services.
+
 ```bash
+# First, build the Docker image
+docker build -t openai-llm-metrics-proxy .
+
+# Then run the metrics API service
 docker run -d \
   --name ollama-metrics-api \
   -p 8002:8002 \
@@ -129,12 +141,18 @@ docker run -d \
   -e DB_PATH=./data/metrics.db \
   -v /path/to/data:/app/data \
   openai-llm-metrics-proxy:latest \
-  python metrics_api.py
+  python -m backend.metrics_server
 ```
 
 ### Just the Frontend
 
+**Important**: Build the frontend Docker image first before running.
+
 ```bash
+# First, build the frontend Docker image
+docker build -t metrics-frontend ./frontend
+
+# Then run the frontend service
 docker run -d \
   --name ollama-metrics-frontend \
   -p 3000:3000 \

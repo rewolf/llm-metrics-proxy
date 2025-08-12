@@ -184,8 +184,13 @@ This will start all three services:
 For more deployment examples and configurations, see [EXAMPLES.md](EXAMPLES.md).
 ### Individual Services
 
+**Note**: The examples below use `docker run` commands, which require manual building first. For automatic building, use Docker Compose instead.
+
 ```bash
-# Just the proxy (for production deployment)
+# First, build the Docker image (only needed for docker run)
+docker build -t openai-llm-metrics-proxy .
+
+# Then run individual services
 docker run -d \
   --name openai-llm-metrics-proxy \
   -p 8001:8000 \
@@ -213,6 +218,30 @@ docker run -d \
 - **Metrics API**: Internal service, should not be exposed publicly
 - **Frontend**: Internal service, should not be exposed publicly
 - **Database**: Internal storage, not exposed via network
+
+## Troubleshooting
+
+### Docker Image Not Found
+
+If you get an error like "Unable to find image" or "pull access denied":
+
+**For Docker Compose users**: This shouldn't happen - Docker Compose builds automatically. Check your docker-compose.yml file.
+
+**For docker run users**: You need to build the Docker image first:
+
+```bash
+# Build the main image
+docker build -t openai-llm-metrics-proxy .
+
+# Build the frontend image
+docker build -t metrics-frontend ./frontend
+```
+
+### Common Issues
+
+- **Port already in use**: Make sure ports 8000, 8002, and 3000 are available
+- **Database permissions**: Ensure the `./data` directory is writable
+- **Backend connection**: Verify your LLM backend is running and accessible
 
 ## Development
 
