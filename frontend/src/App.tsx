@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import { Metrics } from './types';
 import { calculatePercentage, formatNumber, formatResponseTime } from './utils';
+import { ThemeSelector } from './components/ThemeSelector';
+import { getAllThemes, applyTheme, getDefaultThemeId } from './core/themes';
 
 // Use environment variable or default to localhost since browser runs on host
 const METRICS_API_URL = process.env.REACT_APP_METRICS_API_URL || 'http://localhost:8002';
@@ -10,6 +12,7 @@ function App(): JSX.Element {
   const [metrics, setMetrics] = useState<Metrics | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [currentThemeId, setCurrentThemeId] = useState<string>(getDefaultThemeId());
 
   const fetchMetrics = async (): Promise<void> => {
     try {
@@ -35,6 +38,14 @@ function App(): JSX.Element {
     
     return () => clearInterval(interval);
   }, []);
+
+  // Apply theme when it changes
+  useEffect(() => {
+    const theme = getAllThemes().find(t => t.id === currentThemeId);
+    if (theme) {
+      applyTheme(theme);
+    }
+  }, [currentThemeId]);
 
   if (loading) {
     return <div className="App">Loading metrics...</div>;
@@ -205,6 +216,20 @@ function App(): JSX.Element {
       <button onClick={fetchMetrics} className="refresh-btn">
         Refresh Now
       </button>
+      
+      <footer className="app-footer">
+        <div className="footer-content">
+          <div className="footer-left">
+            <span className="footer-text">OpenAI LLM Metrics Proxy</span>
+          </div>
+          <div className="footer-right">
+            <ThemeSelector
+              currentThemeId={currentThemeId}
+              onThemeChange={setCurrentThemeId}
+            />
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

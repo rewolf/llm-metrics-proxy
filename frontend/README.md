@@ -7,6 +7,7 @@ A React TypeScript frontend for displaying metrics from the OpenAI LLM Metrics P
 - **TypeScript**: Full type safety with interfaces for all metrics data
 - **Real-time Updates**: Auto-refreshes metrics every 30 seconds
 - **Responsive Design**: Clean, modern UI that works on all devices
+- **Theming System**: Dynamic theme support with CSS custom properties
 - **Comprehensive Metrics**: Displays all available proxy metrics including:
   - Basic statistics (requests, success rates)
   - Streaming vs non-streaming analysis
@@ -55,6 +56,11 @@ src/
 ├── index.tsx        # Application entry point
 ├── types.ts         # TypeScript interfaces
 ├── App.css          # Styles
+├── components/      # Reusable components
+│   └── ThemeSelector.tsx # Theme selection component
+├── core/            # Core functionality
+│   └── themes/      # Theming system
+│       └── index.ts # Theme definitions and utilities
 └── react-app-env.d.ts # React environment types
 ```
 
@@ -66,6 +72,21 @@ The frontend connects to the metrics API via the `REACT_APP_METRICS_API_URL` env
 # Default: http://localhost:8002
 REACT_APP_METRICS_API_URL=http://your-metrics-api:8002
 ```
+
+## Theming
+
+The frontend includes a dynamic theming system:
+
+- **Theme Selector**: Located in the footer for easy access
+- **CSS Custom Properties**: Efficient theme switching without page reloads
+- **Extensible**: Easy to add new themes by extending the theme interface
+- **Fallbacks**: All styles include fallback values for compatibility
+
+### Current Themes
+- **Light**: Clean, modern light theme (default)
+
+### Adding Themes
+See `docs/ai-context/frontend-theming.md` for detailed implementation guide.
 
 ## Building for Production
 

@@ -11,7 +11,7 @@ The OpenAI LLM Metrics Proxy solves a critical need for organizations deploying 
 - **🔒 Secure by Design**: Proxy server can be safely exposed to the internet while keeping metrics internal
 - **📊 Real-time Metrics**: Track request success rates, response times, and usage patterns
 - **🌐 Universal Compatibility**: Works with any OpenAI-spec compliant service (Ollama, vLLM, LocalAI, etc.)
-- **📱 Beautiful Dashboard**: Modern React frontend for visualizing metrics and trends
+- **📱 Beautiful Dashboard**: Modern React frontend with theming system for visualizing metrics and trends
 - **🐳 Docker Ready**: Simple deployment with Docker Compose
 - **💾 Lightweight Storage**: SQLite-based metrics storage with minimal overhead
 - **🔌 API-First**: RESTful metrics API for integration with existing monitoring systems
