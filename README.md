@@ -46,6 +46,11 @@ docker-compose up -d
 # Metrics API: http://localhost:8002
 ```
 
+## 📚 Documentation
+
+- **[Technical Documentation](docs/technical/)** - Architecture, API reference, and deployment guides
+- **[Examples](EXAMPLES.md)** - Deployment examples and configurations
+
 ## 🔄 Streaming with Usage
 
 The proxy can capture token usage from streaming responses when clients enable it:
@@ -204,6 +209,8 @@ docker run -d \
 - **Database**: Internal storage, not exposed via network
 
 ## Development
+
+For detailed development guides, see the **[Technical Documentation](docs/technical/)**.
 
 ### Frontend Development
 
