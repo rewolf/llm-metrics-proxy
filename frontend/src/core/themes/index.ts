@@ -66,6 +66,39 @@ export const THEMES: Theme[] = [
       medium: '0 2px 8px rgba(0, 0, 0, 0.1)',
       large: '0 4px 12px rgba(0, 0, 0, 0.15)'
     }
+  },
+  {
+    id: 'terminal',
+    name: 'Terminal',
+    description: 'Dark terminal theme with Tron-like cyan accents',
+    colors: {
+      primary: '#00ffff',
+      secondary: '#008080',
+      accent: '#00b3b3',
+      background: '#0a0a0a',
+      surface: '#1a1a1a',
+      text: '#00ffff',
+      textSecondary: '#00b3b3',
+      border: '#00ffff',
+      borderLight: '#008080',
+      success: '#00ff00',
+      warning: '#ffff00',
+      error: '#ff0000',
+      metricBackground: '#1a1a1a',
+      metricBorder: '#00ffff',
+      metricSuccess: '#00ff00',
+      metricFailed: '#ff0000'
+    },
+    borders: {
+      radius: '0px',
+      width: '2px',
+      style: 'solid'
+    },
+    shadows: {
+      small: '0 0 0 rgba(0, 255, 255, 0.3)',
+      medium: '0 0 10px rgba(0, 255, 255, 0.5)',
+      large: '0 0 20px rgba(0, 255, 255, 0.7)'
+    }
   }
 ];
 
@@ -89,19 +122,29 @@ export function getAllThemes(): Theme[] {
  */
 export function applyTheme(theme: Theme): void {
   const root = document.documentElement;
+  const body = document.body;
+  
+  // Remove all existing theme classes
+  body.classList.remove('theme-light', 'theme-terminal');
+  
+  // Add the current theme class
+  body.classList.add(`theme-${theme.id}`);
   
   // Apply colors
-  Object.entries(theme.colors).forEach(([key, value]) => {
+  Object.keys(theme.colors).forEach((key: string) => {
+    const value = (theme.colors as any)[key];
     root.style.setProperty(`--color-${key}`, value);
   });
   
   // Apply borders
-  Object.entries(theme.borders).forEach(([key, value]) => {
+  Object.keys(theme.borders).forEach((key: string) => {
+    const value = (theme.borders as any)[key];
     root.style.setProperty(`--border-${key}`, value);
   });
   
   // Apply shadows
-  Object.entries(theme.shadows).forEach(([key, value]) => {
+  Object.keys(theme.shadows).forEach((key: string) => {
+    const value = (theme.shadows as any)[key];
     root.style.setProperty(`--shadow-${key}`, value);
   });
 }

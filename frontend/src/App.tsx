@@ -135,11 +135,11 @@ function App(): JSX.Element {
   }, [currentThemeId]);
 
   if (loading) {
-    return <div className="App">{t.loadingMetrics}</div>;
+    return <div className="App loading">{t.loadingMetrics}</div>;
   }
 
   if (error) {
-    return <div className="App">{t.errorLoadingMetrics} {error}</div>;
+    return <div className="App error">{t.errorLoadingMetrics} {error}</div>;
   }
 
   if (!metrics) {
@@ -160,7 +160,7 @@ function App(): JSX.Element {
                 <div className="value">{metrics.total_requests}</div>
               </div>
               
-              <div className="metric">
+              <div className="metric success">
                 <h3>{t.successRate}</h3>
                 <div className="value">
                   {calculatePercentage(metrics.successful_requests, metrics.total_requests)}

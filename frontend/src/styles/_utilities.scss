@@ -85,3 +85,43 @@
   box-sizing: border-box;
 }
 
+// Terminal theme utility classes
+.theme-terminal {
+  // Terminal-specific text effects
+  .terminal-text {
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.5px;
+  }
+  
+  .terminal-glow {
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+  }
+  
+  .terminal-border {
+    border: 2px solid var(--color-primary);
+    border-radius: 0;
+  }
+  
+  .terminal-shadow {
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+  }
+  
+  // Scanline effect utility
+  .scanlines {
+    background-image: 
+      linear-gradient(
+        transparent 50%, 
+        rgba(0, 255, 255, 0.02) 50%
+      );
+    background-size: 100% 4px;
+  }
+  
+  // Grid pattern utility
+  .grid-pattern {
+    background-image: 
+      linear-gradient(rgba(0, 255, 255, 0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+}
+

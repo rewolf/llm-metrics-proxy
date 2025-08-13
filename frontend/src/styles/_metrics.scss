@@ -465,3 +465,241 @@
     min-height: 200px;
   }
 }
+
+// Terminal theme enhancements for metrics
+.theme-terminal {
+  .tab-selector {
+    border-bottom: 2px solid var(--color-primary);
+    
+    .tab-button {
+      background: transparent;
+      color: var(--color-textSecondary);
+      border: 2px solid transparent;
+      border-bottom: none;
+      border-radius: 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      
+      &:hover {
+        background: rgba(0, 255, 255, 0.1);
+        color: var(--color-primary);
+        border-color: var(--color-primary);
+      }
+      
+      &.active {
+        background: var(--color-primary);
+        color: var(--color-background);
+        border-color: var(--color-primary);
+        box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+      }
+      
+      .tab-icon {
+        svg {
+          filter: drop-shadow(0 0 5px rgba(0, 255, 255, 0.3));
+          transition: filter 0.3s ease;
+        }
+        
+        &:hover svg {
+          filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.6));
+        }
+      }
+    }
+  }
+  
+  .metric-section {
+    background: var(--color-surface);
+    border: 2px solid var(--color-border);
+    border-radius: 0;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+    
+    h2 {
+      color: var(--color-primary);
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      border-bottom: 2px solid var(--color-primary);
+      text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+      
+      svg {
+        color: var(--color-accent);
+        filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.5));
+        animation: icon-glow 2s ease-in-out infinite alternate;
+      }
+    }
+  }
+  
+  .metric {
+    background: var(--color-surface);
+    border: 2px solid var(--color-border);
+    border-radius: 0;
+    border-left: 4px solid var(--color-metricBorder);
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.1);
+    
+    h3 {
+      color: var(--color-text);
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.3px;
+    }
+    
+    .value {
+      color: var(--color-primary);
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+    }
+    
+    &.success {
+      border-left-color: var(--color-metricSuccess);
+      box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
+      
+      .value {
+        color: var(--color-metricSuccess);
+        text-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
+      }
+    }
+    
+    &.failed {
+      border-left-color: var(--color-metricFailed);
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+      
+      .value {
+        color: var(--color-metricFailed);
+        text-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
+      }
+    }
+    
+    &.warning {
+      border-left-color: var(--color-warning);
+      box-shadow: 0 0 15px rgba(255, 255, 0, 0.2);
+      
+      .value {
+        color: var(--color-warning);
+        text-shadow: 0 0 15px rgba(255, 255, 0, 0.4);
+      }
+    }
+  }
+  
+  .metric-item {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 0;
+    box-shadow: 0 0 8px rgba(0, 255, 255, 0.1);
+    
+    &:hover {
+      border-color: var(--color-primary);
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+      transform: translateY(-2px);
+    }
+    
+    .model-name,
+    .origin-name,
+    .reason-name,
+    .error-name {
+      color: var(--color-text);
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.2px;
+    }
+    
+    .model-count,
+    .origin-count,
+    .reason-count,
+    .error-count {
+      background: var(--color-metricBackground);
+      color: var(--color-primary);
+      border: 1px solid var(--color-primary);
+      border-radius: 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+  }
+  
+  .chart-container {
+    &.empty {
+      background-color: var(--color-surface);
+      border: 2px dashed var(--color-primary);
+      border-radius: 0;
+      
+      .chart-placeholder {
+        color: var(--color-textSecondary);
+        
+        p {
+          font-family: 'JetBrains Mono', monospace;
+          letter-spacing: 0.3px;
+        }
+      }
+    }
+  }
+  
+  .chartjs-tooltip {
+    background: var(--color-surface) !important;
+    border: 2px solid var(--color-primary) !important;
+    border-radius: 0 !important;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5) !important;
+    color: var(--color-text) !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    
+    .tooltip-title {
+      color: var(--color-primary) !important;
+      letter-spacing: 0.5px !important;
+    }
+    
+    .tooltip-body {
+      color: var(--color-textSecondary) !important;
+      letter-spacing: 0.2px !important;
+    }
+  }
+  
+  .chartjs-legend {
+    .legend-item {
+      color: var(--color-text) !important;
+      font-family: 'JetBrains Mono', monospace !important;
+      letter-spacing: 0.3px !important;
+      
+      .legend-color {
+        border: 1px solid var(--color-border) !important;
+        border-radius: 0 !important;
+      }
+    }
+  }
+  
+  // Enhanced chart styling for terminal theme
+  .chart-container {
+    canvas {
+      border: 2px solid var(--color-primary);
+      border-radius: 0;
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+    }
+  }
+  
+  // Terminal-style chart grid lines
+  .chart-container canvas {
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: 
+        linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
+      background-size: 20px 20px;
+      pointer-events: none;
+      opacity: 0.3;
+    }
+  }
+  
+  // Icon glow animation
+  @keyframes icon-glow {
+    0% {
+      filter: drop-shadow(0 0 5px rgba(0, 255, 255, 0.3));
+    }
+    100% {
+      filter: drop-shadow(0 0 15px rgba(0, 255, 255, 0.8));
+    }
+  }
+}

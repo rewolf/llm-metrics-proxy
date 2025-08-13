@@ -60,3 +60,412 @@
   --shadow-medium: 0 2px 8px rgba(0, 0, 0, 0.1);
   --shadow-large: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
+
+.theme-terminal {
+  --color-primary: #00ffff;
+  --color-secondary: #008080;
+  --color-accent: #00b3b3;
+  --color-background: #0a0a0a;
+  --color-surface: #1a1a1a;
+  --color-text: #00ffff;
+  --color-textSecondary: #00b3b3;
+  --color-text-muted: #00b3b3;
+  --color-border: #00ffff;
+  --color-borderLight: #008080;
+  --color-success: #00ff00;
+  --color-warning: #ffff00;
+  --color-error: #ff0000;
+  --color-metricBackground: #1a1a1a;
+  --color-metricBorder: #00ffff;
+  --color-metricSuccess: #00ff00;
+  --color-metricFailed: #ff0000;
+  
+  --border-radius: 0px;
+  --border-width: 2px;
+  --border-style: solid;
+  
+  --shadow-small: 0 0 0 rgba(0, 255, 255, 0.3);
+  --shadow-medium: 0 0 10px rgba(0, 255, 255, 0.5);
+  --shadow-large: 0 0 20px rgba(0, 255, 255, 0.7);
+  
+  // Terminal-specific enhancements
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.5px;
+  
+  // Add subtle scanline effect
+  background-image: 
+    linear-gradient(
+      transparent 50%, 
+      rgba(0, 255, 255, 0.02) 50%
+    );
+  background-size: 100% 4px;
+  
+  // Enhanced text rendering for terminal
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "liga" 1, "calt" 1;
+  
+  // Add subtle pulse animation for primary elements
+  animation: terminal-pulse 4s ease-in-out infinite;
+}
+
+// Terminal theme animations
+@keyframes terminal-pulse {
+  0%, 100% {
+    --color-primary: #00ffff;
+  }
+  50% {
+    --color-primary: #00e6e6;
+  }
+}
+
+// Add glow effect for interactive elements
+.theme-terminal *:hover {
+  transition: all 0.3s ease;
+}
+
+// Enhanced focus states for accessibility
+.theme-terminal *:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+// Terminal cursor effect
+.theme-terminal {
+  cursor: crosshair;
+  
+  // Add subtle flicker effect for text
+  .terminal-text-flicker {
+    animation: text-flicker 0.15s infinite linear;
+  }
+  
+  // Add scanline effect for the entire page
+  &::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      transparent 50%,
+      rgba(0, 255, 255, 0.03) 50%
+    );
+    background-size: 100% 4px;
+    pointer-events: none;
+    z-index: 1;
+    animation: scanlines 0.1s linear infinite;
+  }
+  
+  // Add CRT screen effect
+  &::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+      circle at center,
+      transparent 0%,
+      rgba(0, 0, 0, 0.1) 100%
+    );
+    pointer-events: none;
+    z-index: 2;
+  }
+}
+
+// Terminal text flicker animation
+@keyframes text-flicker {
+  0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100% {
+    opacity: 0.99;
+    filter: drop-shadow(0 0 1px rgba(0, 255, 255, 0.7));
+  }
+  20%, 21.999%, 63%, 63.999%, 65%, 69.999% {
+    opacity: 0.4;
+    filter: none;
+  }
+}
+
+// Scanlines animation
+@keyframes scanlines {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(4px);
+  }
+}
+
+// Terminal loading and error states
+.theme-terminal {
+  // Loading state
+  .loading {
+    color: var(--color-primary);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 1px;
+    text-align: center;
+    animation: terminal-loading 2s ease-in-out infinite;
+    
+    &::after {
+      content: '...';
+      animation: terminal-dots 1.5s infinite;
+    }
+  }
+  
+  // Error state
+  .error {
+    color: var(--color-error);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.5px;
+    text-align: center;
+    border: 2px solid var(--color-error);
+    border-radius: 0;
+    padding: 20px;
+    background: rgba(255, 0, 0, 0.1);
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+  }
+  
+  // Success state
+  .success {
+    color: var(--color-success);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.5px;
+    text-align: center;
+    border: 2px solid var(--color-success);
+    border-radius: 0;
+    padding: 20px;
+    background: rgba(0, 255, 0, 0.1);
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+  }
+  
+  // Enhanced accessibility for screen readers
+  *[aria-label]:focus::after {
+    content: attr(aria-label);
+    position: absolute;
+    top: -30px;
+    left: 0;
+    background: var(--color-surface);
+    color: var(--color-text);
+    padding: 5px 10px;
+    border: 1px solid var(--color-primary);
+    border-radius: 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    z-index: 1000;
+    white-space: nowrap;
+  }
+  
+  // Enhanced focus indicators for keyboard navigation
+  *:focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 3px;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+  }
+}
+
+// Terminal loading animation
+@keyframes terminal-loading {
+  0%, 100% {
+    opacity: 1;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+  }
+  50% {
+    opacity: 0.7;
+    text-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+  }
+}
+
+// Terminal dots animation
+@keyframes terminal-dots {
+  0%, 20% {
+    content: '.';
+  }
+  40% {
+    content: '..';
+  }
+  60%, 100% {
+    content: '...';
+  }
+}
+
+// Performance optimizations for terminal theme
+.theme-terminal {
+  // Optimize animations for better performance
+  will-change: transform, opacity, filter;
+  
+  // Reduce motion for users who prefer it
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+  
+  // High contrast mode support
+  @media (prefers-contrast: high) {
+    --color-primary: #00ffff;
+    --color-text: #ffffff;
+    --color-background: #000000;
+    --color-surface: #000000;
+    --color-border: #00ffff;
+  }
+  
+  // Dark mode preference support
+  @media (prefers-color-scheme: dark) {
+    --color-background: #000000;
+    --color-surface: #0a0a0a;
+  }
+  
+  // Light mode preference support (override for terminal theme)
+  @media (prefers-color-scheme: light) {
+    --color-background: #0a0a0a;
+    --color-surface: #1a1a1a;
+  }
+}
+
+// Print styles for terminal theme
+@media print {
+  .theme-terminal {
+    --color-background: #ffffff;
+    --color-surface: #f8f8f8;
+    --color-text: #000000;
+    --color-primary: #000000;
+    --color-border: #000000;
+    
+    * {
+      box-shadow: none !important;
+      text-shadow: none !important;
+      animation: none !important;
+    }
+    
+    background: none !important;
+    
+    &::before,
+    &::after {
+      display: none !important;
+    }
+  }
+}
+
+// Terminal theme documentation and examples
+/*
+Terminal Theme Features:
+=======================
+
+1. Visual Effects:
+   - Dark background with cyan accents
+   - Square corners (no border-radius)
+   - Glowing effects on interactive elements
+   - Subtle scanlines and CRT effects
+   - Animated elements with smooth transitions
+
+2. Typography:
+   - JetBrains Mono monospace font
+   - Enhanced letter spacing
+   - Text shadows and glow effects
+   - Uppercase transformations for headings
+
+3. Interactive Elements:
+   - Hover effects with glow
+   - Focus states with enhanced visibility
+   - Active states with animations
+   - Ripple effects on buttons
+
+4. Accessibility:
+   - High contrast support
+   - Reduced motion support
+   - Enhanced focus indicators
+   - Screen reader optimizations
+
+5. Performance:
+   - Hardware acceleration for animations
+   - Optimized transitions
+   - Efficient CSS selectors
+   - Minimal repaints
+
+6. Responsive Design:
+   - Mobile-first approach
+   - Adaptive layouts
+   - Touch-friendly interactions
+   - Consistent across devices
+
+Usage:
+======
+- Apply theme-{id} class to body element
+- Use CSS custom properties for dynamic theming
+- Leverage utility classes for common patterns
+- Follow accessibility guidelines for contrast
+
+Examples:
+=========
+// Basic terminal styling
+.theme-terminal {
+  .my-component {
+    border: 2px solid var(--color-primary);
+    border-radius: 0;
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+// Terminal button with glow effect
+.theme-terminal .my-button {
+  background: transparent;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+  border-radius: 0;
+  
+  &:hover {
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+  }
+}
+
+// Terminal text with flicker effect
+.theme-terminal .terminal-text {
+  animation: text-flicker 0.15s infinite linear;
+}
+*/
+
+// Final terminal theme enhancements
+.theme-terminal {
+  // Ensure all elements inherit terminal styling
+  * {
+    box-sizing: border-box;
+  }
+  
+  // Add terminal-specific scrollbar styling
+  ::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-primary);
+    border: 1px solid var(--color-border);
+    
+    &:hover {
+      background: var(--color-accent);
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    }
+  }
+  
+  // Firefox scrollbar styling
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-primary) var(--color-surface);
+  
+  // Selection styling
+  ::selection {
+    background: var(--color-primary);
+    color: var(--color-background);
+  }
+  
+  ::-moz-selection {
+    background: var(--color-primary);
+    color: var(--color-background);
+  }
+}

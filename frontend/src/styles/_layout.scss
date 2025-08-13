@@ -116,3 +116,57 @@
     padding: 0 $spacing-sm;
   }
 }
+
+// Terminal theme enhancements for layout
+.theme-terminal {
+  .App {
+    background: var(--color-background);
+    color: var(--color-text);
+    
+    // Add subtle grid pattern for terminal feel
+    background-image: 
+      linear-gradient(rgba(0, 255, 255, 0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+  
+  .app-header {
+    border-bottom: 2px solid var(--color-primary);
+    padding-bottom: $spacing-md;
+    
+    h1 {
+      color: var(--color-primary);
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      
+      svg {
+        color: var(--color-accent);
+        filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.5));
+      }
+    }
+  }
+  
+  .app-footer {
+    background: var(--color-surface);
+    border-top: 2px solid var(--color-primary);
+    box-shadow: 0 -5px 20px rgba(0, 255, 255, 0.3);
+    
+    .footer-text {
+      color: var(--color-textSecondary);
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.3px;
+    }
+    
+    // Add glow effect to footer icons
+    svg {
+      filter: drop-shadow(0 0 5px rgba(0, 255, 255, 0.3));
+      transition: filter 0.3s ease;
+      
+      &:hover {
+        filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.6));
+      }
+    }
+  }
+}

@@ -98,3 +98,66 @@ h1 {
     font-size: $font-size-base;
   }
 }
+
+// Terminal theme enhancements for typography
+.theme-terminal {
+  h1 {
+    color: var(--color-primary);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+  }
+  
+  .metric-section h2 {
+    color: var(--color-primary);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-bottom: 2px solid var(--color-primary);
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+  }
+  
+  .metric h3 {
+    color: var(--color-textSecondary);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+  }
+  
+  .metric .value {
+    color: var(--color-primary);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+  }
+  
+  .metric-item .model-name,
+  .metric-item .reason-name,
+  .metric-item .error-name {
+    color: var(--color-text);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+  
+  .metric-item .model-count,
+  .metric-item .reason-count,
+  .metric-item .error-count {
+    color: var(--color-primary);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+  }
+  
+  .metric-note small {
+    color: var(--color-textSecondary);
+    font-family: 'JetBrains Mono', monospace;
+    font-style: normal;
+    letter-spacing: 0.3px;
+  }
+}
