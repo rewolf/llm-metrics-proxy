@@ -1,290 +1,170 @@
-# Database Architecture & Migration System
+# Database Architecture
+
+This document describes the database architecture, migration system, and safety features of the OpenAI LLM Metrics Proxy.
 
 ## Overview
 
-This document describes the robust database architecture implemented after the data loss incident. The new system provides multiple layers of protection against data corruption and ensures safe, testable database operations.
+The application uses SQLite as its database engine with a robust architecture designed for production safety, data integrity, and maintainability.
 
-## Architecture Components
+## Core Components
 
-### 1. Schema Management (`backend/database/schema.py`)
+### 1. Safe Migration System
 
-- **Version Tracking**: Maintains schema version in `schema_version` table
-- **Schema Validation**: Validates database structure against expected schema
-- **Version Comparison**: Detects when migrations are needed
+The migration system ensures database schema changes are safe and reversible:
 
-```python
-# Current schema version - increment when making changes
-CURRENT_SCHEMA_VERSION = 3
+#### Schema Versioning
+- **Version Tracking**: `CURRENT_SCHEMA_VERSION` constant defines the target schema
+- **Version Table**: `schema_version` table stores current database version
+- **Migration Detection**: System automatically detects when migrations are needed
 
-# Check if migration is needed
-if schema_needs_migration():
-    # Run migrations
+#### Migration Safety Features
+- **Automatic Backups**: File and table backups created before any migration
+- **Rollback Capability**: Failed migrations can be automatically rolled back
+- **Schema Validation**: Post-migration validation ensures data integrity
+- **Fail-Fast Startup**: System won't start if migrations cannot complete safely
+
+#### Migration Process
+1. Check current schema version
+2. Create backup (file or table)
+3. Run migration step
+4. Validate new schema
+5. Update schema version
+6. Clean up backup if successful
+
+### 2. DAO Pattern
+
+Data access is centralized through the `CompletionRequestsDAO`:
+
+#### Benefits
+- **Centralized Operations**: All database queries go through the DAO
+- **Consistent Patterns**: Standardized data access methods
+- **Easy Testing**: Mock databases for isolated testing
+- **No Custom SQL**: Eliminates scattered database queries throughout codebase
+
+#### Key Methods
+- `insert_completion_request()`: Insert new completion request
+- `get_completion_requests()`: Retrieve completion requests with filtering
+- `get_metrics()`: Get aggregated metrics for specified time period
+- `get_table_info()`: Get table schema information
+- `validate_data_integrity()`: Validate data integrity in the table
+
+### 3. Backup Strategies
+
+Multiple backup approaches ensure data safety:
+
+#### File Backups
+- **Complete Database Copies**: Full database file copies with timestamps
+- **Naming Convention**: `metrics.db.YYYYMMDD_HHMMSS_mmm.backup`
+- **Location Strategy**: 
+  - Primary: `db_dir/backups/`
+  - Fallback: `~/.openai_llm_metrics_proxy/backups/`
+  - Production: Fails to start if backups cannot be created
+
+#### Table Backups
+- **In-Database Backups**: Backup tables created within the same database
+- **Quick Restoration**: Faster than file-based restoration
+- **Automatic Cleanup**: Backup tables cleaned up after successful migration
+
+#### Environment Awareness
+- **Production**: Strict backup requirements, fails if backups cannot be created
+- **Testing**: Uses temporary directories, prevents production interference
+- **Environment Variable**: `TESTING=true` controls backup behavior
+
+## Database Schema
+
+### Completion Requests Table
+
+```sql
+CREATE TABLE completion_requests (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    timestamp TEXT NOT NULL,
+    success BOOLEAN NOT NULL,
+    status_code INTEGER NOT NULL,
+    response_time_ms INTEGER NOT NULL,
+    model TEXT,
+    origin TEXT,
+    is_streaming BOOLEAN NOT NULL,
+    max_tokens INTEGER,
+    temperature REAL,
+    top_p REAL,
+    message_count INTEGER,
+    prompt_tokens INTEGER,
+    completion_tokens INTEGER,
+    total_tokens INTEGER,
+    finish_reason TEXT,
+    time_to_first_token_ms INTEGER,
+    time_to_last_token_ms INTEGER,
+    tokens_per_second REAL,
+    error_type TEXT,
+    error_message TEXT
+);
 ```
 
-### 2. Backup Service (`backend/database/backup.py`)
+### Schema Version Table
 
-- **File Backups**: Complete database file backups before destructive operations
-- **Table Backups**: Individual table backups during migrations
-- **Restore Capabilities**: Full restore from backups if needed
-- **Verification**: Size and integrity checks on backups
-
-```python
-# Create backup before migration
-backup_path = create_file_backup()
-
-# Create backup table during migration
-backup_table = create_backup_table("completion_requests")
-
-# Restore if needed
-restore_from_file_backup(backup_path)
+```sql
+CREATE TABLE schema_version (
+    version INTEGER PRIMARY KEY,
+    applied_at TEXT NOT NULL
+);
 ```
 
-### 3. Safe Migration System (`backend/database/safe_migrations.py`)
+## Error Handling
 
-- **Automatic Backups**: Always creates backups before migrations
-- **Step-by-Step Execution**: Runs migrations individually with validation
-- **Rollback Capabilities**: Automatic rollback on failure
-- **Schema Validation**: Validates schema after each migration step
+### Database-Level Error Handling
 
-```python
-# Migration manager with safety features
-migration_manager = SafeMigrationManager()
+The database layer includes built-in error handling:
 
-# Add migration steps
-migration_manager.add_migration(
-    MigrationStep(1, "Create initial schema", create_initial_schema)
-)
-
-# Run with full safety measures
-success = migration_manager.run_migrations()
-```
-
-### 4. DAO Pattern (`backend/database/dao.py`)
-
-- **Centralized Data Access**: All database operations go through DAO
-- **Type Safety**: Strong typing for all database operations
-- **Transaction Management**: Proper connection and transaction handling
-- **Data Validation**: Integrity checks on data operations
-
-```python
-# Use DAO for all database operations
-dao = CompletionRequestsDAO()
-
-# Insert data
-request_id = dao.insert_completion_request(data)
-
-# Query data
-requests = dao.get_completion_requests(start_date, end_date)
-
-# Get metrics
-metrics = dao.get_metrics(start_date, end_date)
-```
-
-## Migration Safety Features
-
-### Automatic Backup Creation
-
-1. **File Backup**: Complete database backup before any migrations
-2. **Table Backup**: Individual table backup before each migration step
-3. **Verification**: Backup size and integrity verification
-
-### Rollback Mechanisms
-
-1. **Step Rollback**: Rollback individual failed migration steps
-2. **Full Rollback**: Complete rollback to previous state
-3. **Backup Restoration**: Restore from file backup if needed
-
-### Validation & Verification
-
-1. **Schema Validation**: Verify schema after each migration
-2. **Data Integrity**: Check data integrity after operations
-3. **Version Tracking**: Maintain migration history and versions
+- **Connection Failures**: Graceful handling of database connection issues
+- **Transaction Rollback**: Automatic rollback on failed operations
+- **Schema Validation**: Post-migration schema integrity checks
+- **Backup Failures**: System fails to start if backups cannot be created
 
 ## Testing Strategy
 
-### DAO Testing
+### Test Suite Architecture
 
-- **Mock Databases**: Use temporary SQLite databases for testing
-- **Isolated Tests**: Each test runs in isolation
-- **Data Validation**: Test all CRUD operations with sample data
-- **Edge Cases**: Test error conditions and edge cases
+The project includes a comprehensive test suite designed for safety and reliability:
 
-```python
-class TestCompletionRequestsDAO(unittest.TestCase):
-    def setUp(self):
-        # Create temporary test database
-        self.temp_db = tempfile.NamedTemporaryFile(delete=False, suffix='.db')
-        
-        # Mock database connection to use test database
-        self.patcher = patch('backend.database.connection.get_db_path')
-        mock_get_db_path = self.patcher.start()
-        mock_get_db_path.return_value = self.temp_db.name
+#### Isolation Features
+- **Temporary Databases**: Each test uses isolated temporary databases
+- **Mock Database Paths**: Tests mock `get_db_path()` to ensure isolation
+- **Environment Variables**: `TESTING=true` prevents accidental production writes
+- **Comprehensive Coverage**: Tests cover DAO, migrations, backup/restore, and error handling
+
+#### Test Categories
+1. **DAO Tests** (`test_dao.py`): Database operations and data access patterns
+2. **Migration Tests** (`test_migrations.py`): Safe migration system and rollback capabilities
+3. **Backup Tests** (`test_backup.py`): File and table backup/restore operations
+
+### Test Execution
+
+```bash
+# Run all tests
+python run_tests.py
+
+# Run specific test categories
+python run_tests.py test_dao.py
+python run_tests.py test_migrations.py
+python run_tests.py test_backup.py
 ```
 
-### Migration Testing
+## Production Considerations
 
-- **Schema Validation**: Test migration creates correct schema
-- **Rollback Testing**: Test rollback mechanisms work correctly
-- **Backup Testing**: Test backup and restore operations
-- **Error Handling**: Test migration failure scenarios
+### Backup Requirements
+- **Automatic Creation**: Backups must be created before any database operation
+- **Location Validation**: System validates backup locations are writable
+- **Size Verification**: Backup integrity verified through size checks
+- **Cleanup Strategy**: Automatic cleanup of old backups
 
-```python
-class TestSafeMigrationManager(unittest.TestCase):
-    def test_run_migration_step_success(self):
-        # Test successful migration execution
-        success = self.migration_manager.run_migration_step(migration)
-        self.assertTrue(success)
-    
-    def test_run_migration_step_failure(self):
-        # Test migration failure and rollback
-        success = self.migration_manager.run_migration_step(migration)
-        self.assertFalse(success)
-```
+### Migration Safety
+- **Pre-flight Checks**: Validate backup creation before migration
+- **Rollback Strategy**: Automatic rollback on migration failure
+- **Schema Validation**: Post-migration schema integrity checks
+- **Startup Requirements**: System won't start with incomplete migrations
 
-## Usage Examples
-
-### Running Migrations
-
-```python
-# In metrics_proxy.py startup
-if run_safe_migrations():
-    logger.info("Database migrations completed successfully")
-else:
-    logger.error("Database migrations failed - check logs for details")
-```
-
-### Using DAO for Data Operations
-
-```python
-# In API endpoints
-from backend.database.dao import completion_requests_dao
-
-@router.get("/completion_requests")
-async def get_completion_requests(start: str = None, end: str = None):
-    return completion_requests_dao.get_completion_requests(start, end)
-
-@router.get("/metrics")
-async def get_metrics(start: str = None, end: str = None):
-    return completion_requests_dao.get_metrics(start, end)
-```
-
-### Adding New Migrations
-
-```python
-# Define migration function
-def add_new_column():
-    with get_db_connection() as conn:
-        cursor = conn.cursor()
-        cursor.execute("ALTER TABLE completion_requests ADD COLUMN new_field TEXT")
-        conn.commit()
-
-# Add to migration manager
-migration_manager.add_migration(
-    MigrationStep(4, "Add new column", add_new_column)
-)
-```
-
-## Best Practices
-
-### 1. Always Test Migrations
-
-- Test on copy of production data
-- Use isolated test environments
-- Verify rollback mechanisms work
-
-### 2. Increment Schema Version
-
-- Increment `CURRENT_SCHEMA_VERSION` for each change
-- Use descriptive migration descriptions
-- Test version detection logic
-
-### 3. Use DAO for All Database Access
-
-- Never access database directly from API endpoints
-- Use DAO methods for all CRUD operations
-- Maintain transaction boundaries
-
-### 4. Monitor Migration Logs
-
-- Check migration success/failure logs
-- Monitor backup creation and cleanup
-- Verify schema validation results
-
-## Recovery Procedures
-
-### From Migration Failure
-
-1. Check migration logs for failure details
-2. Verify backup files were created
-3. Use rollback mechanisms if available
-4. Restore from file backup if needed
-
-### From Data Corruption
-
-1. Identify corruption source
-2. Check backup availability
-3. Restore from most recent clean backup
-4. Re-run migrations from backup point
-
-### From Complete Failure
-
-1. Stop all services
-2. Restore from file backup
-3. Verify database integrity
-4. Restart services with safe migrations
-
-## Security Considerations
-
-### Read-Only Metrics Server
-
-- `metrics_server.py` has no database write access
-- Only `metrics_proxy.py` can modify database
-- Clear separation of concerns
-
-### Backup Security
-
-- Backup files stored in secure location
-- Backup cleanup after successful migrations
-- Access control on backup directories
-
-### Migration Security
-
-- Only run migrations from trusted code
-- Validate all migration inputs
-- Log all migration activities
-
-## Monitoring & Alerting
-
-### Migration Status
-
-- Monitor migration success/failure
-- Track schema version changes
-- Alert on migration failures
-
-### Backup Status
-
-- Monitor backup creation success
-- Track backup file sizes and counts
-- Alert on backup failures
-
-### Data Integrity
-
-- Regular integrity checks
-- Monitor for data corruption
-- Alert on integrity violations
-
-## Future Enhancements
-
-### Planned Features
-
-1. **Migration Testing Framework**: Automated testing of migrations
-2. **Backup Encryption**: Encrypt backup files for security
-3. **Migration Scheduling**: Schedule migrations during maintenance windows
-4. **Performance Monitoring**: Track migration performance metrics
-
-### Integration Points
-
-1. **CI/CD Pipeline**: Automated migration testing
-2. **Monitoring Systems**: Integration with monitoring tools
-3. **Alerting Systems**: Integration with alerting platforms
-4. **Backup Storage**: Integration with cloud backup services
+### Performance Considerations
+- **Connection Pooling**: Efficient database connection management
+- **Query Optimization**: Optimized queries through DAO pattern
+- **Index Strategy**: Proper indexing for time-series queries
+- **Memory Management**: Efficient handling of large datasets
