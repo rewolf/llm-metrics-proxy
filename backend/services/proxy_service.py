@@ -15,6 +15,21 @@ from backend.services.metrics_service import record_request_from_model
 logger = logging.getLogger(__name__)
 
 
+def safe_metrics_recording(func):
+    """Decorator to safely wrap metrics recording functions."""
+    def wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except Exception as e:
+            # Extract method name and class context for better logging
+            method_name = func.__name__
+            class_name = args[0].__class__.__name__ if args else "Unknown"
+            logger.error(f"[{class_name}.{method_name}] Failed to record metrics: {e}")
+            # Don't let metrics failures affect the main flow
+        return None
+    return wrapper
+
+
 class ProxyService:
     """Service for proxying OpenAI API requests to backend."""
     
@@ -248,6 +263,7 @@ class ProxyService:
                 headers=dict(response.headers)
             )
     
+    @safe_metrics_recording
     def _record_successful_request(
         self,
         start_time: float,
@@ -294,6 +310,7 @@ class ProxyService:
         
         record_request_from_model(request)
     
+    @safe_metrics_recording
     def _record_successful_non_streaming_request(
         self,
         start_time: float,
@@ -337,6 +354,7 @@ class ProxyService:
         
         record_request_from_model(request)
     
+    @safe_metrics_recording
     def _record_failed_request(
         self,
         start_time: float,
