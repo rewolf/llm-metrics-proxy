@@ -4,7 +4,7 @@ Metrics service for recording and managing completion request metrics.
 
 import logging
 from typing import Optional
-from backend.database.connection import get_db_connection
+from backend.database.dao import completion_requests_dao
 from backend.database.models import CompletionRequest
 
 logger = logging.getLogger(__name__)
@@ -33,28 +33,34 @@ def record_request(
 ) -> None:
     """Record a completion request with enhanced metrics in the database."""
     try:
-        with get_db_connection() as conn:
-            cursor = conn.cursor()
-            
-            cursor.execute('''
-                INSERT INTO completion_requests (
-                    success, status_code, response_time_ms, model,
-                    origin, is_streaming, max_tokens, temperature, top_p, message_count,
-                    prompt_tokens, completion_tokens, total_tokens, finish_reason,
-                    time_to_first_token_ms, time_to_last_token_ms, tokens_per_second,
-                    error_type, error_message
-                )
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            ''', (
-                success, status_code, response_time_ms, model,
-                origin, is_streaming, max_tokens, temperature, top_p, message_count,
-                prompt_tokens, completion_tokens, total_tokens, finish_reason,
-                time_to_first_token_ms, time_to_last_token_ms, tokens_per_second,
-                error_type, error_message
-            ))
-            
-            conn.commit()
-            logger.info(f"Request recorded successfully - Success: {success}, Status: {status_code}, Time: {response_time_ms}ms")
+        # Use the DAO to insert the completion request
+        from datetime import datetime
+        
+        request_data = {
+            'timestamp': datetime.now().isoformat(),
+            'success': success,
+            'status_code': status_code,
+            'response_time_ms': response_time_ms,
+            'model': model,
+            'origin': origin,
+            'is_streaming': is_streaming,
+            'max_tokens': max_tokens,
+            'temperature': temperature,
+            'top_p': top_p,
+            'message_count': message_count,
+            'prompt_tokens': prompt_tokens,
+            'completion_tokens': completion_tokens,
+            'total_tokens': total_tokens,
+            'finish_reason': finish_reason,
+            'time_to_first_token_ms': time_to_first_token_ms,
+            'time_to_last_token_ms': time_to_last_token_ms,
+            'tokens_per_second': tokens_per_second,
+            'error_type': error_type,
+            'error_message': error_message
+        }
+        
+        completion_requests_dao.insert_completion_request(request_data)
+        logger.info(f"Request recorded successfully - Success: {success}, Status: {status_code}, Time: {response_time_ms}ms")
     except Exception as e:
         logger.error(f"Failed to record request to database: {e}")
 

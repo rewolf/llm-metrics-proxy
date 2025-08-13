@@ -2,267 +2,33 @@
 Metrics API endpoints for the OpenAI LLM Metrics Proxy.
 """
 
-import sqlite3
 from datetime import datetime, timedelta
-from typing import Dict, Any, List, Optional
+from typing import List, Optional, Dict
 from fastapi import APIRouter, Query
 from fastapi.middleware.cors import CORSMiddleware
-from backend.database.connection import get_db_connection
-from shared.types import Metrics, ModelUsage, FinishReason, ErrorType, OriginUsage, CompletionRequestData
+from backend.database.dao import completion_requests_dao
+from shared.types import CompletionRequestData
 
 router = APIRouter(tags=["metrics"])
 
 
-def get_metrics(start_date: Optional[str] = None, end_date: Optional[str] = None) -> Metrics:
+def get_metrics(start_date: Optional[str] = None, end_date: Optional[str] = None):
     """Get enhanced metrics from the database with optional date filtering."""
-    with get_db_connection() as conn:
-        cursor = conn.cursor()
-        
-        # Log the date filtering parameters for debugging
-        if start_date or end_date:
-            print(f"Date filtering - Start: {start_date}, End: {end_date}")
-        
-        # Build date filter conditions
-        date_filter = ""
-        date_params = []
-        if start_date:
-            # Use SQLite datetime function to compare properly
-            date_filter += " AND datetime(timestamp) >= datetime(?)"
-            date_params.append(start_date)
-            print(f"Added start filter: datetime(timestamp) >= datetime('{start_date}')")
-        if end_date:
-            # Use SQLite datetime function to compare properly
-            date_filter += " AND datetime(timestamp) <= datetime(?)"
-            date_params.append(end_date)
-            print(f"Added end filter: datetime(timestamp) <= datetime('{end_date}')")
-        
-        # Basic request counts
-        cursor.execute(f"SELECT COUNT(*) FROM completion_requests WHERE 1=1{date_filter}", date_params)
-        total_requests = cursor.fetchone()[0]
-        print(f"Total requests with filter: {total_requests}")
-        
-        cursor.execute(f"SELECT COUNT(*) FROM completion_requests WHERE success = 1{date_filter}", date_params)
-        successful_requests = cursor.fetchone()[0]
-        
-        cursor.execute(f"SELECT COUNT(*) FROM completion_requests WHERE success = 0{date_filter}", date_params)
-        failed_requests = cursor.fetchone()[0]
-        
-        # Recent requests (last 24 hours) - only if no date filter is applied
-        if not start_date and not end_date:
-            cursor.execute("""
-                SELECT COUNT(*) FROM completion_requests 
-                WHERE timestamp >= datetime('now', '-1 day')
-            """)
-            recent_requests = cursor.fetchone()[0]
-        else:
-            # When date filtering is applied, recent requests should be the filtered count
-            # since we're already looking at a specific time period
-            recent_requests = total_requests
-        
-        # Streaming stats
-        cursor.execute(f"SELECT COUNT(*) FROM completion_requests WHERE is_streaming = 1{date_filter}", date_params)
-        streaming_requests = cursor.fetchone()[0]
-        
-        cursor.execute(f"SELECT COUNT(*) FROM completion_requests WHERE is_streaming = 0{date_filter}", date_params)
-        non_streaming_requests = cursor.fetchone()[0]
-        
-        # Token usage
-        cursor.execute(f"SELECT SUM(total_tokens) FROM completion_requests WHERE total_tokens IS NOT NULL{date_filter}", date_params)
-        total_tokens_used = cursor.fetchone()[0] or 0
-        
-        cursor.execute(f"SELECT AVG(total_tokens) FROM completion_requests WHERE total_tokens IS NOT NULL{date_filter}", date_params)
-        avg_tokens_per_request = cursor.fetchone()[0] or 0
-        
-        # Performance metrics
-        cursor.execute(f"SELECT AVG(response_time_ms) FROM completion_requests WHERE success = 1{date_filter}", date_params)
-        avg_response_time_ms = cursor.fetchone()[0] or 0
-        
-        cursor.execute(f"SELECT AVG(tokens_per_second) FROM completion_requests WHERE tokens_per_second IS NOT NULL{date_filter}", date_params)
-        avg_tokens_per_second = cursor.fetchone()[0] or 0
-        
-        # Streaming-specific metrics
-        cursor.execute(f"SELECT AVG(time_to_first_token_ms) FROM completion_requests WHERE time_to_first_token_ms IS NOT NULL AND is_streaming = 1{date_filter}", date_params)
-        avg_time_to_first_token_ms = cursor.fetchone()[0] or None
-        
-        cursor.execute(f"SELECT AVG(time_to_last_token_ms) FROM completion_requests WHERE time_to_last_token_ms IS NOT NULL AND is_streaming = 1{date_filter}", date_params)
-        avg_time_to_last_token_ms = cursor.fetchone()[0] or None
-        
-        # Calculate completion duration (time to last token - time to first token)
-        cursor.execute(f"""
-            SELECT AVG(time_to_last_token_ms - time_to_first_token_ms) 
-            FROM completion_requests 
-            WHERE time_to_first_token_ms IS NOT NULL AND time_to_last_token_ms IS NOT NULL 
-            AND is_streaming = 1{date_filter}
-        """, date_params)
-        avg_completion_duration_ms = cursor.fetchone()[0] or None
-        
-        # Model usage
-        cursor.execute(f"""
-            SELECT model, COUNT(*) as count 
-            FROM completion_requests 
-            WHERE model IS NOT NULL {date_filter}
-            GROUP BY model 
-            ORDER BY count DESC 
-            LIMIT 5
-        """, date_params)
-        top_models = [ModelUsage(model=row[0], count=row[1]) for row in cursor.fetchall()]
-        
-        # Origin usage
-        cursor.execute(f"""
-            SELECT origin, COUNT(*) as count 
-            FROM completion_requests 
-            WHERE origin IS NOT NULL {date_filter}
-            GROUP BY origin 
-            ORDER BY count DESC 
-            LIMIT 5
-        """, date_params)
-        top_origins = [OriginUsage(origin=row[0], count=row[1]) for row in cursor.fetchall()]
-        
-        # Finish reasons
-        cursor.execute(f"""
-            SELECT finish_reason, COUNT(*) as count 
-            FROM completion_requests 
-            WHERE finish_reason IS NOT NULL AND finish_reason != '' {date_filter}
-            GROUP BY finish_reason
-            ORDER BY count DESC
-        """, date_params)
-        finish_reasons = [FinishReason(reason=row[0], count=row[1]) for row in cursor.fetchall()]
-        
-        # Error analysis
-        cursor.execute(f"""
-            SELECT error_type, COUNT(*) as count 
-            FROM completion_requests 
-            WHERE error_type IS NOT NULL AND error_type != '' {date_filter}
-            GROUP BY error_type
-            ORDER BY count DESC
-        """, date_params)
-        error_types = [ErrorType(type=row[0], count=row[1]) for row in cursor.fetchall()]
-        
-        return Metrics(
-            total_requests=total_requests,
-            successful_requests=successful_requests,
-            failed_requests=failed_requests,
-            recent_requests_24h=recent_requests,
-            streaming_requests=streaming_requests,
-            non_streaming_requests=non_streaming_requests,
-            total_tokens_used=total_tokens_used,
-            avg_tokens_per_request=round(avg_tokens_per_request, 2) if avg_tokens_per_request else None,
-            avg_response_time_ms=round(avg_response_time_ms, 2),
-            avg_tokens_per_second=round(avg_tokens_per_second, 2) if avg_tokens_per_second else None,
-            avg_time_to_first_token_ms=round(avg_time_to_first_token_ms, 2) if avg_time_to_first_token_ms else None,
-            avg_time_to_last_token_ms=round(avg_time_to_last_token_ms, 2) if avg_time_to_last_token_ms else None,
-            avg_completion_duration_ms=round(avg_completion_duration_ms, 2) if avg_completion_duration_ms else None,
-            top_models=top_models,
-            top_origins=top_origins,
-            finish_reasons=finish_reasons,
-            error_types=error_types,
-            timestamp=datetime.now().isoformat()
-        )
+    # Use the DAO to get metrics - this ensures consistent data access patterns
+    return completion_requests_dao.get_metrics(start_date, end_date)
 
 
 def get_completion_requests(start_date: Optional[str] = None, end_date: Optional[str] = None) -> List[CompletionRequestData]:
     """Get completion requests from the database with optional date filtering."""
-    with get_db_connection() as conn:
-        cursor = conn.cursor()
-        
-        # Log the date filtering parameters for debugging
-        if start_date or end_date:
-            print(f"Completion requests date filtering - Start: {start_date}, End: {end_date}")
-        
-        # Build date filter conditions
-        date_filter = ""
-        date_params = []
-        if start_date:
-            # Use SQLite datetime function to compare properly
-            date_filter += " AND datetime(timestamp) >= datetime(?)"
-            date_params.append(start_date)
-            print(f"Added start filter: datetime(timestamp) >= datetime('{start_date}')")
-        if end_date:
-            # Use SQLite datetime function to compare properly
-            date_filter += " AND datetime(timestamp) <= datetime(?)"
-            date_params.append(end_date)
-            print(f"Added end filter: datetime(timestamp) <= datetime('{end_date}')")
-        
-        # Query completion requests with explicit column names to avoid misalignment
-        cursor.execute(f"""
-            SELECT 
-                timestamp,
-                time_to_first_token_ms,
-                time_to_last_token_ms,
-                is_streaming,
-                success,
-                message_count,
-                prompt_tokens,
-                total_tokens,
-                completion_tokens
-            FROM completion_requests 
-            WHERE 1=1{date_filter}
-            ORDER BY timestamp DESC
-        """, date_params)
-        
-        results = []
-        for row in cursor.fetchall():
-            timestamp, time_to_first_token_ms, time_to_last_token_ms, is_streaming, success, message_count, prompt_tokens, total_tokens, completion_tokens = row
-            
-            # Ensure timestamp is in ISO format with timezone information
-            if isinstance(timestamp, str):
-                # If it's already a string, try to parse and format it
-                try:
-                    parsed_time = datetime.fromisoformat(timestamp.replace('Z', '+00:00'))
-                    formatted_timestamp = parsed_time.isoformat()
-                except ValueError:
-                    # If parsing fails, use as-is
-                    formatted_timestamp = timestamp
-            elif timestamp:
-                # If it's a datetime object, format it with timezone
-                formatted_timestamp = timestamp.isoformat()
-            else:
-                # Fallback to current time in ISO format
-                formatted_timestamp = datetime.now().isoformat()
-            
-            # Validate token values to ensure they're numeric
-            def validate_token_value(value, field_name):
-                if value is not None:
-                    if isinstance(value, str) and value.isdigit():
-                        # If it's a string that looks like a number, convert it
-                        return int(value)
-                    elif isinstance(value, (int, float)):
-                        return int(value)
-                    else:
-                        # If it's not a valid token value, log and return None
-                        print(f"Warning: Invalid {field_name} value: {value} (type: {type(value)})")
-                        return None
-                return None
-            
-            validated_prompt_tokens = validate_token_value(prompt_tokens, "prompt_tokens")
-            validated_completion_tokens = validate_token_value(completion_tokens, "completion_tokens")
-            validated_total_tokens = validate_token_value(total_tokens, "total_tokens")
-            
-            completion_request = CompletionRequestData(
-                timestamp=formatted_timestamp,
-                time_to_first_token_ms=time_to_first_token_ms,
-                time_to_last_token_ms=time_to_last_token_ms,
-                is_streaming=bool(is_streaming),
-                success=bool(success),
-                message_count=message_count,
-                prompt_tokens=validated_prompt_tokens,
-                tokens={
-                    "total": validated_total_tokens,
-                    "prompt": validated_prompt_tokens,
-                    "completion": validated_completion_tokens
-                }
-            )
-            results.append(completion_request)
-        
-        print(f"Returning {len(results)} completion requests")
-        return results
+    # Use the DAO to get completion requests - this ensures consistent data access patterns
+    return completion_requests_dao.get_completion_requests(start_date, end_date)
 
 
 @router.get("/metrics")
 async def metrics_endpoint(
     start: Optional[str] = Query(None, description="Start date in ISO format (e.g., 2024-01-01T00:00:00)"),
     end: Optional[str] = Query(None, description="End date in ISO format (e.g., 2024-01-02T00:00:00)")
-) -> Metrics:
+):
     """Return current metrics as JSON with optional date filtering."""
     return get_metrics(start, end)
 
