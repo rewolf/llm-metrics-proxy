@@ -80,7 +80,7 @@ class Metrics:
     model_distribution: Dict[str, int]
     
     # Origin usage
-    top_origins: List[OriginUsage]
+    origin_distribution: Dict[str, int]
     
     # Completion analysis (as dictionaries for backward compatibility)
     finish_reasons: Dict[str, int]

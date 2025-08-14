@@ -185,6 +185,21 @@ class CompletionRequestsDAO:
                 """)
             model_distribution = dict(cursor.fetchall())
             
+            # Origin distribution
+            if date_filter:
+                cursor.execute(f"""
+                    SELECT origin, COUNT(*) as count FROM {self.table_name} 
+                    {date_filter} AND origin IS NOT NULL AND origin != '' 
+                    GROUP BY origin ORDER BY count DESC
+                """, params)
+            else:
+                cursor.execute(f"""
+                    SELECT origin, COUNT(*) as count FROM {self.table_name} 
+                    WHERE origin IS NOT NULL AND origin != '' 
+                    GROUP BY origin ORDER BY count DESC
+                """)
+            origin_distribution = dict(cursor.fetchall())
+            
             # Finish reasons
             if date_filter:
                 cursor.execute(f"""
@@ -270,7 +285,6 @@ class CompletionRequestsDAO:
             avg_completion_duration_ms = streaming_stats[2] or 0
             
             # Convert dictionaries to lists of objects
-            top_origins = []  # TODO: Add origin tracking
             
             # Calculate token totals
             total_tokens_used = None
@@ -302,7 +316,7 @@ class CompletionRequestsDAO:
                 avg_time_to_last_token_ms=avg_time_to_last_token_ms,
                 avg_completion_duration_ms=avg_completion_duration_ms,
                 model_distribution=model_distribution,
-                top_origins=top_origins,
+                origin_distribution=origin_distribution,
                 finish_reasons=finish_reasons,
                 error_types=error_types,
                 avg_prompt_tokens=avg_prompt_tokens,

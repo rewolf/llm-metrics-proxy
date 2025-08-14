@@ -239,14 +239,14 @@ function App(): JSX.Element {
       )}
 
       {/* Request Sources */}
-      {metrics.top_origins && metrics.top_origins.length > 0 && (
+      {metrics.origin_distribution && Object.keys(metrics.origin_distribution).length > 0 && (
         <div className="metric-section">
           <h2><GlobeIcon /> {t.requestSources}</h2>
           <div className="metric-list">
-            {metrics.top_origins.map((origin, index) => (
+            {Object.entries(metrics.origin_distribution).map(([origin, count], index) => (
               <div key={index} className="metric-item">
-                <span className="origin-name">{origin.origin}</span>
-                <span className="origin-count">{origin.count} {t.requests}</span>
+                <span className="origin-name">{origin}</span>
+                <span className="origin-count">{count} {t.requests}</span>
               </div>
             ))}
           </div>

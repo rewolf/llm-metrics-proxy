@@ -36,10 +36,10 @@ Returns aggregated metrics for the system with optional date filtering.
     {"model": "gpt-4", "count": 100},
     {"model": "gpt-3.5-turbo", "count": 50}
   ],
-  "top_origins": [
-    {"origin": "api.openai.com", "count": 120},
-    {"origin": "custom-client", "count": 30}
-  ],
+  "origin_distribution": {
+    "api.openai.com": 120,
+    "custom-client": 30
+  },
   "finish_reasons": [
     {"reason": "stop", "count": 140},
     {"reason": "length", "count": 10}

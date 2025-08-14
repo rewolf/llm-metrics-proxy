@@ -151,7 +151,7 @@ export interface Metrics {
   model_distribution: { [key: string]: number };
   
   // Origin usage
-  top_origins: OriginUsage[];
+  origin_distribution: { [key: string]: number };
   
   // Completion analysis
   finish_reasons: FinishReason[];

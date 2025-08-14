@@ -364,6 +364,103 @@ class TestCompletionRequestsDAO(unittest.TestCase):
         # Should now be 1
         count = self.dao.get_row_count()
         self.assertEqual(count, 1)
+    
+    def test_get_metrics_with_origin_distribution(self):
+        """Test that origin distribution is properly populated in metrics."""
+        # Insert test data with different origins
+        test_records = [
+            {
+                'timestamp': '2024-01-15T10:00:00',
+                'success': True,
+                'status_code': 200,
+                'response_time_ms': 1000,
+                'model': 'gpt-4',
+                'origin': 'https://example.com',
+                'is_streaming': False,
+                'max_tokens': 100,
+                'temperature': 0.7,
+                'top_p': 1.0,
+                'message_count': 2,
+                'prompt_tokens': 50,
+                'completion_tokens': 30,
+                'total_tokens': 80,
+                'finish_reason': 'stop',
+                'time_to_first_token_ms': None,
+                'time_to_last_token_ms': None,
+                'tokens_per_second': 20.0,
+                'error_type': None,
+                'error_message': None
+            },
+            {
+                'timestamp': '2024-01-15T10:30:00',
+                'success': True,
+                'status_code': 200,
+                'response_time_ms': 1200,
+                'model': 'gpt-4',
+                'origin': 'https://example.com',
+                'is_streaming': False,
+                'max_tokens': 100,
+                'temperature': 0.7,
+                'top_p': 1.0,
+                'message_count': 2,
+                'prompt_tokens': 50,
+                'completion_tokens': 30,
+                'total_tokens': 80,
+                'finish_reason': 'stop',
+                'time_to_first_token_ms': None,
+                'time_to_last_token_ms': None,
+                'tokens_per_second': 20.0,
+                'error_type': None,
+                'error_message': None
+            },
+            {
+                'timestamp': '2024-01-15T11:00:00',
+                'success': True,
+                'status_code': 200,
+                'response_time_ms': 800,
+                'model': 'gpt-3.5-turbo',
+                'origin': 'https://app.mycompany.com',
+                'is_streaming': True,
+                'max_tokens': 100,
+                'temperature': 0.7,
+                'top_p': 1.0,
+                'message_count': 2,
+                'prompt_tokens': 50,
+                'completion_tokens': 30,
+                'total_tokens': 80,
+                'finish_reason': 'stop',
+                'time_to_first_token_ms': 200,
+                'time_to_last_token_ms': 800,
+                'tokens_per_second': 20.0,
+                'error_type': None,
+                'error_message': None
+            }
+        ]
+        
+        # Insert all test records
+        for record in test_records:
+            self.dao.insert_completion_request(record)
+        
+        # Get metrics
+        metrics = self.dao.get_metrics()
+        
+        # Verify origin distribution is populated
+        self.assertIsNotNone(metrics.origin_distribution)
+        self.assertIsInstance(metrics.origin_distribution, dict)
+        
+        # Should have 2 origins
+        self.assertEqual(len(metrics.origin_distribution), 2)
+        
+        # https://example.com should have 2 requests
+        self.assertEqual(metrics.origin_distribution['https://example.com'], 2)
+        
+        # https://app.mycompany.com should have 1 request
+        self.assertEqual(metrics.origin_distribution['https://app.mycompany.com'], 1)
+        
+        # Origins should be ordered by count (descending)
+        origin_items = list(metrics.origin_distribution.items())
+        self.assertEqual(origin_items[0][0], 'https://example.com')  # 2 requests
+        self.assertEqual(origin_items[1][0], 'https://app.mycompany.com')  # 1 request
 
 if __name__ == '__main__':
     unittest.main()
