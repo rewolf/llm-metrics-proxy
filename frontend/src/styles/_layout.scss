@@ -6,6 +6,7 @@
   flex-direction: column;
   align-items: center;
   padding: $container-padding;
+  padding-bottom: 0; // Remove bottom padding so footer can be flush
   background: var(--color-background, $color-background);
   color: var(--color-text, $color-text);
 }
@@ -55,16 +56,18 @@
 
 // Footer Styles
 .app-footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin-top: 0;
+  position: static; // Changed from fixed to static
+  margin-top: auto; // Push footer to bottom when content is short
   padding: $spacing-sm 0;
   border-top: 1px solid var(--color-borderLight, $color-borderLight);
   background: var(--color-surface, $color-surface);
   box-shadow: var(--shadow-medium, 0 -2px 8px rgba(0, 0, 0, 0.1));
   z-index: 100;
+  width: 100vw; // Full viewport width
+  margin-top: $spacing-xl; // Add spacing above footer (30px)
+  align-self: stretch; // Override App container's align-items: center
+  margin-left: calc(-50vw + 50%); // Extend beyond App container padding
+  margin-right: calc(-50vw + 50%); // Extend beyond App container padding
 }
 
 .footer-content {
@@ -72,7 +75,8 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  margin: 0;
+  max-width: 1200px; // Match the max-width of other components
+  margin: 0 auto; // Center the content within the full-width footer
   padding: 0 $container-padding;
   box-sizing: border-box;
 }
@@ -92,7 +96,7 @@
 @media (max-width: 768px) {
   .App {
     padding: $spacing-md;
-    padding-bottom: calc($spacing-md + 80px);
+    padding-bottom: 0; // Remove bottom padding so footer can be flush
   }
   
   .footer-content {
@@ -109,7 +113,7 @@
 @media (max-width: 480px) {
   .App {
     padding: $spacing-sm;
-    padding-bottom: calc($spacing-sm + 80px);
+    padding-bottom: 0; // Remove bottom padding so footer can be flush
   }
   
   .footer-content {

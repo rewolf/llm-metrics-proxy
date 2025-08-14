@@ -51,6 +51,7 @@
   flex-direction: column;
   gap: $spacing-xl;
   width: 100%;
+  flex: 1; // Take up remaining space to push footer to bottom
 }
 
 .metric-section {
