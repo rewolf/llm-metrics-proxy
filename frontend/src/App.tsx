@@ -222,16 +222,18 @@ function App(): JSX.Element {
       </div>
 
       {/* Model Usage */}
-      {metrics.top_models && metrics.top_models.length > 0 && (
+      {metrics.model_distribution && Object.keys(metrics.model_distribution).length > 0 && (
         <div className="metric-section">
           <h2><RobotIcon /> {t.modelUsage}</h2>
           <div className="metric-list">
-            {metrics.top_models.map((model, index) => (
-              <div key={index} className="metric-item">
-                <span className="model-name">{model.model}</span>
-                <span className="model-count">{model.count} {t.requests}</span>
-              </div>
-            ))}
+            {Object.entries(metrics.model_distribution)
+              .sort(([,a], [,b]) => b - a) // Sort by count descending
+              .map(([model, count], index) => (
+                <div key={index} className="metric-item">
+                  <span className="model-name">{model}</span>
+                  <span className="model-count">{count} {t.requests}</span>
+                </div>
+              ))}
           </div>
         </div>
       )}

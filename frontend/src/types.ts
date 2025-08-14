@@ -147,8 +147,8 @@ export interface Metrics {
   avg_time_to_last_token_ms: number | null;
   avg_completion_duration_ms: number | null;
   
-  // Model usage
-  top_models: ModelUsage[];
+  // Model usage (as dictionary from backend)
+  model_distribution: { [key: string]: number };
   
   // Origin usage
   top_origins: OriginUsage[];
