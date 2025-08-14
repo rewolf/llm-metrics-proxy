@@ -62,6 +62,15 @@ export const en: Translation = {
   performanceNote: 'Response time includes both streaming and non-streaming requests. Time to first token shows streaming performance.',
   streamingPerformanceNote: 'These metrics are only available for requests explicitly requesting usage metrics.',
   usageStatsNote: 'Usage stats can be enabled by clients when calling /v1/chat/messages by adding "stream_options": {"include_usage":true} to their payload.',
+  
+  // Token usage section
+  promptTokens: 'Prompt Tokens',
+  completionTokens: 'Completion Tokens',
+  totalTokens: 'Total Tokens',
+  promptTokensPerRequest: 'Prompt Tokens per Request',
+  completionTokensPerRequest: 'Completion Tokens per Request',
+  totalTokensPerRequest: 'Total Tokens per Request',
+  tokenUsageNoteStreaming: 'Token usage metrics are only available when clients enable "include_usage" in their streaming requests.',
   requests: 'requests',
   times: 'times',
   tokensPerSecond: 'tokens/s',

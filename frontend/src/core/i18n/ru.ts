@@ -65,6 +65,15 @@ export const ru: Translation = {
   performanceNote: 'Время ответа включает как потоковые, так и непотоковые запросы. Время до первого токена показывает производительность потоков.',
   streamingPerformanceNote: 'Эти метрики доступны только для запросов, которые явно запрашивают метрики использования.',
   usageStatsNote: 'Статистика использования может быть включена клиентами при вызове /v1/chat/messages, добавив "stream_options": {"include_usage":true} в их payload.',
+  
+  // Token usage section
+  promptTokens: 'Токены Запроса',
+  completionTokens: 'Токены Завершения',
+  totalTokens: 'Общие Токены',
+  promptTokensPerRequest: 'Токены Запроса на Запрос',
+  completionTokensPerRequest: 'Токены Завершения на Запрос',
+  totalTokensPerRequest: 'Общие Токены на Запрос',
+  tokenUsageNoteStreaming: 'Метрики использования токенов доступны только когда клиенты включают "include_usage" в своих потоковых запросах.',
   requests: 'запросов',
   times: 'раз',
   tokensPerSecond: 'токенов/с',

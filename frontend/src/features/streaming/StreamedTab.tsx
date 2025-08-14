@@ -1,10 +1,11 @@
 import React from 'react';
 import { Metrics } from '../../types';
 import { calculatePercentage, formatResponseTime } from '../../utils';
-import { MetricSection, MetricGrid, MetricItem } from '../../shared';
+import { MetricSection, MetricGrid, MetricItem, MetricSplitLayout } from '../../shared';
 import { 
   StreamingIcon, 
-  PerformanceIcon 
+  PerformanceIcon,
+  TokenIcon
 } from '../../assets/icons';
 
 interface StreamedTabProps {
@@ -53,12 +54,60 @@ export const StreamedTab: React.FC<StreamedTabProps> = ({ metrics, t }) => {
             />
           )}
         </MetricGrid>
+      </MetricSection>
+
+      {/* Token Usage Section */}
+      <MetricSection title={t.tokenUsage} icon={<TokenIcon />}>
+        {/* Row 1: Prompt Tokens */}
+        <MetricSplitLayout className="token-usage-row"
+          leftContent={
+            <MetricItem
+              title={t.promptTokens}
+              value={metrics.avg_prompt_tokens ? metrics.avg_prompt_tokens.toFixed(1) : 'N/A'}
+            />
+          }
+          rightContent={
+            <MetricItem
+              title={t.promptTokensPerRequest}
+              value={metrics.avg_prompt_tokens ? metrics.avg_prompt_tokens.toFixed(1) : 'N/A'}
+            />
+          }
+        />
+        
+        {/* Row 2: Completion Tokens */}
+        <MetricSplitLayout className="token-usage-row"
+          leftContent={
+            <MetricItem
+              title={t.completionTokens}
+              value={metrics.avg_completion_tokens ? metrics.avg_completion_tokens.toFixed(1) : 'N/A'}
+            />
+          }
+          rightContent={
+            <MetricItem
+              title={t.completionTokensPerRequest}
+              value={metrics.avg_completion_tokens ? metrics.avg_completion_tokens.toFixed(1) : 'N/A'}
+            />
+          }
+        />
+        
+        {/* Row 3: Total Tokens */}
+        <MetricSplitLayout className="token-usage-row"
+          leftContent={
+            <MetricItem
+              title={t.totalTokens}
+              value={metrics.avg_total_tokens ? metrics.avg_total_tokens.toFixed(1) : 'N/A'}
+            />
+          }
+          rightContent={
+            <MetricItem
+              title={t.totalTokensPerRequest}
+              value={metrics.avg_total_tokens ? metrics.avg_total_tokens.toFixed(1) : 'N/A'}
+            />
+          }
+        />
+        
         <div className="metric-note">
-          <small>
-            {t.streamingPerformanceNote}
-            <br />
-            {t.usageStatsNote}
-          </small>
+          <small>{t.tokenUsageNoteStreaming}</small>
         </div>
       </MetricSection>
     </>

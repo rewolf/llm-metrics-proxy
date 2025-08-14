@@ -65,6 +65,15 @@ export const ja: Translation = {
   performanceNote: '応答時間にはストリーミングと非ストリーミングの両方のリクエストが含まれます。最初のトークンまでの時間はストリーミングのパフォーマンスを示します。',
   streamingPerformanceNote: 'これらのメトリクスは、使用量メトリクスを明示的に要求するリクエストでのみ利用可能です。',
   usageStatsNote: '使用統計は、クライアントが/v1/chat/messagesを呼び出す際に、ペイロードに"stream_options": {"include_usage":true}を追加することで有効にできます。',
+  
+  // Token usage section
+  promptTokens: 'プロンプトトークン',
+  completionTokens: '完了トークン',
+  totalTokens: '総トークン',
+  promptTokensPerRequest: 'リクエストあたりのプロンプトトークン',
+  completionTokensPerRequest: 'リクエストあたりの完了トークン',
+  totalTokensPerRequest: 'リクエストあたりの総トークン',
+  tokenUsageNoteStreaming: 'トークン使用量メトリクスは、クライアントがストリーミングリクエストで"include_usage"を有効にした場合のみ利用可能です。',
   requests: 'リクエスト',
   times: '回',
   tokensPerSecond: 'トークン/秒',

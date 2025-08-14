@@ -62,6 +62,15 @@ export const fr: Translation = {
   performanceNote: 'Le temps de réponse inclut à la fois les requêtes en streaming et non-streaming. Le temps jusqu\'au premier token montre la performance du streaming.',
   streamingPerformanceNote: 'Ces métriques ne sont disponibles que pour les requêtes demandant explicitement des métriques d\'utilisation.',
   usageStatsNote: 'Les statistiques d\'utilisation peuvent être activées par les clients lors de l\'appel à /v1/chat/messages en ajoutant "stream_options": {"include_usage":true} à leur payload.',
+  
+  // Token usage section
+  promptTokens: 'Jetons d\'Entrée',
+  completionTokens: 'Jetons de Complétion',
+  totalTokens: 'Total des Jetons',
+  promptTokensPerRequest: 'Jetons d\'Entrée par Requête',
+  completionTokensPerRequest: 'Jetons de Complétion par Requête',
+  totalTokensPerRequest: 'Total des Jetons par Requête',
+  tokenUsageNoteStreaming: 'Les métriques d\'utilisation des jetons ne sont disponibles que lorsque les clients activent "include_usage" dans leurs requêtes de streaming.',
   requests: 'requêtes',
   times: 'fois',
   tokensPerSecond: 'tokens/s',

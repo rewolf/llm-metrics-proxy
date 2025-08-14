@@ -65,6 +65,15 @@ export const zh: Translation = {
   performanceNote: '响应时间包括流式和非流式请求。到第一个令牌的时间显示流式性能。',
   streamingPerformanceNote: '这些指标仅适用于明确请求使用指标的请求。',
   usageStatsNote: '使用统计可以通过客户端在调用 /v1/chat/messages 时在有效载荷中添加 "stream_options": {"include_usage":true} 来启用。',
+  
+  // Token usage section
+  promptTokens: '提示令牌',
+  completionTokens: '完成令牌',
+  totalTokens: '总令牌',
+  promptTokensPerRequest: '每个请求的提示令牌',
+  completionTokensPerRequest: '每个请求的完成令牌',
+  totalTokensPerRequest: '每个请求的总令牌',
+  tokenUsageNoteStreaming: '令牌使用量指标仅在客户端在流式请求中启用"include_usage"时可用。',
   requests: '请求',
   times: '次',
   tokensPerSecond: '令牌/秒',

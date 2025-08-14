@@ -65,6 +65,15 @@ export const ko: Translation = {
   performanceNote: '응답 시간에는 스트리밍과 비스트리밍 요청이 모두 포함됩니다. 첫 번째 토큰까지의 시간은 스트리밍 성능을 보여줍니다.',
   streamingPerformanceNote: '이러한 메트릭은 사용량 메트릭을 명시적으로 요청하는 요청에서만 사용할 수 있습니다.',
   usageStatsNote: '사용 통계는 클라이언트가 /v1/chat/messages를 호출할 때 페이로드에 "stream_options": {"include_usage":true}를 추가하여 활성화할 수 있습니다.',
+  
+  // Token usage section
+  promptTokens: '프롬프트 토큰',
+  completionTokens: '완성 토큰',
+  totalTokens: '총 토큰',
+  promptTokensPerRequest: '요청당 프롬프트 토큰',
+  completionTokensPerRequest: '요청당 완성 토큰',
+  totalTokensPerRequest: '요청당 총 토큰',
+  tokenUsageNoteStreaming: '토큰 사용량 메트릭은 클라이언트가 스트리밍 요청에서 "include_usage"를 활성화한 경우에만 사용할 수 있습니다.',
   requests: '요청',
   times: '회',
   tokensPerSecond: '토큰/초',

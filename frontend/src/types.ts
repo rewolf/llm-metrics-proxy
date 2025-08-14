@@ -104,6 +104,16 @@ export interface Translation {
   performanceNote: string;
   streamingPerformanceNote: string;
   usageStatsNote: string;
+  
+  // Token usage section
+  promptTokens: string;
+  completionTokens: string;
+  totalTokens: string;
+  promptTokensPerRequest: string;
+  completionTokensPerRequest: string;
+  totalTokensPerRequest: string;
+  tokenUsageNoteStreaming: string;
+  
   requests: string;
   times: string;
   tokensPerSecond: string;
@@ -156,6 +166,11 @@ export interface Metrics {
   // Completion analysis
   finish_reasons: FinishReason[];
   error_types: ErrorType[];
+  
+  // Token averages (from backend)
+  avg_prompt_tokens: number | null;
+  avg_completion_tokens: number | null;
+  avg_total_tokens: number | null;
   
   timestamp: string;
 }

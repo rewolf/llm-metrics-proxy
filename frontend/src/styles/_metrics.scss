@@ -80,6 +80,20 @@
   grid-template-columns: 1fr 1fr;
   gap: $spacing-lg;
   width: 100%;
+  
+  // Special styling for token usage rows
+  &.token-usage-row {
+    margin-bottom: $spacing-md;
+    
+    .metric-left,
+    .metric-right {
+      .metric {
+        width: 100%;
+        min-width: 0; // Allow flex shrinking
+        flex: 1; // Take up equal space
+      }
+    }
+  }
 }
 
 .metric-left {

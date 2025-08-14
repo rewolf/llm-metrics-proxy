@@ -4,6 +4,8 @@ A secure, production-ready reverse proxy that monitors OpenAI-compatible API req
 
 **Note**: This proxy tracks and monitors requests following the [OpenAI API specification](https://platform.openai.com/docs/api-reference/chat), but it is not made by OpenAI. It's designed to work with any OpenAI-spec compliant backend service.
 
+![alt text](docs/README-top.png)
+
 ## 🎯 Purpose
 
 The LLM Metrics Proxy solves a critical need for organizations deploying LLM services: **visibility and monitoring**. Whether you're running Ollama, vLLM, LocalAI, or any other OpenAI-compatible backend, this proxy gives you enterprise-grade monitoring capabilities without compromising security.
