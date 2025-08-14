@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from 'react';
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ChartOptions } from 'chart.js';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ChartOptions, TimeScale } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-import { formatChartTimestamp, formatTooltipTimestamp } from '../../utils';
+import 'chartjs-adapter-luxon';
 
-// Register Chart.js components
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+// Register Chart.js components including TimeScale
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, TimeScale);
 
 export interface ChartDataPoint {
   timestamp: string;
@@ -28,11 +28,7 @@ export const BaseChart: React.FC<BaseChartProps> = ({
   height = 300,
   className = ''
 }) => {
-  const chartRef = useRef<ChartJS<'bar'> | null>(null);
-
-  // Format timestamps for display with improved formatting
-  const labels = data.map(point => formatChartTimestamp(point.timestamp, timeframe));
-  const values = data.map(point => point.value);
+  const chartRef = useRef<ChartJS<'bar', { x: string; y: number }[]> | null>(null);
 
   // Get computed CSS custom properties for theme-aware colors
   const getComputedColor = (property: string, fallback: string): string => {
@@ -77,16 +73,16 @@ export const BaseChart: React.FC<BaseChartProps> = ({
   const gridColor = applyOpacityToColor(borderColor, 0.3);
 
   const chartData = {
-    labels,
-    datasets: [
-      {
-        label: yAxisLabel || 'Value',
-        data: values,
-        backgroundColor: 'rgba(54, 162, 235, 0.6)',
-        borderColor: 'rgba(54, 162, 235, 1)',
-        borderWidth: 1,
-      },
-    ],
+    datasets: [{
+      label: yAxisLabel || 'Value',
+      data: data.map(point => ({
+        x: point.timestamp,
+        y: point.value
+      })),
+      backgroundColor: 'rgba(54, 162, 235, 0.6)',
+      borderColor: 'rgba(54, 162, 235, 1)',
+      borderWidth: 1,
+    }],
   };
 
   const options: ChartOptions<'bar'> = {
@@ -114,10 +110,10 @@ export const BaseChart: React.FC<BaseChartProps> = ({
         borderColor: borderColor,
         borderWidth: 1,
         callbacks: {
-          title: (tooltipItems) => {
+          title: (tooltipItems: any) => {
             const index = tooltipItems[0].dataIndex;
             return data[index]?.timestamp ? 
-              formatTooltipTimestamp(data[index].timestamp) : 
+              new Date(data[index].timestamp).toLocaleString() : 
               tooltipItems[0].label;
           },
         },
@@ -125,6 +121,7 @@ export const BaseChart: React.FC<BaseChartProps> = ({
     },
     scales: {
       x: {
+        type: 'time',
         grid: {
           color: gridColor,
         },
@@ -132,17 +129,7 @@ export const BaseChart: React.FC<BaseChartProps> = ({
           color: textColor,
           maxRotation: 45,
           minRotation: 0,
-          // Sparse labeling - show fewer labels for better readability
-          callback: function(val, index) {
-            // Show labels for every nth tick based on timeframe
-            const labelInterval = getLabelInterval(timeframe);
-            return index % labelInterval === 0 ? this.getLabelForValue(Number(val)) : '';
-          },
-          // Ensure labels are on nice boundaries
-          source: 'auto',
-          autoSkip: true,
-          autoSkipPadding: 20,
-        },
+        }
       },
       y: {
         beginAtZero: true,
@@ -240,24 +227,4 @@ export const BaseChart: React.FC<BaseChartProps> = ({
       />
     </div>
   );
-};
-
-// Helper function to determine label interval based on timeframe
-const getLabelInterval = (timeframe: string): number => {
-  switch (timeframe) {
-    case '1h':
-      return 4; // Show every 4th label (every 2 minutes)
-    case '6h':
-      return 15; // Show every 15th label (every 30 minutes)
-    case '12h':
-      return 12; // Show every 12th label (every 1 hour)
-    case '1d':
-      return 6; // Show every 6th label (every 1 hour)
-    case '1w':
-      return 4; // Show every 4th label (every 4 hours)
-    case '1mo':
-      return 4; // Show every 4th label (every 1 day)
-    default:
-      return 10; // Default to every 10th label
-  }
 };

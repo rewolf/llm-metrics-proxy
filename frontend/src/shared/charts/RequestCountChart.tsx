@@ -26,7 +26,7 @@ export const RequestCountChart: React.FC<RequestCountChartProps> = ({
   return (
     <BaseChart
       data={aggregatedData}
-      title="Request Count Over Time"
+      title="Requests"
       yAxisLabel="Number of Requests"
       timeframe={timeframe}
       height={height}

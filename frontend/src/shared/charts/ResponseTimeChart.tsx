@@ -40,7 +40,7 @@ export const ResponseTimeChart: React.FC<ResponseTimeChartProps> = ({
   return (
     <BaseChart
       data={aggregatedData}
-      title="Average Response Time Over Time"
+      title="Response Time"
       yAxisLabel="Response Time (ms)"
       timeframe={timeframe}
       height={height}
