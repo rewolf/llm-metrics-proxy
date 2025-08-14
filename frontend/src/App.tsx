@@ -160,9 +160,20 @@ function App(): JSX.Element {
                 <div className="value">{metrics.total_requests}</div>
               </div>
               
-              <div className="metric success">
+              <div className="metric">
                 <h3>{t.successRate}</h3>
-                <div className="value">
+                <div 
+                  className="value success-rate-value"
+                  style={{
+                    color: (() => {
+                      const successRate = (metrics.successful_requests / metrics.total_requests) * 100;
+                      if (successRate === 100) return 'var(--color-metricSuccess, #28a745)';
+                      if (successRate >= 90) return 'var(--color-success, #28a745)';
+                      if (successRate >= 80) return 'var(--color-warning, #ffc107)';
+                      return 'var(--color-metricFailed, #dc3545)';
+                    })()
+                  }}
+                >
                   {calculatePercentage(metrics.successful_requests, metrics.total_requests)}
                 </div>
               </div>

@@ -151,6 +151,12 @@
     font-size: $font-size-large;
     font-weight: bold;
     margin: 0;
+    
+    &.success-rate-value {
+      // Dynamic color based on success rate percentage
+      // This will be overridden by theme-specific styles
+      color: var(--color-text, $color-text);
+    }
   }
 }
 
@@ -549,6 +555,12 @@
       font-weight: 600;
       letter-spacing: 1px;
       text-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+      
+      &.success-rate-value {
+        // Success rate value will use dynamic colors set via inline styles
+        // Remove any default text-shadow for success rate
+        text-shadow: none;
+      }
     }
     
     &.success {
