@@ -18,18 +18,18 @@ This will start all services:
 
 ## Standalone Metrics System with Ollama
 
-For a clean deployment with just the metrics system and Ollama, use the example below:
+For a clean deployment with just the metrics system and Ollama, you can use the main `docker-compose.yml` file. The example below shows the same configuration with custom port mapping:
 
 ```yaml
 version: '3.8'
 
 services:
   # LLM Metrics Proxy - proxies OpenAI API requests and tracks metrics
-  ollama-metrics-proxy:
+  llm-metrics-proxy:
     build: .
-    container_name: ollama-metrics-proxy
+    container_name: llm-metrics-proxy
     ports:
-      - "8001:8000"  # OpenAI API proxy
+      - "8001:8000"  # OpenAI API proxy (custom port)
     environment:
       - BACKEND_HOST=ollama
       - BACKEND_PORT=11434
@@ -42,9 +42,9 @@ services:
     restart: unless-stopped
 
   # Metrics API Server - exposes metrics data for frontend
-  ollama-metrics-api:
+  metrics-api:
     build: .
-    container_name: ollama-metrics-api
+    container_name: metrics-api
     ports:
       - "8002:8002"  # Metrics API
     environment:
@@ -54,23 +54,23 @@ services:
       - ./data:/app/data
     command: ["python", "-m", "backend.metrics_server"]
     depends_on:
-      - ollama-metrics-proxy
+      - llm-metrics-proxy
     restart: unless-stopped
 
   # React Frontend - displays metrics dashboard
-  ollama-metrics-frontend:
+  frontend:
     build: ./frontend
-    container_name: ollama-metrics-frontend
+    container_name: metrics-frontend
     ports:
       - "3000:3000"  # Frontend dashboard
     depends_on:
-      - ollama-metrics-api
+      - metrics-api
     restart: unless-stopped
 
   # Ollama Server - serves GGUF models with OpenAI-compatible API
   ollama:
     image: ollama/ollama:latest
-    container_name: ollama
+    container_name: test-ollama
     ports:
       - "11434:11434"  # Ollama API
     volumes:
@@ -86,7 +86,7 @@ volumes:
 This example shows a clean deployment with just the essential services:
 
 1. **Ollama**: Serves your AI models with OpenAI-compatible API
-2. **Ollama Metrics Proxy**: Intercepts requests, tracks metrics, forwards to Ollama
+2. **LLM Metrics Proxy**: Intercepts requests, tracks metrics, forwards to Ollama
 3. **Metrics API**: Provides metrics data to the frontend
 4. **Frontend**: Web dashboard displaying the metrics
 
@@ -117,7 +117,7 @@ docker build -t llm-metrics-proxy .
 
 # Then run the proxy service
 docker run -d \
-  --name ollama-metrics-proxy \
+  --name llm-metrics-proxy \
   -p 8001:8000 \
   -e BACKEND_HOST=your-ollama-host \
   -e BACKEND_PORT=11434 \
@@ -135,7 +135,7 @@ docker build -t llm-metrics-proxy .
 
 # Then run the metrics API service
 docker run -d \
-  --name ollama-metrics-api \
+  --name metrics-api \
   -p 8002:8002 \
   -e METRICS_PORT=8002 \
   -e DB_PATH=./data/metrics.db \
@@ -154,7 +154,7 @@ docker build -t metrics-frontend ./frontend
 
 # Then run the frontend service
 docker run -d \
-  --name ollama-metrics-frontend \
+  --name metrics-frontend \
   -p 3000:3000 \
   -e REACT_APP_METRICS_API_URL=http://your-metrics-api:8002 \
   metrics-frontend:latest
@@ -180,7 +180,7 @@ vllm:
 
 Then update the proxy environment:
 ```yaml
-ollama-metrics-proxy:
+llm-metrics-proxy:
   environment:
     - BACKEND_HOST=vllm
     - BACKEND_PORT=8000
@@ -200,7 +200,7 @@ localai:
 
 Update proxy environment:
 ```yaml
-ollama-metrics-proxy:
+llm-metrics-proxy:
   environment:
     - BACKEND_HOST=localai
     - BACKEND_PORT=8080
