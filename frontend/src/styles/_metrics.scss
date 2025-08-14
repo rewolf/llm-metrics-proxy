@@ -4,7 +4,6 @@
   gap: $spacing-sm;
   margin-bottom: $spacing-xl;
   border-bottom: 2px solid var(--color-border, $color-border);
-  padding-bottom: $spacing-sm;
 }
 
 .tab-button {
@@ -476,7 +475,7 @@
 // Terminal theme enhancements for metrics
 .theme-terminal {
   .tab-selector {
-    border-bottom: 2px solid var(--color-primary);
+    border-bottom: none;
     
     .tab-button {
       background: transparent;
@@ -720,7 +719,7 @@
 // Fluid theme enhancements for metrics
 .theme-fluid {
   .tab-selector {
-    border-bottom: 2px solid var(--color-primary);
+    border-bottom: none;
     
     .tab-button {
       background: transparent;

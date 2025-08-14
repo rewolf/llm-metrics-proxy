@@ -135,8 +135,8 @@
   }
   
   .app-header {
-    border-bottom: 2px solid var(--color-primary);
-    padding-bottom: $spacing-md;
+    border: 2px solid var(--color-primary);
+    padding: $spacing-md;
     
     h1 {
       color: var(--color-primary);
@@ -253,7 +253,7 @@
   
   .app-header {
     border-bottom: 1px solid var(--color-border);
-    padding-bottom: $spacing-md;
+    padding: $spacing-md;
     background: var(--color-surface);
     border-radius: 0 0 var(--border-radius) var(--border-radius);
     box-shadow: var(--shadow-small);
@@ -345,10 +345,12 @@
   
   .app-header {
     border-bottom: 1px solid var(--color-border);
-    padding-bottom: $spacing-md;
+    padding: $spacing-md;
     background: var(--color-surface);
     border-radius: 0 0 var(--border-radius) var(--border-radius);
     box-shadow: var(--shadow-small);
+    max-width: none;
+    margin-top: -$spacing-lg;
     
     h1 {
       color: var(--color-primary);
