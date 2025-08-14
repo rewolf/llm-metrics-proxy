@@ -2,6 +2,7 @@ export interface Theme {
   id: string;
   name: string;
   description: string;
+  fontFamily: string;
   colors: {
     primary: string;
     secondary: string;
@@ -38,6 +39,7 @@ export const THEMES: Theme[] = [
     id: 'light',
     name: 'Light',
     description: 'Clean, modern light theme',
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
     colors: {
       primary: '#007bff',
       secondary: '#6c757d',
@@ -71,6 +73,7 @@ export const THEMES: Theme[] = [
     id: 'terminal',
     name: 'Terminal',
     description: 'Dark terminal theme with Tron-like cyan accents',
+    fontFamily: '"JetBrains Mono", monospace',
     colors: {
       primary: '#00ffff',
       secondary: '#008080',
@@ -129,6 +132,9 @@ export function applyTheme(theme: Theme): void {
   
   // Add the current theme class
   body.classList.add(`theme-${theme.id}`);
+  
+  // Apply font family
+  root.style.setProperty('--font-family', theme.fontFamily);
   
   // Apply colors
   Object.keys(theme.colors).forEach((key: string) => {

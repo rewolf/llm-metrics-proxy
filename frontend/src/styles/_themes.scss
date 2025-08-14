@@ -1,6 +1,9 @@
 // Theme system implementation
 // This file handles CSS custom properties and theme application
 
+// Import fonts for specific themes
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
+
 :root {
   // Apply default theme colors
   --color-primary: #{$color-primary};
@@ -30,6 +33,9 @@
   --shadow-small: #{$shadow-small};
   --shadow-medium: #{$shadow-medium};
   --shadow-large: #{$shadow-large};
+  
+  // Default font family
+  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
 }
 
 // Theme utility classes
@@ -59,6 +65,9 @@
   --shadow-small: 0 1px 3px rgba(0, 0, 0, 0.05);
   --shadow-medium: 0 2px 8px rgba(0, 0, 0, 0.1);
   --shadow-large: 0 4px 12px rgba(0, 0, 0, 0.15);
+  
+  // Light theme font
+  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
 }
 
 .theme-terminal {
@@ -88,8 +97,11 @@
   --shadow-medium: 0 0 10px rgba(0, 255, 255, 0.5);
   --shadow-large: 0 0 20px rgba(0, 255, 255, 0.7);
   
+  // Terminal theme font
+  --font-family: 'JetBrains Mono', monospace;
+  
   // Terminal-specific enhancements
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-family);
   letter-spacing: 0.5px;
   
   // Add subtle scanline effect
@@ -153,7 +165,6 @@
     background-size: 100% 4px;
     pointer-events: none;
     z-index: 1;
-    animation: scanlines 0.1s linear infinite;
   }
   
   // Add CRT screen effect
@@ -183,16 +194,6 @@
   20%, 21.999%, 63%, 63.999%, 65%, 69.999% {
     opacity: 0.4;
     filter: none;
-  }
-}
-
-// Scanlines animation
-@keyframes scanlines {
-  0% {
-    transform: translateY(0);
-  }
-  100% {
-    transform: translateY(4px);
   }
 }
 
