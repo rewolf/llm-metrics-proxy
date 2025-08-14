@@ -30,7 +30,8 @@ async def metrics_endpoint(
     end: Optional[str] = Query(None, description="End date in ISO format (e.g., 2024-01-02T00:00:00)")
 ):
     """Return current metrics as JSON with optional date filtering."""
-    return get_metrics(start, end)
+    metrics = get_metrics(start, end)
+    return metrics.dict(exclude_none=True)
 
 
 @router.get("/completion_requests")
@@ -39,7 +40,8 @@ async def completion_requests_endpoint(
     end: Optional[str] = Query(None, description="End date in ISO format (e.g., 2024-01-02T00:00:00)")
 ) -> List[CompletionRequestData]:
     """Return completion requests with optional date filtering."""
-    return get_completion_requests(start, end)
+    requests = get_completion_requests(start, end)
+    return [req.dict(exclude_none=True) for req in requests]
 
 
 @router.get("/health")

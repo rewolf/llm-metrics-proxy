@@ -135,12 +135,19 @@ class ProxyService:
                                     if json_str.strip() and json_str.strip() != "[DONE]":
                                         chunk_data = json.loads(json_str)
                                         
+                                        # Debug logging to see what we're processing
+                                        logger.info(f"[{request_id}] Processing chunk: {json_str[:100]}...")
+                                        
                                         # Check if this chunk contains usage info
                                         if 'usage' in chunk_data and chunk_data['usage']:
                                             usage = chunk_data['usage']
                                             if usage.get('prompt_tokens') or usage.get('completion_tokens') or usage.get('total_tokens'):
                                                 final_usage = usage
                                                 logger.info(f"[{request_id}] Captured usage from stream: {usage}")
+                                            else:
+                                                logger.info(f"[{request_id}] Usage found but no token data: {usage}")
+                                        else:
+                                            logger.info(f"[{request_id}] No usage in chunk: {list(chunk_data.keys())}")
                                         
                                         # Check for finish reason
                                         if 'choices' in chunk_data and chunk_data['choices']:
@@ -150,6 +157,24 @@ class ProxyService:
                                                 logger.info(f"[{request_id}] Captured finish reason: {finish_reason}")
                                 except (json.JSONDecodeError, KeyError) as e:
                                     # Not a JSON chunk or missing expected fields, continue
+                                    logger.info(f"[{request_id}] JSON parse error for chunk: {chunk_text[:200]}... Error: {e}")
+                                    # Try to extract usage from malformed JSON if possible
+                                    if 'usage' in chunk_text and ('prompt_tokens' in chunk_text or 'completion_tokens' in chunk_text):
+                                        logger.info(f"[{request_id}] Attempting to extract usage from malformed JSON: {chunk_text}")
+                                        # Simple regex extraction as fallback
+                                        import re
+                                        prompt_match = re.search(r'"prompt_tokens":(\d+)', chunk_text)
+                                        completion_match = re.search(r'"completion_tokens":(\d+)', chunk_text)
+                                        total_match = re.search(r'"total_tokens":(\d+)', chunk_text)
+                                        
+                                        if prompt_match and completion_match and total_match:
+                                            fallback_usage = {
+                                                'prompt_tokens': int(prompt_match.group(1)),
+                                                'completion_tokens': int(completion_match.group(1)),
+                                                'total_tokens': int(total_match.group(1))
+                                            }
+                                            final_usage = fallback_usage
+                                            logger.info(f"[{request_id}] Extracted usage from malformed JSON: {fallback_usage}")
                                     pass
                             
                             if not first_token_received:

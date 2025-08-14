@@ -59,7 +59,7 @@ export const en: Translation = {
   
   // Notes and warnings
   tokenUsageNote: 'Token usage is only available for non-streaming requests. Streaming requests show timing metrics instead.',
-  performanceNote: 'Response time includes both streaming and non-streaming requests. Time to first token shows streaming performance.',
+  performanceNote: 'Response time includes both streaming and non-streaming requests. For streamed completion requests, response time is the time until the last token is completed.',
   streamingPerformanceNote: 'These metrics are only available for requests explicitly requesting usage metrics.',
   usageStatsNote: 'Usage stats can be enabled by clients when calling /v1/chat/messages by adding "stream_options": {"include_usage":true} to their payload.',
   

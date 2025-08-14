@@ -34,7 +34,7 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({
             <MetricGrid>
               <MetricItem
                 title={t.totalCompletionRequests}
-                value={metrics.total_requests}
+                value={metrics.requests.total.total}
               />
               <MetricItem
                 title={t.successRate}
@@ -43,7 +43,7 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({
                     className="success-rate-value"
                     style={{
                       color: (() => {
-                        const successRate = (metrics.successful_requests / metrics.total_requests) * 100;
+                        const successRate = (metrics.requests.total.successful / metrics.requests.total.total) * 100;
                         if (successRate === 100) return 'var(--color-metricSuccess, #28a745)';
                         if (successRate >= 90) return 'var(--color-success, #28a745)';
                         if (successRate >= 80) return 'var(--color-warning, #ffc107)';
@@ -51,7 +51,7 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({
                       })()
                     }}
                   >
-                    {calculatePercentage(metrics.successful_requests, metrics.total_requests)}
+                    {calculatePercentage(metrics.requests.total.successful, metrics.requests.total.total)}
                   </span>
                 }
               />
@@ -74,14 +74,8 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({
             <MetricGrid>
               <MetricItem
                 title={t.avgResponseTime}
-                value={formatResponseTime(metrics.avg_response_time_ms)}
+                value={formatResponseTime(metrics.requests.total.avg_response_time_ms)}
               />
-              {metrics.avg_time_to_first_token_ms && (
-                <MetricItem
-                  title={t.timeToFirstToken}
-                  value={formatResponseTime(metrics.avg_time_to_first_token_ms)}
-                />
-              )}
             </MetricGrid>
           }
           rightContent={
@@ -127,40 +121,6 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({
                 count={count}
                 unit={t.requests}
                 className="origin-item"
-              />
-            ))}
-          </MetricList>
-        </MetricSection>
-      )}
-
-      {/* Completion Analysis */}
-      {metrics.finish_reasons && metrics.finish_reasons.length > 0 && (
-        <MetricSection title={t.completionAnalysis} icon={<FinishIcon />}>
-          <MetricList>
-            {metrics.finish_reasons.map((reason, index) => (
-              <MetricListItem
-                key={index}
-                label={reason.reason}
-                count={reason.count}
-                unit={t.times}
-                className="reason-item"
-              />
-            ))}
-          </MetricList>
-        </MetricSection>
-      )}
-
-      {/* Error Analysis */}
-      {metrics.error_types && metrics.error_types.length > 0 && (
-        <MetricSection title={t.errorAnalysis} icon={<ErrorIcon />}>
-          <MetricList>
-            {metrics.error_types.map((error, index) => (
-              <MetricListItem
-                key={index}
-                label={error.type}
-                count={error.count}
-                unit={t.times}
-                className="error-item"
               />
             ))}
           </MetricList>

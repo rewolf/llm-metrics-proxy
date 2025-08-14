@@ -127,8 +127,9 @@ export const BaseChart: React.FC<BaseChartProps> = ({
         },
         ticks: {
           color: textColor,
-          maxRotation: 45,
+          maxRotation: 0,
           minRotation: 0,
+          align: 'center',
         }
       },
       y: {

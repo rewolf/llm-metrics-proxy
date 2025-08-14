@@ -21,11 +21,11 @@ export const StreamedTab: React.FC<StreamedTabProps> = ({ metrics, t }) => {
         <MetricGrid>
           <MetricItem
             title={t.streamedRequestsCount}
-            value={metrics.streaming_requests}
+            value={metrics.requests.streamed.total}
           />
           <MetricItem
             title={t.streamedRequestsPercent}
-            value={calculatePercentage(metrics.streaming_requests, metrics.total_requests)}
+            value={calculatePercentage(metrics.requests.streamed.total, metrics.requests.total.total)}
           />
         </MetricGrid>
       </MetricSection>
@@ -33,83 +33,85 @@ export const StreamedTab: React.FC<StreamedTabProps> = ({ metrics, t }) => {
       {/* Streaming Performance Metrics */}
       <MetricSection title={t.performanceMetrics} icon={<PerformanceIcon />}>
         <MetricGrid>
-          {metrics.avg_time_to_first_token_ms && (
+          {metrics.requests.streamed.avg_time_to_first_token_ms && (
             <MetricItem
               title={t.timeToFirstToken}
-              value={formatResponseTime(metrics.avg_time_to_first_token_ms)}
+              value={formatResponseTime(metrics.requests.streamed.avg_time_to_first_token_ms)}
             />
           )}
           
-          {metrics.avg_time_to_last_token_ms && (
+          {metrics.requests.streamed.avg_time_to_last_token_ms && (
             <MetricItem
               title={t.timeToLastToken}
-              value={formatResponseTime(metrics.avg_time_to_last_token_ms)}
+              value={formatResponseTime(metrics.requests.streamed.avg_time_to_last_token_ms)}
             />
           )}
           
-          {metrics.avg_completion_duration_ms && (
+          {metrics.requests.streamed.avg_completion_duration_ms && (
             <MetricItem
               title={t.completionDuration}
-              value={formatResponseTime(metrics.avg_completion_duration_ms)}
+              value={formatResponseTime(metrics.requests.streamed.avg_completion_duration_ms)}
             />
           )}
         </MetricGrid>
       </MetricSection>
 
       {/* Token Usage Section */}
-      <MetricSection title={t.tokenUsage} icon={<TokenIcon />}>
-        {/* Row 1: Prompt Tokens */}
-        <MetricSplitLayout className="token-usage-row"
-          leftContent={
-            <MetricItem
-              title={t.promptTokens}
-              value={metrics.avg_prompt_tokens ? metrics.avg_prompt_tokens.toFixed(1) : 'N/A'}
-            />
-          }
-          rightContent={
-            <MetricItem
-              title={t.promptTokensPerRequest}
-              value={metrics.avg_prompt_tokens ? metrics.avg_prompt_tokens.toFixed(1) : 'N/A'}
-            />
-          }
-        />
-        
-        {/* Row 2: Completion Tokens */}
-        <MetricSplitLayout className="token-usage-row"
-          leftContent={
-            <MetricItem
-              title={t.completionTokens}
-              value={metrics.avg_completion_tokens ? metrics.avg_completion_tokens.toFixed(1) : 'N/A'}
-            />
-          }
-          rightContent={
-            <MetricItem
-              title={t.completionTokensPerRequest}
-              value={metrics.avg_completion_tokens ? metrics.avg_completion_tokens.toFixed(1) : 'N/A'}
-            />
-          }
-        />
-        
-        {/* Row 3: Total Tokens */}
-        <MetricSplitLayout className="token-usage-row"
-          leftContent={
-            <MetricItem
-              title={t.totalTokens}
-              value={metrics.avg_total_tokens ? metrics.avg_total_tokens.toFixed(1) : 'N/A'}
-            />
-          }
-          rightContent={
-            <MetricItem
-              title={t.totalTokensPerRequest}
-              value={metrics.avg_total_tokens ? metrics.avg_total_tokens.toFixed(1) : 'N/A'}
-            />
-          }
-        />
-        
-        <div className="metric-note">
-          <small>{t.tokenUsageNoteStreaming}</small>
-        </div>
-      </MetricSection>
+      {metrics.requests.streamed.tokens.reported_count > 0 && (
+        <MetricSection title={t.tokenUsage} icon={<TokenIcon />}>
+          {/* Row 1: Prompt Tokens */}
+          <MetricSplitLayout className="token-usage-row"
+            leftContent={
+              <MetricItem
+                title={t.promptTokens}
+                value={metrics.requests.streamed.tokens.prompt_total.toFixed(0)}
+              />
+            }
+            rightContent={
+              <MetricItem
+                title={t.promptTokensPerRequest}
+                value={(metrics.requests.streamed.tokens.prompt_total / metrics.requests.streamed.tokens.reported_count).toFixed(1)}
+              />
+            }
+          />
+          
+          {/* Row 2: Completion Tokens */}
+          <MetricSplitLayout className="token-usage-row"
+            leftContent={
+              <MetricItem
+                title={t.completionTokens}
+                value={metrics.requests.streamed.tokens.completion_total.toFixed(0)}
+              />
+            }
+            rightContent={
+              <MetricItem
+                title={t.completionTokensPerRequest}
+                value={(metrics.requests.streamed.tokens.completion_total / metrics.requests.streamed.tokens.reported_count).toFixed(1)}
+              />
+            }
+          />
+          
+          {/* Row 3: Total Tokens */}
+          <MetricSplitLayout className="token-usage-row"
+            leftContent={
+              <MetricItem
+                title={t.totalTokens}
+                value={metrics.requests.streamed.tokens.total.toFixed(0)}
+              />
+            }
+            rightContent={
+              <MetricItem
+                title={t.totalTokensPerRequest}
+                value={(metrics.requests.streamed.tokens.total / metrics.requests.streamed.tokens.reported_count).toFixed(1)}
+              />
+            }
+          />
+          
+          <div className="metric-note">
+            <small>{t.tokenUsageNoteStreaming}</small>
+          </div>
+        </MetricSection>
+      )}
     </>
   );
 };

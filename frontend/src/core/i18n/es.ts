@@ -62,7 +62,7 @@ export const es: Translation = {
   
   // Notes and warnings
   tokenUsageNote: 'El uso de tokens solo está disponible para solicitudes no-streaming. Las solicitudes en streaming muestran métricas de tiempo en su lugar.',
-  performanceNote: 'El tiempo de respuesta incluye tanto solicitudes en streaming como no-streaming. El tiempo hasta el primer token muestra el rendimiento del streaming.',
+  performanceNote: 'El tiempo de respuesta incluye tanto solicitudes en streaming como no-streaming. Para solicitudes de completado en streaming, el tiempo de respuesta es el tiempo hasta que se complete el último token.',
   streamingPerformanceNote: 'Estas métricas solo están disponibles para solicitudes que solicitan explícitamente métricas de uso.',
   usageStatsNote: 'Las estadísticas de uso pueden ser habilitadas por los clientes al llamar /v1/chat/messages agregando "stream_options": {"include_usage":true} a su payload.',
   

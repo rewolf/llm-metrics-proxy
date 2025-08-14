@@ -135,42 +135,53 @@ export interface Translation {
   timeframeAll: string;
 }
 
-export interface Metrics {
-  total_requests: number;
-  successful_requests: number;
-  failed_requests: number;
-  
-  // Streaming stats
-  streaming_requests: number;
-  non_streaming_requests: number;
-  
-  // Token usage (non-streaming only)
-  total_tokens_used: number | null;
-  avg_tokens_per_request: number | null;
-  
-  // Performance
+export interface RequestsSummary {
+  total: number;
+  successful: number;
+  failed: number;
   avg_response_time_ms: number;
-  avg_tokens_per_second: number | null;
-  
-  // Streaming-specific metrics
-  avg_time_to_first_token_ms: number | null;
-  avg_time_to_last_token_ms: number | null;
-  avg_completion_duration_ms: number | null;
-  
-  // Model usage (as dictionary from backend)
-  model_distribution: { [key: string]: number };
-  
-  // Origin usage
-  origin_distribution: { [key: string]: number };
-  
-  // Completion analysis
-  finish_reasons: FinishReason[];
-  error_types: ErrorType[];
-  
-  // Token averages (from backend)
-  avg_prompt_tokens: number | null;
-  avg_completion_tokens: number | null;
-  avg_total_tokens: number | null;
-  
+}
+
+export interface TokenMetrics {
+  reported_count: number;
+  total: number;
+  prompt_total: number;
+  completion_total: number;
+  avg_tokens_per_second?: number;
+}
+
+export interface StreamedRequests {
+  total: number;
+  successful: number;
+  failed: number;
+  tokens: TokenMetrics;
+  error_types: { [key: string]: number };
+  avg_response_time_ms: number;
+  avg_time_to_first_token_ms?: number;
+  avg_time_to_last_token_ms?: number;
+  avg_completion_duration_ms?: number;
+}
+
+export interface NonStreamedRequests {
+  total: number;
+  successful: number;
+  failed: number;
+  tokens: TokenMetrics;
+  error_types: { [key: string]: number };
+  avg_time_to_first_token_ms?: number;
+  avg_time_to_last_token_ms?: number;
+  avg_completion_duration_ms?: number;
+}
+
+export interface Requests {
+  total: RequestsSummary;
+  streamed: StreamedRequests;
+  non_streamed: NonStreamedRequests;
+}
+
+export interface Metrics {
   timestamp: string;
+  requests: Requests;
+  model_distribution: { [key: string]: number };
+  origin_distribution: { [key: string]: number };
 }
