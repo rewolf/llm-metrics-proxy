@@ -10,7 +10,7 @@ export const ko: Translation = {
   nonStreamedRequests: '비스트리밍 요청',
   
   // Section headers
-  basicStatistics: '기본 통계',
+  basicStatistics: '완료 요청',
   streamingStatistics: '스트리밍 통계',
   tokenUsage: '토큰 사용량',
   performanceMetrics: '성능 메트릭',
@@ -30,7 +30,7 @@ export const ko: Translation = {
   totalTokensUsed: '사용된 토큰 총수',
   avgTokensPerRequest: '요청당 평균 토큰 수',
   avgResponseTime: '평균 응답 시간',
-  avgTokensPerSecond: '초당 평균 토큰 수',
+  avgTokensPerSecond: '추론 속도',
 
   
   // Streaming-specific metrics
@@ -61,10 +61,21 @@ export const ko: Translation = {
   korean: '한국어',
   
   // Notes and warnings
-  tokenUsageNote: '토큰 사용량은 비스트리밍 요청에서만 사용할 수 있습니다. 스트리밍 요청은 시간 메트릭을 대신 표시합니다.',
-  performanceNote: '응답 시간에는 스트리밍과 비스트리밍 요청이 모두 포함됩니다. 첫 번째 토큰까지의 시간은 스트리밍 성능을 보여줍니다.',
-  streamingPerformanceNote: '이러한 메트릭은 사용량 메트릭을 명시적으로 요청하는 요청에서만 사용할 수 있습니다.',
-  usageStatsNote: '사용 통계는 클라이언트가 /v1/chat/messages를 호출할 때 페이로드에 "stream_options": {"include_usage":true}를 추가하여 활성화할 수 있습니다.',
+  tokenUsageNote: '토큰 사용량은 비스트리밍 요청에서만 사용할 수 있습니다. 스트리밍 요청은 대신 시간 메트릭을 표시합니다.',
+  performanceNote: '응답 시간에는 스트리밍 및 비스트리밍 요청이 모두 포함됩니다. 스트리밍 완료 요청의 경우 응답 시간은 마지막 토큰이 완료될 때까지의 시간입니다.',
+  streamingPerformanceNote: '이 메트릭은 사용량 메트릭을 명시적으로 요청하는 요청에서만 사용할 수 있습니다.',
+  usageStatsNote: '사용량 통계는 클라이언트가 /v1/chat/messages를 호출할 때 페이로드에 "stream_options": {"include_usage":true}를 추가하여 활성화할 수 있습니다.',
+  
+  // Tooltips
+  tooltipCompletionRequests: '성공/실패율과 총 수를 포함한 모든 완료 요청의 개요',
+  tooltipPerformanceMetrics: '모든 요청 유형에 대한 응답 시간 및 추론 속도 메트릭',
+  tooltipModelUsage: '다양한 LLM 모델에 걸친 요청 분포',
+  tooltipRequestSources: '어떤 클라이언트/소스가 시스템을 사용하고 있는지 보여주는 요청의 출처',
+  tooltipInferenceSpeed: 'LLM이 토큰을 처리할 수 있는 속도, 초당 토큰(TPS)으로 측정',
+  tooltipResponseTime: '요청 시작부터 완료까지의 총 시간, 토큰 생성 시간 포함',
+  tooltipTokenUsage: '요청에 사용된 프롬프트, 완료 및 총 토큰의 세분화',
+  tooltipStreamingMetrics: '사용량이 활성화된 스트리밍 요청 전용 성능 메트릭',
+  tooltipNonStreamingMetrics: '비스트리밍 완료 요청 전용 성능 메트릭',
   
   // Token usage section
   promptTokens: '프롬프트 토큰',
@@ -76,7 +87,7 @@ export const ko: Translation = {
   tokenUsageNoteStreaming: '토큰 사용량 메트릭은 클라이언트가 스트리밍 요청에서 "include_usage"를 활성화한 경우에만 사용할 수 있습니다.',
   requests: '요청',
   times: '회',
-  tokensPerSecond: '토큰/초',
+  tokensPerSecond: 'TPS',
   naStreaming: 'N/A (스트리밍)',
   
   // Loading and error states

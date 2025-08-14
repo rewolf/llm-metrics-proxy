@@ -10,7 +10,7 @@ export const es: Translation = {
   nonStreamedRequests: 'Solicitudes No-Streaming',
   
   // Section headers
-  basicStatistics: 'Estadísticas Básicas',
+  basicStatistics: 'Solicitudes de Completado',
   streamingStatistics: 'Estadísticas de Streaming',
   tokenUsage: 'Uso de Tokens',
   performanceMetrics: 'Métricas de Rendimiento',
@@ -30,7 +30,7 @@ export const es: Translation = {
   totalTokensUsed: 'Total de Tokens Utilizados',
   avgTokensPerRequest: 'Promedio de Tokens por Solicitud',
   avgResponseTime: 'Tiempo de Respuesta Promedio',
-  avgTokensPerSecond: 'Promedio de Tokens por Segundo',
+  avgTokensPerSecond: 'Velocidad de Inferencia',
 
   
   // Streaming-specific metrics
@@ -61,10 +61,21 @@ export const es: Translation = {
   korean: '한국어',
   
   // Notes and warnings
-  tokenUsageNote: 'El uso de tokens solo está disponible para solicitudes no-streaming. Las solicitudes en streaming muestran métricas de tiempo en su lugar.',
-  performanceNote: 'El tiempo de respuesta incluye tanto solicitudes en streaming como no-streaming. Para solicitudes de completado en streaming, el tiempo de respuesta es el tiempo hasta que se complete el último token.',
+  tokenUsageNote: 'El uso de tokens solo está disponible para solicitudes no streaming. Las solicitudes streaming muestran métricas de tiempo en su lugar.',
+  performanceNote: 'El tiempo de respuesta incluye tanto solicitudes streaming como no streaming. Para solicitudes de completado streaming, el tiempo de respuesta es el tiempo hasta que se complete el último token.',
   streamingPerformanceNote: 'Estas métricas solo están disponibles para solicitudes que solicitan explícitamente métricas de uso.',
-  usageStatsNote: 'Las estadísticas de uso pueden ser habilitadas por los clientes al llamar /v1/chat/messages agregando "stream_options": {"include_usage":true} a su payload.',
+  usageStatsNote: 'Las estadísticas de uso pueden ser habilitadas por los clientes al llamar a /v1/chat/messages agregando "stream_options": {"include_usage":true} a su payload.',
+  
+  // Tooltips
+  tooltipCompletionRequests: 'Resumen de todas las solicitudes de completado, incluyendo tasas de éxito/fallo y conteos totales',
+  tooltipPerformanceMetrics: 'Métricas de tiempo de respuesta y velocidad de inferencia para todos los tipos de solicitudes',
+  tooltipModelUsage: 'Distribución de solicitudes a través de diferentes modelos LLM',
+  tooltipRequestSources: 'Origen de las solicitudes mostrando qué clientes/fuentes están usando el sistema',
+  tooltipInferenceSpeed: 'La velocidad a la que un LLM puede procesar tokens, medida en tokens-por-segundo (TPS)',
+  tooltipResponseTime: 'Tiempo total desde el inicio de la solicitud hasta la finalización, incluyendo el tiempo de generación de tokens',
+  tooltipTokenUsage: 'Desglose de tokens de prompt, completado y totales utilizados en las solicitudes',
+  tooltipStreamingMetrics: 'Métricas de rendimiento específicas para solicitudes streaming con uso habilitado',
+  tooltipNonStreamingMetrics: 'Métricas de rendimiento específicas para solicitudes de completado no streaming',
   
   // Token usage section
   promptTokens: 'Tokens de Entrada',
@@ -76,7 +87,7 @@ export const es: Translation = {
   tokenUsageNoteStreaming: 'Las métricas de uso de tokens solo están disponibles cuando los clientes habilitan "include_usage" en sus solicitudes de streaming.',
   requests: 'solicitudes',
   times: 'veces',
-  tokensPerSecond: 'tokens/s',
+  tokensPerSecond: 'TPS',
   naStreaming: 'N/A (streaming)',
   
   // Loading and error states

@@ -10,7 +10,7 @@ export const ja: Translation = {
   nonStreamedRequests: '非ストリーミングリクエスト',
   
   // Section headers
-  basicStatistics: '基本統計',
+  basicStatistics: '完了リクエスト',
   streamingStatistics: 'ストリーミング統計',
   tokenUsage: 'トークン使用量',
   performanceMetrics: 'パフォーマンスメトリクス',
@@ -30,7 +30,7 @@ export const ja: Translation = {
   totalTokensUsed: '使用トークン総数',
   avgTokensPerRequest: 'リクエストあたりの平均トークン数',
   avgResponseTime: '平均応答時間',
-  avgTokensPerSecond: '1秒あたりの平均トークン数',
+  avgTokensPerSecond: '推論速度',
 
   
   // Streaming-specific metrics
@@ -61,10 +61,21 @@ export const ja: Translation = {
   korean: '한국어',
   
   // Notes and warnings
-  tokenUsageNote: 'トークン使用量は非ストリーミングリクエストでのみ利用可能です。ストリーミングリクエストでは時間メトリクスが表示されます。',
-  performanceNote: '応答時間にはストリーミングと非ストリーミングの両方のリクエストが含まれます。最初のトークンまでの時間はストリーミングのパフォーマンスを示します。',
+  tokenUsageNote: 'トークン使用量は非ストリーミングリクエストでのみ利用可能です。ストリーミングリクエストでは代わりにタイミングメトリクスが表示されます。',
+  performanceNote: '応答時間にはストリーミングと非ストリーミングの両方のリクエストが含まれます。ストリーミング完了リクエストの場合、応答時間は最後のトークンが完了するまでの時間です。',
   streamingPerformanceNote: 'これらのメトリクスは、使用量メトリクスを明示的に要求するリクエストでのみ利用可能です。',
-  usageStatsNote: '使用統計は、クライアントが/v1/chat/messagesを呼び出す際に、ペイロードに"stream_options": {"include_usage":true}を追加することで有効にできます。',
+  usageStatsNote: '使用量統計は、クライアントが/v1/chat/messagesを呼び出す際にペイロードに"stream_options": {"include_usage":true}を追加することで有効にできます。',
+  
+  // Tooltips
+  tooltipCompletionRequests: '成功/失敗率と総数を含む、すべての完了リクエストの概要',
+  tooltipPerformanceMetrics: 'すべてのリクエストタイプの応答時間と推論速度メトリクス',
+  tooltipModelUsage: '異なるLLMモデル間でのリクエストの分布',
+  tooltipRequestSources: 'どのクライアント/ソースがシステムを使用しているかを示すリクエストの起源',
+  tooltipInferenceSpeed: 'LLMがトークンを処理できる速度、トークン/秒（TPS）で測定',
+  tooltipResponseTime: 'リクエスト開始から完了までの総時間、トークン生成時間を含む',
+  tooltipTokenUsage: 'リクエスト全体で使用されるプロンプト、完了、総トークンの内訳',
+  tooltipStreamingMetrics: '使用量が有効なストリーミングリクエスト専用のパフォーマンスメトリクス',
+  tooltipNonStreamingMetrics: '非ストリーミング完了リクエスト専用のパフォーマンスメトリクス',
   
   // Token usage section
   promptTokens: 'プロンプトトークン',
@@ -76,7 +87,7 @@ export const ja: Translation = {
   tokenUsageNoteStreaming: 'トークン使用量メトリクスは、クライアントがストリーミングリクエストで"include_usage"を有効にした場合のみ利用可能です。',
   requests: 'リクエスト',
   times: '回',
-  tokensPerSecond: 'トークン/秒',
+  tokensPerSecond: 'TPS',
   naStreaming: 'N/A (ストリーミング)',
   
   // Loading and error states

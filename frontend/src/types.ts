@@ -20,17 +20,22 @@ export interface OriginUsage {
 
 export interface CompletionRequestData {
   timestamp: string;
-  time_to_first_token_ms: number | null;
-  time_to_last_token_ms: number | null;
   is_streaming: boolean;
   success: boolean;
-  message_count: number | null;
-  prompt_tokens: number | null;
-  tokens: {
-    total: number | null;
-    prompt: number | null;
-    completion: number | null;
+  error_type?: string;
+  message_count?: number;
+  timing: {
+    time_to_first_token_ms?: number;
+    time_to_last_token_ms?: number;
+    response_time_ms?: number;
   };
+  tokens: {
+    total?: number;
+    prompt?: number;
+    completion?: number;
+  };
+  model?: string;
+  origin?: string;
 }
 
 export interface Timeframe {
@@ -104,6 +109,17 @@ export interface Translation {
   performanceNote: string;
   streamingPerformanceNote: string;
   usageStatsNote: string;
+  
+  // Tooltips
+  tooltipCompletionRequests: string;
+  tooltipPerformanceMetrics: string;
+  tooltipModelUsage: string;
+  tooltipRequestSources: string;
+  tooltipInferenceSpeed: string;
+  tooltipResponseTime: string;
+  tooltipTokenUsage: string;
+  tooltipStreamingMetrics: string;
+  tooltipNonStreamingMetrics: string;
   
   // Token usage section
   promptTokens: string;

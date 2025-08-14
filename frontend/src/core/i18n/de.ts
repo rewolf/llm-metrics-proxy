@@ -10,8 +10,8 @@ export const de: Translation = {
   nonStreamedRequests: 'Nicht-Streaming Anfragen',
   
   // Section headers
-  basicStatistics: 'Grundlegende Statistiken',
-  streamingStatistics: 'Streaming Statistiken',
+  basicStatistics: 'Vervollständigungsanfragen',
+  streamingStatistics: 'Streaming-Statistiken',
   tokenUsage: 'Token Verbrauch',
   performanceMetrics: 'Leistungsmetriken',
   modelUsage: 'Modell Verwendung',
@@ -30,7 +30,7 @@ export const de: Translation = {
   totalTokensUsed: 'Gesamte verwendete Tokens',
   avgTokensPerRequest: 'Durchschnittliche Tokens pro Anfrage',
   avgResponseTime: 'Durchschnittliche Antwortzeit',
-  avgTokensPerSecond: 'Durchschnittliche Tokens pro Sekunde',
+  avgTokensPerSecond: 'Inferenzgeschwindigkeit',
 
   
   // Streaming-specific metrics
@@ -62,9 +62,20 @@ export const de: Translation = {
   
   // Notes and warnings
   tokenUsageNote: 'Token-Verbrauch ist nur für Nicht-Streaming-Anfragen verfügbar. Streaming-Anfragen zeigen stattdessen Zeitmetriken.',
-  performanceNote: 'Antwortzeit umfasst sowohl Streaming- als auch Nicht-Streaming-Anfragen. Zeit bis zum ersten Token zeigt Streaming-Leistung.',
+  performanceNote: 'Antwortzeit umfasst sowohl Streaming- als auch Nicht-Streaming-Anfragen. Für gestreamte Vervollständigungsanfragen ist die Antwortzeit die Zeit bis zum letzten Token.',
   streamingPerformanceNote: 'Diese Metriken sind nur für Anfragen verfügbar, die explizit Nutzungsmetriken anfordern.',
-  usageStatsNote: 'Nutzungsstatistiken können von Clients aktiviert werden, wenn sie /v1/chat/messages aufrufen, indem sie "stream_options": {"include_usage":true} zu ihrer Payload hinzufügen.',
+  usageStatsNote: 'Nutzungsstatistiken können von Clients aktiviert werden, wenn sie /v1/chat/messages aufrufen, indem sie "stream_options": {"include_usage":true} zu ihrer Anfrage hinzufügen.',
+  
+  // Tooltips
+  tooltipCompletionRequests: 'Übersicht aller Vervollständigungsanfragen, einschließlich Erfolgs-/Fehlerraten und Gesamtanzahlen',
+  tooltipPerformanceMetrics: 'Antwortzeit- und Inferenzgeschwindigkeitsmetriken für alle Anfragentypen',
+  tooltipModelUsage: 'Verteilung der Anfragen über verschiedene LLM-Modelle',
+  tooltipRequestSources: 'Herkunft der Anfragen, die zeigt, welche Clients/Quellen das System nutzen',
+  tooltipInferenceSpeed: 'Die Geschwindigkeit, mit der ein LLM Token verarbeiten kann, gemessen in Token-pro-Sekunde (TPS)',
+  tooltipResponseTime: 'Gesamtzeit vom Anfragebeginn bis zur Fertigstellung, einschließlich Token-Generierungszeit',
+  tooltipTokenUsage: 'Aufschlüsselung der verwendeten Prompt-, Vervollständigungs- und Gesamttoken über Anfragen',
+  tooltipStreamingMetrics: 'Leistungsmetriken spezifisch für Streaming-Anfragen mit aktivierter Nutzung',
+  tooltipNonStreamingMetrics: 'Leistungsmetriken spezifisch für Nicht-Streaming-Vervollständigungsanfragen',
   
   // Token usage section
   promptTokens: 'Prompt-Tokens',
@@ -76,7 +87,7 @@ export const de: Translation = {
   tokenUsageNoteStreaming: 'Token-Verbrauchsmetriken sind nur verfügbar, wenn Clients "include_usage" in ihren Streaming-Anfragen aktivieren.',
   requests: 'Anfragen',
   times: 'mal',
-  tokensPerSecond: 'Tokens/s',
+  tokensPerSecond: 'TPS',
   naStreaming: 'N/A (Streaming)',
   
   // Loading and error states

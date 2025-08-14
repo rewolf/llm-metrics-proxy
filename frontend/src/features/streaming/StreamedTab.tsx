@@ -17,7 +17,7 @@ export const StreamedTab: React.FC<StreamedTabProps> = ({ metrics, t }) => {
   return (
     <>
       {/* Streamed Requests Overview */}
-      <MetricSection title={t.streamedRequests} icon={<StreamingIcon />}>
+      <MetricSection title={t.streamedRequests} icon={<StreamingIcon />} tooltip={t.tooltipStreamingMetrics}>
         <MetricGrid>
           <MetricItem
             title={t.streamedRequestsCount}
@@ -31,7 +31,7 @@ export const StreamedTab: React.FC<StreamedTabProps> = ({ metrics, t }) => {
       </MetricSection>
 
       {/* Streaming Performance Metrics */}
-      <MetricSection title={t.performanceMetrics} icon={<PerformanceIcon />}>
+      <MetricSection title={t.performanceMetrics} icon={<PerformanceIcon />} tooltip={t.tooltipPerformanceMetrics}>
         <MetricGrid>
           {metrics.requests.streamed.avg_time_to_first_token_ms && (
             <MetricItem
@@ -53,12 +53,30 @@ export const StreamedTab: React.FC<StreamedTabProps> = ({ metrics, t }) => {
               value={formatResponseTime(metrics.requests.streamed.avg_completion_duration_ms)}
             />
           )}
+          
+          {metrics.requests.streamed.tokens.reported_count > 0 && (
+            <MetricItem
+              title={t.tokensPerSecond}
+              value={
+                (() => {
+                  const totalTokens = metrics.requests.streamed.tokens.total;
+                  const avgResponseTime = metrics.requests.streamed.avg_response_time_ms;
+                  if (totalTokens > 0 && avgResponseTime > 0) {
+                    const tps = (totalTokens / avgResponseTime) * 1000;
+                    return `${tps.toFixed(2)} ${t.tokensPerSecond}`;
+                  }
+                  return t.naStreaming;
+                })()
+              }
+              tooltip={t.tooltipInferenceSpeed}
+            />
+          )}
         </MetricGrid>
       </MetricSection>
 
       {/* Token Usage Section */}
       {metrics.requests.streamed.tokens.reported_count > 0 && (
-        <MetricSection title={t.tokenUsage} icon={<TokenIcon />}>
+        <MetricSection title={t.tokenUsage} icon={<TokenIcon />} tooltip={t.tooltipTokenUsage}>
           {/* Row 1: Prompt Tokens */}
           <MetricSplitLayout className="token-usage-row"
             leftContent={

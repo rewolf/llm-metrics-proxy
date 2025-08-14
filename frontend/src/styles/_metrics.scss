@@ -53,6 +53,58 @@
   flex: 1; // Take up remaining space to push footer to bottom
 }
 
+// Tooltip styling
+.metric[data-tooltip]:not([data-tooltip=""]),
+.metric-section h2[data-tooltip]:not([data-tooltip=""]) {
+  position: relative;
+  
+  &:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--color-tooltipBackground, rgba(0, 0, 0, 0.9));
+    color: var(--color-tooltipText, white);
+    padding: $spacing-sm $spacing-md;
+    border-radius: var(--border-radius, $border-radius);
+    font-size: $font-size-small;
+    white-space: normal;
+    z-index: 1000;
+    pointer-events: none;
+    opacity: 0;
+    animation: fadeIn 0.2s ease-in-out 0.3s forwards;
+    box-shadow: var(--shadow-medium, $shadow-medium);
+    max-width: 300px;
+    min-width: 200px;
+    text-align: center;
+    line-height: 1.4;
+    word-wrap: break-word;
+    margin-bottom: 8px;
+  }
+  
+  &:hover::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: var(--color-tooltipBackground, rgba(0, 0, 0, 0.9));
+    z-index: 1000;
+    pointer-events: none;
+    opacity: 0;
+    animation: fadeIn 0.2s ease-in-out 0.3s forwards;
+    margin-bottom: 3px;
+  }
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
 .metric-section {
   background: var(--color-metricBackground, $color-metricBackground);
   border-radius: var(--border-radius, $border-radius);

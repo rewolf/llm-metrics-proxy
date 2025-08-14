@@ -17,7 +17,7 @@ export const NonStreamedTab: React.FC<NonStreamedTabProps> = ({ metrics, t }) =>
   return (
     <>
       {/* Non-streamed Requests Overview */}
-      <MetricSection title={t.nonStreamedRequests} icon={<DocumentIcon />}>
+      <MetricSection title={t.nonStreamedRequests} icon={<DocumentIcon />} tooltip={t.tooltipNonStreamingMetrics}>
         <MetricGrid>
           <MetricItem
             title={t.nonStreamedRequestsCount}
@@ -31,26 +31,36 @@ export const NonStreamedTab: React.FC<NonStreamedTabProps> = ({ metrics, t }) =>
       </MetricSection>
 
       {/* Performance Metrics */}
-      <MetricSection title={t.performanceMetrics} icon={<PerformanceIcon />}>
+      <MetricSection title={t.performanceMetrics} icon={<PerformanceIcon />} tooltip={t.tooltipPerformanceMetrics}>
         <MetricGrid>
           <MetricItem
             title={t.avgResponseTime}
             value={formatResponseTime(metrics.requests.total.avg_response_time_ms)}
+            tooltip={t.tooltipResponseTime}
           />
-          <MetricItem
-            title={t.tokensPerSecond}
-            value={
-              metrics.requests.non_streamed.tokens.avg_tokens_per_second ? 
-                `${metrics.requests.non_streamed.tokens.avg_tokens_per_second.toFixed(2)} ${t.tokensPerSecond}` : 
-                t.naStreaming
-            }
-          />
+          {metrics.requests.non_streamed.tokens.reported_count > 0 && (
+            <MetricItem
+              title={t.tokensPerSecond}
+              value={
+                (() => {
+                  const totalTokens = metrics.requests.non_streamed.tokens.total;
+                  const avgResponseTime = metrics.requests.total.avg_response_time_ms;
+                  if (totalTokens > 0 && avgResponseTime > 0) {
+                    const tps = (totalTokens / avgResponseTime) * 1000;
+                    return `${tps.toFixed(2)} ${t.tokensPerSecond}`;
+                  }
+                  return t.naStreaming;
+                })()
+              }
+              tooltip={t.tooltipInferenceSpeed}
+            />
+          )}
         </MetricGrid>
       </MetricSection>
 
       {/* Token Usage Section */}
       {metrics.requests.non_streamed.tokens.reported_count > 0 && (
-        <MetricSection title={t.tokenUsage} icon={<TokenIcon />}>
+        <MetricSection title={t.tokenUsage} icon={<TokenIcon />} tooltip={t.tooltipTokenUsage}>
           {/* Row 1: Prompt Tokens */}
           <MetricSplitLayout className="token-usage-row"
             leftContent={

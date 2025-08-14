@@ -23,14 +23,14 @@ export const ResponseTimeChart: React.FC<ResponseTimeChartProps> = ({
     (bucketRequests) => {
       // Filter requests that have response time data
       const requestsWithTime = bucketRequests.filter(req => 
-        req.time_to_last_token_ms !== null && req.time_to_last_token_ms !== undefined
+        req.timing.time_to_last_token_ms !== null && req.timing.time_to_last_token_ms !== undefined
       );
       
       if (requestsWithTime.length === 0) return 0;
       
       // Calculate average response time for the bucket
       const totalTime = requestsWithTime.reduce((sum, req) => 
-        sum + (req.time_to_last_token_ms || 0), 0
+        sum + (req.timing.time_to_last_token_ms || 0), 0
       );
       
       return Math.round(totalTime / requestsWithTime.length);

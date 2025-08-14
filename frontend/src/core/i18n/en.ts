@@ -10,7 +10,7 @@ export const en: Translation = {
   nonStreamedRequests: 'Non-streamed Requests',
   
   // Section headers
-  basicStatistics: 'Basic Statistics',
+  basicStatistics: 'Completion Requests',
   streamingStatistics: 'Streaming Statistics',
   tokenUsage: 'Token Usage',
   performanceMetrics: 'Performance Metrics',
@@ -30,7 +30,7 @@ export const en: Translation = {
   totalTokensUsed: 'Total Tokens Used',
   avgTokensPerRequest: 'Average Tokens per Request',
   avgResponseTime: 'Average Response Time',
-  avgTokensPerSecond: 'Average Tokens per Second',
+  avgTokensPerSecond: 'Inference Speed',
   
   // Streaming-specific metrics
   timeToFirstToken: 'Time to First Token',
@@ -63,6 +63,17 @@ export const en: Translation = {
   streamingPerformanceNote: 'These metrics are only available for requests explicitly requesting usage metrics.',
   usageStatsNote: 'Usage stats can be enabled by clients when calling /v1/chat/messages by adding "stream_options": {"include_usage":true} to their payload.',
   
+  // Tooltips
+  tooltipCompletionRequests: 'Overview of all completion requests, including success/failure rates and total counts',
+  tooltipPerformanceMetrics: 'Response time and inference speed metrics for all request types',
+  tooltipModelUsage: 'Distribution of requests across different LLM models',
+  tooltipRequestSources: 'Origin of requests showing which clients/sources are using the system',
+  tooltipInferenceSpeed: 'The rate at which an LLM can process tokens, measured in tokens-per-second (TPS)',
+  tooltipResponseTime: 'Total time from request start to completion, including token generation time',
+  tooltipTokenUsage: 'Breakdown of prompt, completion, and total tokens used across requests',
+  tooltipStreamingMetrics: 'Performance metrics specific to streaming requests with usage enabled',
+  tooltipNonStreamingMetrics: 'Performance metrics specific to non-streaming completion requests',
+  
   // Token usage section
   promptTokens: 'Prompt Tokens',
   completionTokens: 'Completion Tokens',
@@ -73,7 +84,7 @@ export const en: Translation = {
   tokenUsageNoteStreaming: 'Token usage metrics are only available when clients enable "include_usage" in their streaming requests.',
   requests: 'requests',
   times: 'times',
-  tokensPerSecond: 'tokens/s',
+  tokensPerSecond: 'TPS',
   naStreaming: 'N/A (streaming)',
   
   // Loading and error states

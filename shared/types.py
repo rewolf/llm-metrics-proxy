@@ -34,14 +34,14 @@ class OriginUsage(BaseModel):
 class CompletionRequestData(BaseModel):
     """Individual completion request data for the /completion_requests endpoint."""
     timestamp: str
-    time_to_first_token_ms: Optional[int] = None
-    time_to_last_token_ms: Optional[int] = None
     is_streaming: bool
     success: bool
+    error_type: Optional[str] = None
     message_count: Optional[int] = None
-    prompt_tokens: Optional[int] = None
+    timing: Dict[str, Optional[int]] = Field(default_factory=dict)  # time_to_first_token_ms, time_to_last_token_ms, response_time_ms
     tokens: Dict[str, Optional[int]] = Field(default_factory=dict)  # total, prompt, completion
     model: Optional[str] = None
+    origin: Optional[str] = None
 
 
 class RequestsSummary(BaseModel):

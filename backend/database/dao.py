@@ -93,18 +93,22 @@ class CompletionRequestsDAO:
                 # Map row data to CompletionRequestData fields using explicit column order
                 completion_request = CompletionRequestData(
                     timestamp=row[1],  # timestamp
-                    time_to_first_token_ms=row[16],  # time_to_first_token_ms
-                    time_to_last_token_ms=row[17],   # time_to_last_token_ms
                     is_streaming=bool(row[7]),       # is_streaming
                     success=bool(row[2]),            # success
+                    error_type=row[19],              # error_type
                     message_count=row[11],           # message_count
-                    prompt_tokens=row[12],           # prompt_tokens
+                    timing={
+                        "time_to_first_token_ms": row[16],  # time_to_first_token_ms
+                        "time_to_last_token_ms": row[17],   # time_to_last_token_ms
+                        "response_time_ms": row[4]          # response_time_ms
+                    },
                     tokens={
                         "total": row[14],            # total_tokens (index 14)
                         "prompt": row[12],           # prompt_tokens (index 12)
                         "completion": row[13]        # completion_tokens (index 13)
                     },
-                    model=row[5]  # model
+                    model=row[5],  # model
+                    origin=row[6]  # origin
                 )
                 results.append(completion_request)
             

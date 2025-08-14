@@ -17,11 +17,12 @@ interface MetricItemProps {
   title: string;
   value: ReactNode;
   className?: string;
+  tooltip?: string;
 }
 
-export const MetricItem: React.FC<MetricItemProps> = ({ title, value, className = '' }) => {
+export const MetricItem: React.FC<MetricItemProps> = ({ title, value, className = '', tooltip }) => {
   return (
-    <div className={`metric ${className}`.trim()}>
+    <div className={`metric ${className}`.trim()} data-tooltip={tooltip}>
       <h3>{title}</h3>
       <div className="value">{value}</div>
     </div>

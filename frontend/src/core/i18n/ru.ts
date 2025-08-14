@@ -10,8 +10,8 @@ export const ru: Translation = {
   nonStreamedRequests: 'Непотоковые запросы',
   
   // Section headers
-  basicStatistics: 'Основная статистика',
-  streamingStatistics: 'Статистика потоков',
+  basicStatistics: 'Запросы на завершение',
+  streamingStatistics: 'Статистика потоковой передачи',
   tokenUsage: 'Использование токенов',
   performanceMetrics: 'Метрики производительности',
   modelUsage: 'Использование моделей',
@@ -30,7 +30,7 @@ export const ru: Translation = {
   totalTokensUsed: 'Общее количество использованных токенов',
   avgTokensPerRequest: 'Среднее количество токенов на запрос',
   avgResponseTime: 'Среднее время ответа',
-  avgTokensPerSecond: 'Среднее количество токенов в секунду',
+  avgTokensPerSecond: 'Скорость вывода',
 
   
   // Streaming-specific metrics
@@ -61,10 +61,21 @@ export const ru: Translation = {
   korean: '한국어',
   
   // Notes and warnings
-  tokenUsageNote: 'Использование токенов доступно только для непотоковых запросов. Потоковые запросы показывают метрики времени.',
-  performanceNote: 'Время ответа включает как потоковые, так и непотоковые запросы. Время до первого токена показывает производительность потоков.',
+  tokenUsageNote: 'Использование токенов доступно только для не-потоковых запросов. Потоковые запросы показывают метрики времени вместо этого.',
+  performanceNote: 'Время ответа включает как потоковые, так и не-потоковые запросы. Для потоковых запросов на завершение время ответа - это время до завершения последнего токена.',
   streamingPerformanceNote: 'Эти метрики доступны только для запросов, которые явно запрашивают метрики использования.',
   usageStatsNote: 'Статистика использования может быть включена клиентами при вызове /v1/chat/messages, добавив "stream_options": {"include_usage":true} в их payload.',
+  
+  // Tooltips
+  tooltipCompletionRequests: 'Обзор всех запросов на завершение, включая показатели успеха/неудачи и общие количества',
+  tooltipPerformanceMetrics: 'Метрики времени ответа и скорости вывода для всех типов запросов',
+  tooltipModelUsage: 'Распределение запросов по различным LLM-моделям',
+  tooltipRequestSources: 'Источник запросов, показывающий, какие клиенты/источники используют систему',
+  tooltipInferenceSpeed: 'Скорость, с которой LLM может обрабатывать токены, измеряется в токенах-в-секунду (TPS)',
+  tooltipResponseTime: 'Общее время от начала запроса до завершения, включая время генерации токенов',
+  tooltipTokenUsage: 'Разбивка используемых токенов промпта, завершения и общих токенов по запросам',
+  tooltipStreamingMetrics: 'Метрики производительности, специфичные для потоковых запросов с включенным использованием',
+  tooltipNonStreamingMetrics: 'Метрики производительности, специфичные для не-потоковых запросов на завершение',
   
   // Token usage section
   promptTokens: 'Токены Запроса',
@@ -76,7 +87,7 @@ export const ru: Translation = {
   tokenUsageNoteStreaming: 'Метрики использования токенов доступны только когда клиенты включают "include_usage" в своих потоковых запросах.',
   requests: 'запросов',
   times: 'раз',
-  tokensPerSecond: 'токенов/с',
+  tokensPerSecond: 'TPS',
   naStreaming: 'N/A (поток)',
   
   // Loading and error states
