@@ -319,11 +319,11 @@ function App(): JSX.Element {
           )}
         </div>
         <div className="metric-note">
-          <small>{t.streamingPerformanceNote}</small>
-        </div>
-        
-        <div className="metric-note">
-          <small>{t.usageStatsNote}</small>
+          <small>
+            {t.streamingPerformanceNote}
+            <br />
+            {t.usageStatsNote}
+          </small>
         </div>
       </div>
     </>
