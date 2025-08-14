@@ -42,9 +42,38 @@ export const BaseChart: React.FC<BaseChartProps> = ({
     return fallback;
   };
 
+  // Utility function to apply opacity to any color
+  const applyOpacityToColor = (color: string, opacity: number): string => {
+    // Handle hex colors
+    if (color.startsWith('#')) {
+      const hex = color.slice(1);
+      const r = parseInt(hex.slice(0, 2), 16);
+      const g = parseInt(hex.slice(2, 4), 16);
+      const b = parseInt(hex.slice(4, 6), 16);
+      return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+    }
+    
+    // Handle rgb/rgba colors
+    if (color.startsWith('rgb')) {
+      if (color.startsWith('rgba(')) {
+        // Already has alpha, replace it
+        return color.replace(/[\d.]+\)$/, `${opacity})`);
+      } else {
+        // rgb() format, convert to rgba
+        return color.replace('rgb(', 'rgba(').replace(')', `, ${opacity})`);
+      }
+    }
+    
+    // Handle named colors or other formats - return as is with fallback opacity
+    return color;
+  };
+
   const textColor = getComputedColor('--color-text', '#212529');
   const backgroundColor = getComputedColor('--color-background', '#ffffff');
   const borderColor = getComputedColor('--color-border', '#dee2e6');
+  
+  // Apply reduced opacity to grid colors for subtle appearance
+  const gridColor = applyOpacityToColor(borderColor, 0.3);
 
   const chartData = {
     labels,
@@ -96,7 +125,7 @@ export const BaseChart: React.FC<BaseChartProps> = ({
     scales: {
       x: {
         grid: {
-          color: borderColor,
+          color: gridColor,
         },
         ticks: {
           color: textColor,
@@ -117,7 +146,7 @@ export const BaseChart: React.FC<BaseChartProps> = ({
       y: {
         beginAtZero: true,
         grid: {
-          color: borderColor,
+          color: gridColor,
         },
         ticks: {
           color: textColor,
@@ -146,6 +175,7 @@ export const BaseChart: React.FC<BaseChartProps> = ({
         const newTextColor = getComputedColor('--color-text', '#212529');
         const newBackgroundColor = getComputedColor('--color-background', '#ffffff');
         const newBorderColor = getComputedColor('--color-border', '#dee2e6');
+        const newGridColor = applyOpacityToColor(newBorderColor, 0.3);
 
         // Update chart options
         if (chart.options.plugins?.title) {
@@ -157,16 +187,20 @@ export const BaseChart: React.FC<BaseChartProps> = ({
           chart.options.plugins.tooltip.bodyColor = newTextColor;
           chart.options.plugins.tooltip.borderColor = newBorderColor;
         }
-        if (chart.options.scales?.x) {
-          chart.options.scales.x.grid!.color = newBorderColor;
-          chart.options.scales.x.ticks!.color = newTextColor;
+        if (chart.options.scales?.x?.grid) {
+          chart.options.scales.x.grid.color = newGridColor;
         }
-        if (chart.options.scales?.y) {
-          chart.options.scales.y.grid!.color = newBorderColor;
-          chart.options.scales.y.ticks!.color = newTextColor;
-          if (chart.options.scales.y.title) {
-            chart.options.scales.y.title.color = newTextColor;
-          }
+        if (chart.options.scales?.x?.ticks) {
+          chart.options.scales.x.ticks.color = newTextColor;
+        }
+        if (chart.options.scales?.y?.grid) {
+          chart.options.scales.y.grid.color = newGridColor;
+        }
+        if (chart.options.scales?.y?.ticks) {
+          chart.options.scales.y.ticks.color = newTextColor;
+        }
+        if (chart.options.scales?.y?.title) {
+          chart.options.scales.y.title.color = newTextColor;
         }
 
         chart.update('none'); // Update without animation
