@@ -16,8 +16,10 @@ import {
   RobotIcon,
   DashboardIcon,
   StreamingIcon,
-  DocumentIcon
+  DocumentIcon,
+  GitHubIcon
 } from './assets/icons';
+import { CreatorCredit } from './shared';
 
 // Use environment variable or default to localhost since browser runs on host
 const METRICS_API_URL = process.env.REACT_APP_METRICS_API_URL || 'http://localhost:8002';
@@ -207,11 +209,17 @@ function App(): JSX.Element {
       <div className="metrics">
         {renderTabContent()}
       </div>
-      
+
       <footer className="app-footer">
         <div className="footer-content">
           <div className="footer-left">
             <span className="footer-text">{t.footerText}</span>
+            <a href="https://github.com/rewolf/openai-llm-metrics-proxy" target="_blank" rel="noopener noreferrer" className="github-link">
+              <GitHubIcon />
+            </a>
+          </div>
+          <div className="footer-center">
+            <CreatorCredit />
           </div>
           <div className="footer-right">
             <LanguageSelector

@@ -105,6 +105,71 @@
   }
 }
 
+// Creator Credit styling
+.creator-credit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-sm;
+  margin: 0;
+  position: relative;
+  
+  .creator-icon {
+    width: 18px;
+    height: 18px;
+    opacity: 0.6;
+    transition: all 0.3s ease;
+    color: currentColor;
+    flex-shrink: 0; // Prevent icon from shrinking
+  }
+  
+  .creator-text {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0;
+    transition: all 0.3s ease;
+    font-size: 0.8em;
+    white-space: nowrap;
+    font-weight: 500;
+    color: var(--color-textSecondary, #6c757d);
+    pointer-events: none; // Initially not clickable
+    
+    .creator-link {
+      color: var(--color-surface, #ffffff);
+      background: var(--color-textSecondary, #6c757d);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 600;
+      pointer-events: auto; // Make link clickable
+      
+      &:hover {
+        color: var(--color-surface, #ffffff);
+        background: var(--color-primary, #007bff);
+        text-decoration: none;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+    }
+  }
+  
+  &:hover {
+    .creator-icon {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    
+    .creator-text {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+      pointer-events: auto; // Make text clickable on hover
+    }
+  }
+}
+
 .metric-section {
   background: var(--color-metricBackground, $color-metricBackground);
   border-radius: var(--border-radius, $border-radius);

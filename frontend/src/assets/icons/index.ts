@@ -1,9 +1,11 @@
 export { ReactComponent as DashboardIcon } from './dashboard.svg';
-export { ReactComponent as StreamingIcon } from './streaming.svg';
 export { ReactComponent as DocumentIcon } from './document.svg';
+export { ReactComponent as ErrorIcon } from './error.svg';
+export { ReactComponent as FinishIcon } from './finish.svg';
+export { ReactComponent as GlobeIcon } from './globe.svg';
 export { ReactComponent as PerformanceIcon } from './performance.svg';
 export { ReactComponent as RobotIcon } from './robot.svg';
-export { ReactComponent as GlobeIcon } from './globe.svg';
-export { ReactComponent as FinishIcon } from './finish.svg';
-export { ReactComponent as ErrorIcon } from './error.svg';
+export { ReactComponent as StreamingIcon } from './streaming.svg';
 export { ReactComponent as TokenIcon } from './token.svg';
+export { ReactComponent as CreatorLogoIcon } from './creator-logo.svg';
+export { ReactComponent as GitHubIcon } from './github.svg';
