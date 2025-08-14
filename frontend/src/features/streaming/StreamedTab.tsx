@@ -1,12 +1,17 @@
 import React from 'react';
 import { Metrics } from '../../types';
-import { calculatePercentage, formatResponseTime } from '../../utils';
-import { MetricSection, MetricGrid, MetricItem, MetricSplitLayout } from '../../shared';
+import { 
+  MetricSection, 
+  MetricGrid, 
+  MetricItem, 
+  TokenUsageSection 
+} from '../../shared';
 import { 
   StreamingIcon, 
-  PerformanceIcon,
-  TokenIcon
+  PerformanceIcon, 
+  TokenIcon 
 } from '../../assets/icons';
+import { calculatePercentage, formatResponseTime } from '../../utils';
 
 interface StreamedTabProps {
   metrics: Metrics;
@@ -75,61 +80,11 @@ export const StreamedTab: React.FC<StreamedTabProps> = ({ metrics, t }) => {
       </MetricSection>
 
       {/* Token Usage Section */}
-      {metrics.requests.streamed.tokens.reported_count > 0 && (
-        <MetricSection title={t.tokenUsage} icon={<TokenIcon />} tooltip={t.tooltipTokenUsage}>
-          {/* Row 1: Prompt Tokens */}
-          <MetricSplitLayout className="token-usage-row"
-            leftContent={
-              <MetricItem
-                title={t.promptTokens}
-                value={metrics.requests.streamed.tokens.prompt_total.toFixed(0)}
-              />
-            }
-            rightContent={
-              <MetricItem
-                title={t.promptTokensPerRequest}
-                value={(metrics.requests.streamed.tokens.prompt_total / metrics.requests.streamed.tokens.reported_count).toFixed(1)}
-              />
-            }
-          />
-          
-          {/* Row 2: Completion Tokens */}
-          <MetricSplitLayout className="token-usage-row"
-            leftContent={
-              <MetricItem
-                title={t.completionTokens}
-                value={metrics.requests.streamed.tokens.completion_total.toFixed(0)}
-              />
-            }
-            rightContent={
-              <MetricItem
-                title={t.completionTokensPerRequest}
-                value={(metrics.requests.streamed.tokens.completion_total / metrics.requests.streamed.tokens.reported_count).toFixed(1)}
-              />
-            }
-          />
-          
-          {/* Row 3: Total Tokens */}
-          <MetricSplitLayout className="token-usage-row"
-            leftContent={
-              <MetricItem
-                title={t.totalTokens}
-                value={metrics.requests.streamed.tokens.total.toFixed(0)}
-              />
-            }
-            rightContent={
-              <MetricItem
-                title={t.totalTokensPerRequest}
-                value={(metrics.requests.streamed.tokens.total / metrics.requests.streamed.tokens.reported_count).toFixed(1)}
-              />
-            }
-          />
-          
-          <div className="metric-note">
-            <small>{t.tokenUsageNoteStreaming}</small>
-          </div>
-        </MetricSection>
-      )}
+      <TokenUsageSection 
+        tokenMetrics={metrics.requests.streamed.tokens}
+        noteText={t.tokenUsageNoteStreaming}
+        t={t}
+      />
     </>
   );
 };
