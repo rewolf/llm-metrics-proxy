@@ -1,6 +1,6 @@
 # Deployment Examples
 
-This document provides various examples of how to deploy the OpenAI LLM Metrics Proxy system.
+This document provides various examples of how to deploy the LLM Metrics Proxy system.
 
 ## Quick Start with Docker Compose
 
@@ -11,7 +11,7 @@ docker-compose up -d
 ```
 
 This will start all services:
-- **OpenAI LLM Metrics Proxy**: http://localhost:8000 (OpenAI API)
+- **LLM Metrics Proxy**: http://localhost:8000 (OpenAI API)
 - **Metrics API**: http://localhost:8002 (internal)
 - **Frontend**: http://localhost:3000 (dashboard)
 - **Ollama**: http://localhost:11434 (example backend)
@@ -24,7 +24,7 @@ For a clean deployment with just the metrics system and Ollama, use the example 
 version: '3.8'
 
 services:
-  # OpenAI LLM Metrics Proxy - proxies OpenAI API requests and tracks metrics
+  # LLM Metrics Proxy - proxies OpenAI API requests and tracks metrics
   ollama-metrics-proxy:
     build: .
     container_name: ollama-metrics-proxy
@@ -113,7 +113,7 @@ Client → Port 8001 (Proxy) → Ollama → Response
 
 ```bash
 # First, build the Docker image
-docker build -t openai-llm-metrics-proxy .
+docker build -t llm-metrics-proxy .
 
 # Then run the proxy service
 docker run -d \
@@ -122,7 +122,7 @@ docker run -d \
   -e BACKEND_HOST=your-ollama-host \
   -e BACKEND_PORT=11434 \
   -v /path/to/data:/app/data \
-  openai-llm-metrics-proxy:latest
+  llm-metrics-proxy:latest
 ```
 
 ### Just the Metrics API
@@ -131,7 +131,7 @@ docker run -d \
 
 ```bash
 # First, build the Docker image
-docker build -t openai-llm-metrics-proxy .
+docker build -t llm-metrics-proxy .
 
 # Then run the metrics API service
 docker run -d \
@@ -140,7 +140,7 @@ docker run -d \
   -e METRICS_PORT=8002 \
   -e DB_PATH=./data/metrics.db \
   -v /path/to/data:/app/data \
-  openai-llm-metrics-proxy:latest \
+  llm-metrics-proxy:latest \
   python -m backend.metrics_server
 ```
 

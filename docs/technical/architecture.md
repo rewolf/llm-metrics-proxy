@@ -1,6 +1,6 @@
 # Architecture Overview
 
-This document describes the system architecture, design principles, and component relationships of the OpenAI LLM Metrics Proxy.
+This document describes the system architecture, design principles, and component relationships of the LLM Metrics Proxy.
 
 ## 🏗️ System Architecture
 

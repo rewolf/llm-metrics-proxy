@@ -73,7 +73,7 @@ def create_file_backup(backup_dir: Optional[str] = None, db_name: Optional[str] 
             except (PermissionError, OSError):
                 # If we still can't write, try user's home directory
                 home_dir = os.path.expanduser("~")
-                backup_dir = os.path.join(home_dir, ".openai_llm_metrics_proxy", "backups")
+                backup_dir = os.path.join(home_dir, ".llm_metrics_proxy", "backups")
                 print(f"Using home directory for backups: {backup_dir}")
     
     # Create backup directory if it doesn't exist

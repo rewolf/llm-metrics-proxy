@@ -2,7 +2,7 @@ import { Translation } from '../../types';
 
 export const ru: Translation = {
   // App title
-  appTitle: 'Панель метрик OpenAI LLM',
+  appTitle: 'Панель метрик LLM',
   
   // Tab labels
   overview: 'Обзор',
@@ -49,7 +49,7 @@ export const ru: Translation = {
   refreshNow: 'Обновить сейчас',
   
   // Footer
-  footerText: 'Прокси метрик OpenAI LLM',
+  footerText: 'Прокси метрик LLM',
   
   // Language names
   english: 'English',

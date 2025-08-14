@@ -2,7 +2,7 @@ import { Translation } from '../../types';
 
 export const fr: Translation = {
   // App title
-  appTitle: 'Tableau de Bord des Métriques OpenAI LLM',
+  appTitle: 'Tableau de Bord des Métriques LLM',
   
   // Tab labels
   overview: 'Vue d\'ensemble',
@@ -49,7 +49,7 @@ export const fr: Translation = {
   refreshNow: 'Actualiser Maintenant',
   
   // Footer
-  footerText: 'Proxy de Métriques OpenAI LLM',
+  footerText: 'Proxy de Métriques LLM',
   
   // Language names
   english: 'English',

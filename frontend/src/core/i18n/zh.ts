@@ -2,7 +2,7 @@ import { Translation } from '../../types';
 
 export const zh: Translation = {
   // App title
-  appTitle: 'OpenAI LLM 指标仪表板',
+  appTitle: 'LLM 指标仪表板',
   
   // Tab labels
   overview: '概览',
@@ -49,7 +49,7 @@ export const zh: Translation = {
   refreshNow: '立即刷新',
   
   // Footer
-  footerText: 'OpenAI LLM 指标代理',
+  footerText: 'LLM 指标代理',
   
   // Language names
   english: 'English',

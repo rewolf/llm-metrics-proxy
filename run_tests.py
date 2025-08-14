@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Test runner for the OpenAI LLM Metrics Proxy project.
+Test runner for the LLM Metrics Proxy project.
 """
 
 import os

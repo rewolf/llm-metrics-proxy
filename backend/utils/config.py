@@ -1,5 +1,5 @@
 """
-Configuration management for the OpenAI LLM Metrics Proxy.
+Configuration management for the LLM Metrics Proxy.
 """
 
 import os

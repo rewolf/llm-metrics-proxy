@@ -1,6 +1,6 @@
 # Technical Documentation
 
-This directory contains technical documentation for the OpenAI LLM Metrics Proxy project.
+This directory contains technical documentation for the LLM Metrics Proxy project.
 
 ## Contents
 
@@ -22,7 +22,7 @@ This directory contains technical documentation for the OpenAI LLM Metrics Proxy
 1. **Clone the repository**
    ```bash
    git clone <repository-url>
-   cd openai-llm-metrics-proxy
+   cd llm-metrics-proxy
    ```
 
 2. **Install Python dependencies**

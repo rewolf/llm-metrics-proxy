@@ -2,7 +2,7 @@ import { Translation } from '../../types';
 
 export const ja: Translation = {
   // App title
-  appTitle: 'OpenAI LLM メトリクスダッシュボード',
+  appTitle: 'LLM メトリクスダッシュボード',
   
   // Tab labels
   overview: '概要',
@@ -49,7 +49,7 @@ export const ja: Translation = {
   refreshNow: '今すぐ更新',
   
   // Footer
-  footerText: 'OpenAI LLM メトリクスプロキシ',
+  footerText: 'LLM メトリクスプロキシ',
   
   // Language names
   english: 'English',

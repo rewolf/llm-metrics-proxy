@@ -1,6 +1,6 @@
 # API Reference
 
-This document describes the API endpoints available in the OpenAI LLM Metrics Proxy system.
+This document describes the API endpoints available in the LLM Metrics Proxy system.
 
 ## Metrics API
 

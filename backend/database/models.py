@@ -1,5 +1,5 @@
 """
-Database models and schema definitions for the OpenAI LLM Metrics Proxy.
+Database models and schema definitions for the LLM Metrics Proxy.
 """
 
 from dataclasses import dataclass

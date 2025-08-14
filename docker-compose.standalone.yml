@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  # OpenAI LLM Metrics Proxy - proxies OpenAI API requests and tracks metrics
+  # LLM Metrics Proxy - proxies OpenAI API requests and tracks metrics
   ollama-metrics-proxy:
     build: .
     container_name: ollama-metrics-proxy

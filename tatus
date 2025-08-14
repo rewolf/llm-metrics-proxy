@@ -1,0 +1,300 @@
+* [31me8e64a2[m -[33m (HEAD -> master)[m docs: refactor AI context docs for minimal, focused coverage [32m(83 seconds ago) [1;34m<rewolf>[m[31m|[m 
+[31m|[m  docs/technical/database-architecture.md | 19 [32m++++++[m[31m-------------[m
+[31m|[m  1 file changed, 6 insertions(+), 13 deletions(-)
+
+* [31m80f4ad4[m -[33m[m docs: comprehensive documentation updates for recent architectural improvements [32m(5 minutes ago) [1;34m<rewolf>[m[31m|[m 
+[31m|[m  docs/technical/database-architecture.md | 421 [32m++++++++[m[31m--------------[m
+[31m|[m  1 file changed, 154 insertions(+), 267 deletions(-)
+
+* [31m6ff6970[m -[33m[m feat: implement AOP-based error handling for metrics recording [32m(8 minutes ago) [1;34m<rewolf>[m[31m|[m 
+[31m|[m  backend/services/proxy_service.py | 18 [32m++++++++++++++++++[m
+[31m|[m  1 file changed, 18 insertions(+)
+
+* [31m0b81665[m -[33m[m fix: Update code to properly use DAO and resolve schema-incompatible query from happening again [32m(14 minutes ago) [1;34m<rewolf>[m[31m|[m 
+[31m|[m  backend/api/metrics.py              | 252 [32m+[m[31m-------------------------[m
+[31m|[m  backend/services/metrics_service.py |  52 [32m+++[m[31m---[m
+[31m|[m  2 files changed, 38 insertions(+), 266 deletions(-)
+
+* [31maa7abdc[m -[33m[m feat: Implement comprehensive test suite with robust database architecture and backup system [32m(46 minutes ago) [1;34m<rewolf>[m[31m|[m 
+[31m|[m  backend/database/backup.py              | 241 [32m+++++++++++[m
+[31m|[m  backend/database/connection.py          |  17 [32m+[m[31m-[m
+[31m|[m  backend/database/dao.py                 | 362 [32m++++++++++++++++[m
+[31m|[m  backend/database/safe_migrations.py     | 326 [32m+++++++++++++++[m
+[31m|[m  backend/database/schema.py              | 187 [32m+++++++++[m
+[31m|[m  backend/metrics_proxy.py                |  37 [32m+[m[31m-[m
+[31m|[m  backend/tests/__init__.py               |   1 [32m+[m
+[31m|[m  backend/tests/test_backup.py            | 306 [32m++++++++++++++[m
+[31m|[m  backend/tests/test_dao.py               | 369 [32m+++++++++++++++++[m
+[31m|[m  backend/tests/test_migrations.py        | 484 [32m++++++++++++++++++++++[m
+[31m|[m  docs/technical/README.md                | 307 [32m++++++++++++[m[31m--[m
+[31m|[m  docs/technical/database-architecture.md | 290 [32m+++++++++++++[m
+[31m|[m  run_tests.py                            | 101 [32m+++++[m
+[31m|[m  shared/types.py                         |  21 [32m+[m[31m-[m
+[31m|[m  test_enhanced_metrics.py                | 153 [31m-------[m
+[31m|[m  test_models_endpoint.py                 |  69 [31m---[m
+[31m|[m  test_proxy.py                           | 104 [31m-----[m
+[31m|[m  test_streaming_usage.py                 | 232 [31m-----------[m
+[31m|[m  18 files changed, 2985 insertions(+), 622 deletions(-)
+
+* [31m62aed33[m -[33m[m fix: Repair data corruption issues and improve migration safety [32m(46 minutes ago) [1;34m<rewolf>[m[31m|[m 
+[31m|[m  backend/api/metrics.py         |  28 [32m++++[m[31m-[m
+[31m|[m  backend/database/migrations.py | 189 [32m+++++++++++++++++++++++++++++[m[31m--[m
+[31m|[m  backend/metrics_server.py      |   9 [32m+[m[31m-[m
+[31m|[m  3 files changed, 207 insertions(+), 19 deletions(-)
+
+* [31mf4dd71b[m -[33m[m fix: Resolve metrics API issues and improve timestamp handling [32m(46 minutes ago) [1;34m<rewolf>[m[31m|[m 
+[31m|[m  backend/api/metrics.py              | 41 [32m+++++++++++++++++++++++[m[31m----[m
+[31m|[m  backend/services/metrics_service.py |  8 [32m++[m[31m----[m
+[31m|[m  backend/services/proxy_service.py   |  5 [31m----[m
+[31m|[m  shared/types.py                     |  5 [32m++++[m
+[31m|[m  4 files changed, 44 insertions(+), 15 deletions(-)
+
+* [31m75e8de8[m -[33m[m feat: Integrate Chart.js with improved dashboard and time-based metrics [32m(48 minutes ago) [1;34m<rewolf>[m[31m|[m 
+[31m|[m  CHANGELOG.md                                 |  84 [32m++++[m
+[31m|[m  README.md                                    |  10 [32m+[m[31m-[m
+[31m|[m  backend/api/metrics.py                       | 178 [32m+++++[m[31m--[m
+[31m|[m  backend/database/migrations.py               |  73 [32m+++[m
+[31m|[m  backend/database/models.py                   |   2 [31m-[m
+[31m|[m  backend/metrics_server.py                    |  10 [32m+[m[31m-[m
+[31m|[m  docs/technical/api.md                        | 147 [32m++++++[m
+[31m|[m  frontend/package-lock.json                   |  30 [32m++[m
+[31m|[m  frontend/package.json                        |   2 [32m+[m
+[31m|[m  frontend/src/App.tsx                         | 438 [32m++++++++++++[m[31m-----[m
+[31m|[m  frontend/src/assets/icons/dashboard.svg      |   6 [32m+[m
+[31m|[m  frontend/src/assets/icons/document.svg       |   7 [32m+[m
+[31m|[m  frontend/src/assets/icons/error.svg          |   5 [32m+[m
+[31m|[m  frontend/src/assets/icons/finish.svg         |   5 [32m+[m
+[31m|[m  frontend/src/assets/icons/globe.svg          |   5 [32m+[m
+[31m|[m  frontend/src/assets/icons/index.ts           |   9 [32m+[m
+[31m|[m  frontend/src/assets/icons/performance.svg    |   3 [32m+[m
+[31m|[m  frontend/src/assets/icons/robot.svg          |   8 [32m+[m
+[31m|[m  frontend/src/assets/icons/streaming.svg      |   4 [32m+[m
+[31m|[m  frontend/src/assets/icons/token.svg          |   5 [32m+[m
+[31m|[m  frontend/src/components/BaseChart.tsx        | 273 [32m++++++++++[m
+[31m|[m  .../src/components/RequestCountChart.tsx     |  36 [32m++[m
+[31m|[m  .../src/components/ResponseTimeChart.tsx     |  50 [32m++[m
+[31m|[m  frontend/src/components/TabSelector.tsx      |  36 [32m++[m
+[31m|[m  .../src/components/TimeframeSelector.tsx     |  49 [32m++[m
+[31m|[m  frontend/src/core/i18n/de.ts                 |  34 [32m+[m[31m-[m
+[31m|[m  frontend/src/core/i18n/en.ts                 |  34 [32m+[m[31m-[m
+[31m|[m  frontend/src/core/i18n/es.ts                 |  40 [32m+[m[31m-[m
+[31m|[m  frontend/src/core/i18n/fr.ts                 |  52 [32m+[m[31m-[m
+[31m|[m  frontend/src/core/i18n/ja.ts                 |  36 [32m+[m[31m-[m
+[31m|[m  frontend/src/core/i18n/ko.ts                 |  36 [32m+[m[31m-[m
+[31m|[m  frontend/src/core/i18n/ru.ts                 |  40 [32m+[m[31m-[m
+[31m|[m  frontend/src/core/i18n/zh.ts                 |  42 [32m+[m[31m-[m
+[31m|[m  frontend/src/styles/_layout.scss             |  56 [32m++[m[31m-[m
+[31m|[m  frontend/src/styles/_metrics.scss            | 308 [32m+++++++++++[m[31m-[m
+[31m|[m  frontend/src/styles/_themes.scss             |   2 [32m+[m
+[31m|[m  frontend/src/styles/_timeframe-selector.scss |  45 [32m++[m
+[31m|[m  frontend/src/styles/_variables.scss          |   2 [32m+[m
+[31m|[m  frontend/src/styles/main.scss                |   1 [32m+[m
+[31m|[m  frontend/src/types.ts                        |  69 [32m++[m[31m-[m
+[31m|[m  frontend/src/types/svg.d.ts                  |   6 [32m+[m
+[31m|[m  frontend/src/utils.ts                        | 184 [32m+++++++[m
+[31m|[m  shared/types.py                              |  13 [32m+[m
+[31m|[m  43 files changed, 2242 insertions(+), 233 deletions(-)
+
+* [31m4caeaa8[m -[33m (origin/master, origin/HEAD)[m Add /v1/models endpoint proxy support [32m(26 hours ago) [1;34m<rewolf>[m[31m|[m 
+[31m|[m  README.md                      |  1 [32m+[m
+[31m|[m  backend/api/metrics.py         |  2 [32m+[m[31m-[m
+[31m|[m  backend/metrics_proxy.py       | 36 [32m++++++++++++++++[m[31m-[m
+[31m|[m  backend/metrics_server.py      |  4 [32m+[m[31m-[m
+[31m|[m  docs/technical/architecture.md |  7 [32m++[m[31m--[m
+[31m|[m  test_models_endpoint.py        | 69 [32m++++++++++++++++++++++++++++++++[m
+[31m|[m  test_proxy.py                  | 58 [32m++++++++++++++++[m[31m-----------[m
+[31m|[m  7 files changed, 146 insertions(+), 31 deletions(-)
+
+* [31m414f185[m -[33m[m Rename main.py to metrics_proxy.py and clean up old files [32m(26 hours ago) [1;34m<rewolf>[m[31m|[m 
+[31m|[m  Dockerfile                            |   2 [32m+[m[31m-[m
+[31m|[m  README.md                             |   4 [32m+[m[31m-[m
+[31m|[m  backend/api/metrics.py                |  13 [32m+[m[31m-[m
+[31m|[m  backend/database/migrations.py        |   4 [32m+[m[31m-[m
+[31m|[m  backend/{main.py => metrics_proxy.py} |   6 [32m+[m[31m-[m
+[31m|[m  backend/metrics_server.py             |   4 [32m+[m[31m-[m
+[31m|[m  backend/services/metrics_service.py   |   4 [32m+[m[31m-[m
+[31m|[m  backend/services/proxy_service.py     |   4 [32m+[m[31m-[m
+[31m|[m  docker-compose.standalone.yml         |   2 [32m+[m[31m-[m
+[31m|[m  docs/technical/architecture.md        |   4 [32m+[m[31m-[m
+[31m|[m  main.py                               | 555 [31m------------------------[m
+[31m|[m  metrics_api.py                        | 162 [31m-------[m
+[31m|[m  12 files changed, 19 insertions(+), 745 deletions(-)
+
+* [31m5cb8296[m -[33m (refactor)[m Refactor codebase for better organization and add Origin header tracking [32m(27 hours ago) [1;34m<rewolf>[m[31m|[m 
+[31m|[m  Dockerfile                          |   6 [32m+[m[31m-[m
+[31m|[m  EXAMPLES.md                         |  22 [32m+[m[31m-[m
+[31m|[m  README.md                           |  31 [32m++[m[31m-[m
+[31m|[m  backend/api/__init__.py             |   1 [32m+[m
+[31m|[m  backend/api/metrics.py              | 136 [32m++++++++++[m
+[31m|[m  backend/database/__init__.py        |   1 [32m+[m
+[31m|[m  backend/database/connection.py      |  44 [32m+++[m
+[31m|[m  backend/database/migrations.py      |  75 [32m++++++[m
+[31m|[m  backend/database/models.py          |  79 [32m++++++[m
+[31m|[m  backend/main.py                     | 132 [32m+++++++++[m
+[31m|[m  backend/metrics_server.py           |  47 [32m++++[m
+[31m|[m  backend/services/__init__.py        |   1 [32m+[m
+[31m|[m  backend/services/metrics_service.py |  86 [32m++++++[m
+[31m|[m  backend/services/proxy_service.py   | 371 [32m++++++++++++++++++++++++++[m
+[31m|[m  backend/utils/__init__.py           |   1 [32m+[m
+[31m|[m  backend/utils/config.py             |  43 [32m+++[m
+[31m|[m  docker-compose.yml                  |   2 [32m+[m[31m-[m
+[31m|[m  frontend/src/App.tsx                |  15 [32m++[m
+[31m|[m  frontend/src/types.ts               |   8 [32m+[m
+[31m|[m  shared/__init__.py                  |   1 [32m+[m
+[31m|[m  shared/types.py                     |  68 [32m+++++[m
+[31m|[m  21 files changed, 1164 insertions(+), 6 deletions(-)
+
+* [31m5380016[m -[33m[m Add Origin header tracking to metrics collection [32m(27 hours ago) [1;34m<rewolf>[m[31m|[m 
+[31m|[m  main.py | 107 [32m++++++++++++++++++++++++++++++[m[31m------------------------[m
+[31m|[m  1 file changed, 60 insertions(+), 47 deletions(-)
+
+* [31m06ac040[m -[33m[m Convert layout from column-based to full-screen responsive design [32m(27 hours ago) [1;34m<rewolf>[m[31m|[m 
+[31m|[m  frontend/src/styles/_buttons.scss           |  21 [32m+++[m
+[31m|[m  frontend/src/styles/_language-selector.scss |  27 [32m++++[m
+[31m|[m  frontend/src/styles/_layout.scss            |  39 [32m+++++[m[31m-[m
+[31m|[m  frontend/src/styles/_metrics.scss           | 103 [32m++++++++++++++[m[31m-[m
+[31m|[m  frontend/src/styles/_theme-selector.scss    |  33 [32m+++++[m
+[31m|[m  frontend/src/styles/_typography.scss        |  52 [32m++++++++[m
+[31m|[m  frontend/src/styles/_utilities.scss         | 123 [32m+++++++++++[m[31m-------[m
+[31m|[m  frontend/src/styles/main.scss               |  20 [32m+++[m
+[31m|[m  8 files changed, 369 insertions(+), 49 deletions(-)
+
+* [31m3c20501[m -[33m[m fix: Update theme selector to open upward like language selector [32m(30 hours ago) [1;34m<rewolf>[m[31m|[m 
+[31m|[m  frontend/src/styles/_theme-selector.scss | 7 [32m++++[m[31m---[m
+[31m|[m  1 file changed, 4 insertions(+), 3 deletions(-)
+
+* [31m56ee2a2[m -[33m[m feat: Add browser language detection and localStorage persistence [32m(30 hours ago) [1;34m<rewolf>[m[31m|[m 
+[31m|[m  frontend/src/App.tsx            |  13 [32m++[m[31m-[m
+[31m|[m  frontend/src/core/i18n/index.ts | 174 [32m+++++++++++++++++++++++++++++[m[31m-[m
+[31m|[m  2 files changed, 183 insertions(+), 4 deletions(-)
+
+* [31m815972d[m -[33m[m feat: Add Chinese, Russian, and Korean language support [32m(31 hours ago) [1;34m<rewolf>[m[31m|[m 
+[31m|[m  frontend/src/components/LanguageSelector.tsx |  5 [32m+[m[31m-[m
+[31m|[m  frontend/src/core/i18n/de.ts                 |  3 [32m+[m
+[31m|[m  frontend/src/core/i18n/en.ts                 |  3 [32m+[m
+[31m|[m  frontend/src/core/i18n/es.ts                 |  3 [32m+[m
+[31m|[m  frontend/src/core/i18n/fr.ts                 |  3 [32m+[m
+[31m|[m  frontend/src/core/i18n/ja.ts                 |  3 [32m+[m
+[31m|[m  frontend/src/core/i18n/ko.ts                 | 59 [32m++++++++++++++++++[m
+[31m|[m  frontend/src/core/i18n/ru.ts                 | 59 [32m++++++++++++++++++[m
+[31m|[m  frontend/src/core/i18n/translations.ts       |  8 [32m++[m[31m-[m
+[31m|[m  frontend/src/core/i18n/zh.ts                 | 59 [32m++++++++++++++++++[m
+[31m|[m  frontend/src/types.ts                        |  5 [32m+[m[31m-[m
+[31m|[m  11 files changed, 207 insertions(+), 3 deletions(-)
+
+* [31m82f68f1[m -[33m[m feat: Add comprehensive i18n system and sticky footer with language selector [32m(32 hours ago) [1;34m<rewolf>[m[31m|[m 
+[31m|[m  README.md                                    |   1 [32m+[m
+[31m|[m  frontend/src/App.tsx                         | 118 [32m+++++++++[m[31m--------[m
+[31m|[m  frontend/src/components/LanguageSelector.tsx |  55 [32m++++++++[m
+[31m|[m  frontend/src/core/i18n/de.ts                 |  56 [32m++++++++[m
+[31m|[m  frontend/src/core/i18n/en.ts                 |  56 [32m++++++++[m
+[31m|[m  frontend/src/core/i18n/es.ts                 |  56 [32m++++++++[m
+[31m|[m  frontend/src/core/i18n/fr.ts                 |  56 [32m++++++++[m
+[31m|[m  frontend/src/core/i18n/index.ts              |  23 [32m++++[m
+[31m|[m  frontend/src/core/i18n/ja.ts                 |  56 [32m++++++++[m
+[31m|[m  frontend/src/core/i18n/translations.ts       |  15 [32m+++[m
+[31m|[m  frontend/src/styles/_language-selector.scss  |  93 [32m+++++++++++++[m
+[31m|[m  frontend/src/styles/_layout.scss             |  19 [32m++[m[31m-[m
+[31m|[m  frontend/src/styles/main.scss                |   1 [32m+[m
+[31m|[m  frontend/src/types.ts                        |  58 [32m++++++++[m
+[31m|[m  14 files changed, 605 insertions(+), 58 deletions(-)
+
+* [31md333b5c[m -[33m[m docs: Reorganize documentation structure for better user/developer separation [32m(31 hours ago) [1;34m<rewolf>[m[31m|[m 
+[31m|[m  README.md                               |   5 [32m+[m
+[31m|[m  docs/technical/README.md                |   5 [32m+[m
+[31m|[m  docs/technical/frontend-architecture.md | 210 [32m++++++++++++++++++++++[m
+[31m|[m  frontend/README.md                      |  37 [32m+[m[31m---[m
+[31m|[m  4 files changed, 229 insertions(+), 28 deletions(-)
+
+* [31mc704d0a[m -[33m[m refactor: Convert CSS to SCSS with modular organization [32m(31 hours ago) [1;34m<rewolf>[m[31m|[m 
+[31m|[m  frontend/README.md                       |  28 [32m+[m[31m-[m
+[31m|[m  frontend/package-lock.json               | 391 [32m+++++++++++++++++++++[m
+[31m|[m  frontend/package.json                    |   1 [32m+[m
+[31m|[m  frontend/src/App.css                     | 242 [31m-------------[m
+[31m|[m  frontend/src/App.tsx                     |   2 [32m+[m[31m-[m
+[31m|[m  frontend/src/styles/README.md            |  86 [32m+++++[m
+[31m|[m  frontend/src/styles/_buttons.scss        |  21 [32m++[m
+[31m|[m  frontend/src/styles/_layout.scss         |  36 [32m++[m
+[31m|[m  frontend/src/styles/_metrics.scss        |  60 [32m++++[m
+[31m|[m  frontend/src/styles/_theme-selector.scss |  82 [32m+++++[m
+[31m|[m  frontend/src/styles/_themes.scss         |  60 [32m++++[m
+[31m|[m  frontend/src/styles/_typography.scss     |  48 [32m+++[m
+[31m|[m  frontend/src/styles/_utilities.scss      |  52 [32m+++[m
+[31m|[m  frontend/src/styles/_variables.scss      |  49 [32m+++[m
+[31m|[m  frontend/src/styles/main.scss            |   9 [32m+[m
+[31m|[m  15 files changed, 923 insertions(+), 244 deletions(-)
+
+* [31m3f3f231[m -[33m[m feat: Add theming system to frontend [32m(31 hours ago) [1;34m<rewolf>[m[31m|[m 
+[31m|[m  README.md                                 |   2 [32m+[m[31m-[m
+[31m|[m  frontend/README.md                        |  21 [32m+++[m
+[31m|[m  frontend/src/App.css                      | 163 [32m++++++++++++++++[m[31m----[m
+[31m|[m  frontend/src/App.tsx                      |  25 [32m+++[m
+[31m|[m  frontend/src/components/ThemeSelector.tsx |  67 [32m++++++++[m
+[31m|[m  frontend/src/core/themes/index.ts         | 114 [32m++++++++++++++[m
+[31m|[m  6 files changed, 364 insertions(+), 28 deletions(-)
+
+* [31m71e740c[m -[33m[m Some documentation updates [32m(32 hours ago) [1;34m<rewolf>[m[31m|[m 
+[31m|[m  .gitignore                     |   3 [32m+[m
+[31m|[m  README.md                      |   7 [32m++[m
+[31m|[m  docs/README.md                 |  21 [32m+++++[m
+[31m|[m  docs/technical/README.md       |  50 [32m+++++++++++[m
+[31m|[m  docs/technical/architecture.md | 147 [32m+++++++++++++++++++++++++++++++[m
+[31m|[m  5 files changed, 228 insertions(+)
+
+* [31md9c7fdc[m -[33m[m Major refactor: Remove chat_id, convert to TypeScript, remove API percentages [32m(2 days ago) [1;34m<rewolf>[m[31m|[m 
+[31m|[m  README.md                        |   102 [32m+[m[31m-[m
+[31m|[m  frontend/README.md               |    74 [32m+[m[31m-[m
+[31m|[m  frontend/package-lock.json       | 17388 [32m+++++++++++++++++++++++++++[m
+[31m|[m  frontend/package.json            |     7 [32m+[m[31m-[m
+[31m|[m  frontend/src/App.css             |    13 [32m+[m
+[31m|[m  frontend/src/{App.js => App.tsx} |    84 [32m+[m[31m-[m
+[31m|[m  frontend/src/index.js            |    10 [31m-[m
+[31m|[m  frontend/src/index.tsx           |    15 [32m+[m
+[31m|[m  frontend/src/react-app-env.d.ts  |     1 [32m+[m
+[31m|[m  frontend/src/types.ts            |    42 [32m+[m
+[31m|[m  frontend/src/utils.ts            |    31 [32m+[m
+[31m|[m  frontend/tsconfig.json           |    26 [32m+[m
+[31m|[m  main.py                          |   229 [32m+[m[31m-[m
+[31m|[m  metrics_api.py                   |     6 [32m+[m[31m-[m
+[31m|[m  test_enhanced_metrics.py         |     9 [32m+[m[31m-[m
+[31m|[m  test_streaming_usage.py          |   232 [32m+[m
+[31m|[m  16 files changed, 18128 insertions(+), 141 deletions(-)
+
+* [31m42240bf[m -[33m[m feat: implement comprehensive OpenAI LLM metrics proxy with enhanced monitoring [32m(2 days ago) [1;34m<rewolf>[m[31m|[m 
+[31m|[m  frontend/src/App.css     |  94 [32m+++++++[m[31m---[m
+[31m|[m  frontend/src/App.js      | 146 [32m++++++++++++[m[31m---[m
+[31m|[m  main.py                  | 370 [32m+++++++++++++++++++++++++++++++++[m[31m----[m
+[31m|[m  metrics_api.py           |  78 [32m+++++++[m[31m-[m
+[31m|[m  requirements.txt         |   1 [32m+[m
+[31m|[m  test_enhanced_metrics.py | 156 [32m++++++++++++++++[m
+[31m|[m  6 files changed, 758 insertions(+), 87 deletions(-)
+
+* [31m7369679[m -[33m[m Fix README.md - restore correct content and add EXAMPLES.md link [32m(2 days ago) [1;34m<rewolf>[m[31m|[m 
+[31m|[m  README.md | 151 [32m+[m[31m---------------------------------------------------[m
+[31m|[m  1 file changed, 1 insertion(+), 150 deletions(-)
+
+* [31m0160f11[m -[33m[m Add EXAMPLES.md with deployment examples and standalone docker-compose [32m(2 days ago) [1;34m<rewolf>[m[31m|[m 
+[31m|[m  README.md             | 2 [32m++[m
+[31m|[m  frontend/package.json | 3 [32m+[m[31m--[m
+[31m|[m  frontend/src/App.js   | 5 [32m++++[m[31m-[m
+[31m|[m  3 files changed, 7 insertions(+), 3 deletions(-)
+
+* [31m6754177[m -[33m[m Initial commit: OpenAI LLM Metrics Proxy with separated architecture - proxy server, metrics API, and React frontend [32m(2 days ago) [1;34m<rewolf>[m  
+   .gitignore                    |  73 [32m++++++++++[m
+   Dockerfile                    |  28 [32m++++[m
+   EXAMPLES.md                   | 209 [32m++++++++++++++++++++++++++++[m
+   README.md                     | 292 [32m++++++++++++++++++++++++++++++++++++++++[m
+   docker-compose.standalone.yml |  58 [32m++++++++[m
+   docker-compose.yml            |  58 [32m++++++++[m
+   frontend/Dockerfile           |  24 [32m++++[m
+   frontend/README.md            |  65 [32m+++++++++[m
+   frontend/package.json         |  30 [32m+++++[m
+   frontend/public/index.html    |  14 [32m++[m
+   frontend/src/App.css          |  70 [32m++++++++++[m
+   frontend/src/App.js           |  85 [32m++++++++++++[m
+   frontend/src/index.js         |  10 [32m++[m
+   main.py                       | 137 [32m+++++++++++++++++++[m
+   metrics_api.py                |  96 [32m+++++++++++++[m
+   requirements.txt              |   4 [32m+[m
+   test_proxy.py                 |  94 [32m+++++++++++++[m
+   17 files changed, 1347 insertions(+)

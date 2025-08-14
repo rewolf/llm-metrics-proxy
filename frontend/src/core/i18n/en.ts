@@ -2,7 +2,7 @@ import { Translation } from '../../types';
 
 export const en: Translation = {
   // App title
-  appTitle: 'OpenAI LLM Metrics Dashboard',
+  appTitle: 'LLM Metrics Dashboard',
   
   // Tab labels
   overview: 'Overview',
@@ -49,7 +49,7 @@ export const en: Translation = {
   refreshNow: 'Refresh Now',
   
   // Footer
-  footerText: 'OpenAI LLM Metrics Proxy',
+  footerText: 'LLM Metrics Proxy',
   
   // Language names
   english: 'English',

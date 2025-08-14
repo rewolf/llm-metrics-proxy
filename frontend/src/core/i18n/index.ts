@@ -110,7 +110,7 @@ export function getDefaultLanguage(): Language {
   // First, check if there's a stored language preference
   if (typeof localStorage !== 'undefined') {
     try {
-      const stored = localStorage.getItem('openai-llm-metrics-preferences');
+      const stored = localStorage.getItem('llm-metrics-preferences');
       if (stored) {
         const parsed = JSON.parse(stored);
         if (parsed.language && isValidLanguage(parsed.language)) {
@@ -140,10 +140,10 @@ function isValidLanguage(lang: any): lang is Language {
 export function saveLanguagePreference(language: Language): void {
   if (typeof localStorage !== 'undefined') {
     try {
-      const stored = localStorage.getItem('openai-llm-metrics-preferences');
+      const stored = localStorage.getItem('llm-metrics-preferences');
       const preferences = stored ? JSON.parse(stored) : {};
       preferences.language = language;
-      localStorage.setItem('openai-llm-metrics-preferences', JSON.stringify(preferences));
+      localStorage.setItem('llm-metrics-preferences', JSON.stringify(preferences));
     } catch (error) {
       console.error('Failed to save language preference:', error);
     }
@@ -178,7 +178,7 @@ export function debugLanguageDetection(): {
 export function getStoredLanguagePreference(): Language | null {
   if (typeof localStorage !== 'undefined') {
     try {
-      const stored = localStorage.getItem('openai-llm-metrics-preferences');
+      const stored = localStorage.getItem('llm-metrics-preferences');
       if (stored) {
         const parsed = JSON.parse(stored);
         if (parsed.language && isValidLanguage(parsed.language)) {

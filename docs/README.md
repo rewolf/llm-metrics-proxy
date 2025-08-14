@@ -1,6 +1,6 @@
 # Documentation
 
-This directory contains comprehensive documentation for the OpenAI LLM Metrics Proxy project.
+This directory contains comprehensive documentation for the LLM Metrics Proxy project.
 
 ## 📚 Documentation Structure
 

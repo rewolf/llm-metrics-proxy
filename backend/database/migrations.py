@@ -1,5 +1,5 @@
 """
-Database migration logic for the OpenAI LLM Metrics Proxy.
+Database migration logic for the LLM Metrics Proxy.
 """
 
 import logging

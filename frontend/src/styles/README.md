@@ -1,6 +1,6 @@
 # Frontend Styles
 
-This directory contains all the SCSS styles for the OpenAI LLM Metrics Proxy frontend application.
+This directory contains the SCSS styles for the LLM Metrics Proxy frontend, organized into logical modules for maintainability and scalability.
 
 ## File Structure
 

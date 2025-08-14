@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to the OpenAI LLM Metrics Proxy project will be documented in this file.
+All notable changes to the LLM Metrics Proxy project will be documented in this file.
 
 ## [Unreleased] - 2024-01-15
 

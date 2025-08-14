@@ -1,5 +1,5 @@
 """
-Metrics API endpoints for the OpenAI LLM Metrics Proxy.
+Metrics API endpoints for the LLM Metrics Proxy.
 """
 
 from datetime import datetime, timedelta

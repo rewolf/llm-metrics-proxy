@@ -1,6 +1,6 @@
 # Database Architecture
 
-This document describes the database architecture, migration system, and safety features of the OpenAI LLM Metrics Proxy.
+This document describes the database architecture, migration system, and safety features of the LLM Metrics Proxy.
 
 ## Overview
 
@@ -57,7 +57,7 @@ Multiple backup approaches ensure data safety:
 - **Naming Convention**: `metrics.db.YYYYMMDD_HHMMSS_mmm.backup`
 - **Location Strategy**: 
   - Primary: `db_dir/backups/`
-  - Fallback: `~/.openai_llm_metrics_proxy/backups/`
+  - Fallback: `~/.llm_metrics_proxy/backups/`
   - Production: Fails to start if backups cannot be created
 
 #### Table Backups

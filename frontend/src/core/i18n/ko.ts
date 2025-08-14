@@ -2,7 +2,7 @@ import { Translation } from '../../types';
 
 export const ko: Translation = {
   // App title
-  appTitle: 'OpenAI LLM 메트릭 대시보드',
+  appTitle: 'LLM 메트릭 대시보드',
   
   // Tab labels
   overview: '개요',
@@ -49,7 +49,7 @@ export const ko: Translation = {
   refreshNow: '지금 새로고침',
   
   // Footer
-  footerText: 'OpenAI LLM 메트릭 프록시',
+  footerText: 'LLM 메트릭 프록시',
   
   // Language names
   english: 'English',

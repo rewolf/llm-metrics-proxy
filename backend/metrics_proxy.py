@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-OpenAI LLM Metrics Proxy
+LLM Metrics Proxy
 
-This service proxies requests to the OpenAI backend while collecting
+This service proxies requests to the OpenAI-compatible backend while collecting
 detailed metrics about each request for analysis and monitoring.
 """
 
@@ -25,7 +25,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Initialize FastAPI app
-app = FastAPI(title="OpenAI LLM Metrics Proxy", version="1.0.0")
+app = FastAPI(title="LLM Metrics Proxy", version="1.0.0")
 
 # Enable CORS
 app.add_middleware(
@@ -55,12 +55,12 @@ async def startup_event():
         import sys
         sys.exit(1)
     
-    logger.info(f"OpenAI LLM Metrics Proxy started")
+    logger.info(f"LLM Metrics Proxy started")
     logger.info(f"Proxying to: {Config.get_backend_url()}")
     logger.info(f"Listening on port: {Config.get_proxy_port()}")
     logger.info(f"Metrics dashboard available on separate port")
     
-    print(f"OpenAI LLM Metrics Proxy started")
+    print(f"LLM Metrics Proxy started")
     print(f"Proxying to: {Config.get_backend_url()}")
     print(f"Listening on port: {Config.get_proxy_port()}")
     print(f"Metrics dashboard available on separate port")

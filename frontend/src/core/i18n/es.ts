@@ -2,7 +2,7 @@ import { Translation } from '../../types';
 
 export const es: Translation = {
   // App title
-  appTitle: 'Panel de Métricas OpenAI LLM',
+  appTitle: 'Panel de Métricas LLM',
   
   // Tab labels
   overview: 'Resumen',
@@ -49,7 +49,7 @@ export const es: Translation = {
   refreshNow: 'Actualizar Ahora',
   
   // Footer
-  footerText: 'Proxy de Métricas OpenAI LLM',
+  footerText: 'Proxy de Métricas LLM',
   
   // Language names
   english: 'English',

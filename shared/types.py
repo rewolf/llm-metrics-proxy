@@ -1,5 +1,5 @@
 """
-Shared type definitions for the OpenAI LLM Metrics Proxy.
+Shared type definitions for the LLM Metrics Proxy.
 These types are used by both backend and frontend.
 """
 

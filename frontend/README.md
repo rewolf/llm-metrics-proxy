@@ -1,6 +1,6 @@
-# OpenAI LLM Metrics Frontend
+# LLM Metrics Frontend
 
-A React TypeScript frontend for displaying metrics from the OpenAI LLM Metrics Proxy.
+A React TypeScript frontend for displaying metrics from the LLM Metrics Proxy.
 
 ## Features
 

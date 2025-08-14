@@ -1,5 +1,5 @@
 """
-Database connection management for the OpenAI LLM Metrics Proxy.
+Database connection management for the LLM Metrics Proxy.
 """
 
 import os
