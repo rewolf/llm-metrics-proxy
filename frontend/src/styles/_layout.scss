@@ -170,3 +170,274 @@
     }
   }
 }
+
+// Fluid theme enhancements for layout
+.theme-fluid {
+  .App {
+    background: var(--color-background);
+    color: var(--color-text);
+    
+    // Add subtle gradient background for fluid feel
+    background: linear-gradient(135deg, var(--color-background) 0%, #1a1f2e 100%);
+  }
+  
+  .app-header {
+    border-bottom: 2px solid var(--color-primary);
+    padding-bottom: $spacing-md;
+    background: rgba(22, 27, 34, 0.8);
+    backdrop-filter: blur(10px);
+    
+    h1 {
+      color: var(--color-primary);
+      font-weight: 600;
+      text-shadow: 0 0 10px rgba(233, 30, 99, 0.3);
+      
+      svg {
+        color: var(--color-accent);
+        filter: drop-shadow(0 0 10px rgba(233, 30, 99, 0.4));
+        animation: fluid-header-glow 4s ease-in-out infinite alternate;
+      }
+    }
+  }
+  
+  .app-footer {
+    background: rgba(22, 27, 34, 0.9);
+    border-top: 2px solid var(--color-primary);
+    box-shadow: 0 -5px 20px rgba(233, 30, 99, 0.2);
+    backdrop-filter: blur(10px);
+    
+    .footer-text {
+      color: var(--color-textSecondary);
+      font-weight: 500;
+    }
+    
+    // Add flowing effect to footer icons
+    svg {
+      filter: drop-shadow(0 0 5px rgba(233, 30, 99, 0.3));
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      
+      &:hover {
+        filter: drop-shadow(0 0 10px rgba(233, 30, 99, 0.6));
+        transform: scale(1.1);
+      }
+    }
+  }
+  
+  // Add flowing container effects
+  .container {
+    position: relative;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
+      opacity: 0.3;
+    }
+  }
+}
+
+// Dark theme enhancements for layout
+.theme-dark {
+  .App {
+    background: var(--color-background);
+    color: var(--color-text);
+  }
+  
+  .app-header {
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: $spacing-md;
+    background: var(--color-surface);
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+    box-shadow: var(--shadow-small);
+    
+    h1 {
+      color: var(--color-primary);
+      font-weight: 600;
+      
+      svg {
+        color: var(--color-accent);
+        filter: drop-shadow(0 0 2px rgba(16, 185, 129, 0.2));
+        transition: filter 0.2s ease;
+      }
+      
+      &:hover svg {
+        filter: drop-shadow(0 0 4px rgba(16, 185, 129, 0.4));
+      }
+    }
+  }
+  
+  .app-footer {
+    background: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+    box-shadow: var(--shadow-small);
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    
+    .footer-text {
+      color: var(--color-textSecondary);
+      font-weight: 500;
+    }
+    
+    // Add subtle effects to footer icons
+    svg {
+      filter: drop-shadow(0 0 2px rgba(16, 185, 129, 0.2));
+      transition: all 0.2s ease;
+      
+      &:hover {
+        filter: drop-shadow(0 0 4px rgba(16, 185, 129, 0.4));
+        transform: scale(1.05);
+      }
+    }
+  }
+  
+  // Add subtle depth to containers
+  .container {
+    position: relative;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
+      opacity: 0.2;
+    }
+  }
+  
+  // Add depth classes for different elevation levels
+  .depth-1 {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-small);
+  }
+  
+  .depth-2 {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-medium);
+  }
+  
+  .depth-3 {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-large);
+  }
+}
+
+// Solarized Light theme enhancements for layout
+.theme-solarized-light {
+  .App {
+    background: var(--color-background);
+    color: var(--color-text);
+  }
+  
+  .app-header {
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: $spacing-md;
+    background: var(--color-surface);
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+    box-shadow: var(--shadow-small);
+    
+    h1 {
+      color: var(--color-primary);
+      font-weight: 600;
+      
+      svg {
+        color: var(--color-accent);
+        filter: drop-shadow(0 0 2px rgba(42, 161, 152, 0.2));
+        transition: filter 0.2s ease;
+      }
+      
+      &:hover svg {
+        filter: drop-shadow(0 0 4px rgba(42, 161, 152, 0.4));
+      }
+    }
+  }
+  
+  .app-footer {
+    background: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+    box-shadow: var(--shadow-small);
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    
+    .footer-text {
+      color: var(--color-textSecondary);
+      font-weight: 500;
+    }
+    
+    // Add subtle effects to footer icons
+    svg {
+      filter: drop-shadow(0 0 2px rgba(38, 139, 210, 0.2));
+      transition: all 0.2s ease;
+      
+      &:hover {
+        filter: drop-shadow(0 0 4px rgba(38, 139, 210, 0.4));
+        transform: scale(1.05);
+      }
+    }
+  }
+  
+  // Add subtle depth to containers
+  .container {
+    position: relative;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
+      opacity: 0.3;
+    }
+  }
+  
+  // Add warm depth classes for different elevation levels
+  .depth-1 {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-small);
+  }
+  
+  .depth-2 {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-medium);
+  }
+  
+  .depth-3 {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-large);
+  }
+  
+  // Add paper-like texture to surfaces
+  .paper-surface {
+    background: var(--color-surface);
+    background-image: 
+      radial-gradient(circle at 1px 1px, rgba(101, 123, 131, 0.03) 1px, transparent 0);
+    background-size: 20px 20px;
+  }
+}
+
+// Fluid theme header glow animation
+@keyframes fluid-header-glow {
+  0% {
+    filter: drop-shadow(0 0 10px rgba(233, 30, 99, 0.4));
+  }
+  100% {
+    filter: drop-shadow(0 0 20px rgba(233, 30, 99, 0.7));
+  }
+}

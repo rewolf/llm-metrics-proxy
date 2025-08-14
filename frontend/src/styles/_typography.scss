@@ -161,3 +161,356 @@ h1 {
     letter-spacing: 0.3px;
   }
 }
+
+// Fluid theme enhancements for typography
+.theme-fluid {
+  h1 {
+    color: var(--color-primary);
+    font-weight: 700;
+    text-shadow: 0 0 15px rgba(233, 30, 99, 0.4);
+    position: relative;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--color-primary), var(--color-accent), var(--color-secondary));
+      border-radius: 1px;
+      opacity: 0.7;
+    }
+  }
+  
+  .metric-section h2 {
+    color: var(--color-primary);
+    font-weight: 600;
+    border-bottom: 2px solid var(--color-primary);
+    text-shadow: 0 0 10px rgba(233, 30, 99, 0.3);
+    position: relative;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--color-accent);
+      transition: width 0.3s ease;
+    }
+    
+    &:hover::before {
+      width: 100%;
+    }
+  }
+  
+  .metric h3 {
+    color: var(--color-textSecondary);
+    font-weight: 500;
+    transition: color 0.3s ease;
+    
+    &:hover {
+      color: var(--color-accent);
+    }
+  }
+  
+  .metric .value {
+    color: var(--color-primary);
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(233, 30, 99, 0.3);
+    transition: all 0.3s ease;
+    
+    &:hover {
+      text-shadow: 0 0 15px rgba(233, 30, 99, 0.5);
+      transform: scale(1.02);
+    }
+  }
+  
+  .metric-item .model-name,
+  .metric-item .reason-name,
+  .metric-item .error-name {
+    color: var(--color-text);
+    font-weight: 500;
+    transition: color 0.3s ease;
+    
+    &:hover {
+      color: var(--color-accent);
+    }
+  }
+  
+  .metric-item .model-count,
+  .metric-item .reason-count,
+  .metric-item .error-count {
+    color: var(--color-primary);
+    font-weight: 600;
+    text-shadow: 0 0 5px rgba(233, 30, 99, 0.2);
+  }
+  
+  .metric-note small {
+    color: var(--color-textSecondary);
+    font-style: normal;
+    transition: color 0.3s ease;
+    
+    &:hover {
+      color: var(--color-accent);
+    }
+  }
+  
+  // Add flowing text effects
+  .flowing-text {
+    background: linear-gradient(45deg, var(--color-primary), var(--color-accent), var(--color-secondary));
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: flowing-text-gradient 3s ease infinite;
+  }
+}
+
+// Dark theme enhancements for typography
+.theme-dark {
+  h1 {
+    color: var(--color-primary);
+    font-weight: 600;
+    position: relative;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, var(--color-primary), var(--color-accent), transparent);
+      border-radius: 0.5px;
+      opacity: 0.6;
+    }
+  }
+  
+  .metric-section h2 {
+    color: var(--color-primary);
+    font-weight: 600;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 8px;
+    position: relative;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--color-accent);
+      transition: width 0.2s ease;
+    }
+    
+    &:hover::before {
+      width: 100%;
+    }
+  }
+  
+  .metric h3 {
+    color: var(--color-textSecondary);
+    font-weight: 500;
+    transition: color 0.2s ease;
+    
+    &:hover {
+      color: var(--color-accent);
+    }
+  }
+  
+  .metric .value {
+    color: var(--color-primary);
+    font-weight: 600;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      color: var(--color-accent);
+      transform: scale(1.01);
+    }
+    
+    &.success-rate-value {
+      // Success rate value will use dynamic colors set via inline styles
+    }
+  }
+  
+  .metric-item .model-name,
+  .metric-item .reason-name,
+  .metric-item .error-name {
+    color: var(--color-text);
+    font-weight: 500;
+    transition: color 0.2s ease;
+    
+    &:hover {
+      color: var(--color-accent);
+    }
+  }
+  
+  .metric-item .model-count,
+  .metric-item .reason-count,
+  .metric-item .error-count {
+    color: var(--color-primary);
+    font-weight: 600;
+  }
+  
+  .metric-note small {
+    color: var(--color-textSecondary);
+    font-style: normal;
+    transition: color 0.2s ease;
+    
+    &:hover {
+      color: var(--color-accent);
+    }
+  }
+  
+  // Add clean, modern text effects
+  .clean-text {
+    color: var(--color-text);
+    font-weight: 500;
+  }
+  
+  .accent-text {
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+  
+  .muted-text {
+    color: var(--color-textSecondary);
+    font-weight: 400;
+  }
+}
+
+// Flowing text gradient animation
+@keyframes flowing-text-gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+// Solarized Light theme enhancements for typography
+.theme-solarized-light {
+  h1 {
+    color: var(--color-primary);
+    font-weight: 600;
+    position: relative;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, var(--color-primary), var(--color-accent), transparent);
+      border-radius: 0.5px;
+      opacity: 0.6;
+    }
+  }
+  
+  .metric-section h2 {
+    color: var(--color-primary);
+    font-weight: 600;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 8px;
+    position: relative;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--color-accent);
+      transition: width 0.2s ease;
+    }
+    
+    &:hover::before {
+      width: 100%;
+    }
+  }
+  
+  .metric h3 {
+    color: var(--color-text);
+    font-weight: 500;
+    transition: color 0.2s ease;
+    
+    &:hover {
+      color: var(--color-accent);
+    }
+  }
+  
+  .metric .value {
+    color: var(--color-primary);
+    font-weight: 600;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      color: var(--color-accent);
+      transform: scale(1.01);
+    }
+    
+    &.success-rate-value {
+      // Success rate value will use dynamic colors set via inline styles
+    }
+  }
+  
+  .metric-item .model-name,
+  .metric-item .reason-name,
+  .metric-item .error-name {
+    color: var(--color-text);
+    font-weight: 500;
+    transition: color 0.2s ease;
+    
+    &:hover {
+      color: var(--color-accent);
+    }
+  }
+  
+  .metric-item .model-count,
+  .metric-item .reason-count,
+  .metric-item .error-count {
+    color: var(--color-primary);
+    font-weight: 600;
+  }
+  
+  .metric-note small {
+    color: var(--color-textSecondary);
+    font-style: normal;
+    transition: color 0.2s ease;
+    
+    &:hover {
+      color: var(--color-accent);
+    }
+  }
+  
+  // Add warm, paper-like text effects
+  .warm-text {
+    color: var(--color-text);
+    font-weight: 500;
+  }
+  
+  .accent-text {
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+  
+  .muted-text {
+    color: var(--color-textSecondary);
+    font-weight: 400;
+  }
+  
+  .primary-text {
+    color: var(--color-primary);
+    font-weight: 600;
+  }
+}

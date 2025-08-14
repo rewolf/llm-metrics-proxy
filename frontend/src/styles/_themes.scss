@@ -475,3 +475,473 @@ Examples:
     color: var(--color-background);
   }
 }
+
+.theme-fluid {
+  --color-primary: #e91e63;
+  --color-secondary: #9c27b0;
+  --color-accent: #ff4081;
+  --color-background: #0d1117;
+  --color-surface: #161b22;
+  --color-text: #ffffff;
+  --color-textSecondary: #c9d1d9;
+  --color-text-muted: #c9d1d9;
+  --color-border: #30363d;
+  --color-borderLight: #21262d;
+  --color-success: #00e676;
+  --color-warning: #ffab00;
+  --color-error: #ff5252;
+  --color-metricBackground: #161b22;
+  --color-metricBorder: #e91e63;
+  --color-metricSuccess: #00e676;
+  --color-metricFailed: #ff5252;
+  
+  --border-radius: 16px;
+  --border-width: 2px;
+  --border-style: solid;
+  
+  --shadow-small: 0 4px 12px rgba(233, 30, 99, 0.15);
+  --shadow-medium: 0 8px 24px rgba(233, 30, 99, 0.25);
+  --shadow-large: 0 16px 48px rgba(233, 30, 99, 0.35);
+  
+  // Fluid theme font
+  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  
+  // Fluid theme enhancements
+  font-family: var(--font-family);
+  
+  // Add subtle gradient background effect
+  background: linear-gradient(135deg, var(--color-background) 0%, #1a1f2e 100%);
+  
+  // Enhanced text rendering for fluid theme
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "liga" 1, "calt" 1;
+  
+  // Add subtle flow animation for primary elements
+  animation: fluid-flow 6s ease-in-out infinite;
+}
+
+// Fluid theme animations
+@keyframes fluid-flow {
+  0%, 100% {
+    --color-primary: #e91e63;
+  }
+  50% {
+    --color-primary: #f06292;
+  }
+}
+
+// Add flowing effects for interactive elements
+.theme-fluid *:hover {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+// Enhanced focus states for accessibility
+.theme-fluid *:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: var(--border-radius);
+}
+
+// Fluid theme specific enhancements
+.theme-fluid {
+  // Add flowing border effects
+  .flowing-border {
+    position: relative;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: var(--border-radius);
+      padding: 2px;
+      background: linear-gradient(45deg, var(--color-primary), var(--color-accent), var(--color-secondary));
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask-composite: exclude;
+      animation: flowing-border-rotate 3s linear infinite;
+    }
+  }
+  
+  // Add floating effect for cards
+  .floating-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    
+    &:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-large);
+    }
+  }
+  
+  // Add ripple effect for buttons
+  .ripple-button {
+    position: relative;
+    overflow: hidden;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(233, 30, 99, 0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+    
+    &:active::after {
+      width: 300px;
+      height: 300px;
+    }
+  }
+}
+
+// Flowing border rotation animation
+@keyframes flowing-border-rotate {
+  0% {
+    background: linear-gradient(45deg, var(--color-primary), var(--color-accent), var(--color-secondary));
+  }
+  100% {
+    background: linear-gradient(405deg, var(--color-primary), var(--color-accent), var(--color-secondary));
+  }
+}
+
+// Fluid theme loading and state styles
+.theme-fluid {
+  // Loading state with flowing animation
+  .loading {
+    color: var(--color-primary);
+    text-align: center;
+    animation: fluid-loading 2s ease-in-out infinite;
+    
+    &::after {
+      content: '...';
+      animation: fluid-dots 1.5s infinite;
+    }
+  }
+  
+  // Error state with flowing borders
+  .error {
+    color: var(--color-error);
+    text-align: center;
+    border: 2px solid var(--color-error);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    background: rgba(255, 82, 82, 0.1);
+    box-shadow: var(--shadow-medium);
+    position: relative;
+    overflow: hidden;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 82, 82, 0.2), transparent);
+      animation: fluid-sweep 2s infinite;
+    }
+  }
+  
+  // Success state with flowing effects
+  .success {
+    color: var(--color-success);
+    text-align: center;
+    border: 2px solid var(--color-success);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    background: rgba(0, 230, 118, 0.1);
+    box-shadow: var(--shadow-medium);
+  }
+}
+
+// Fluid loading animation
+@keyframes fluid-loading {
+  0%, 100% {
+    opacity: 1;
+    text-shadow: 0 0 10px rgba(233, 30, 99, 0.5);
+  }
+  50% {
+    opacity: 0.7;
+    text-shadow: 0 0 20px rgba(233, 30, 99, 0.8);
+  }
+}
+
+// Fluid dots animation
+@keyframes fluid-dots {
+  0%, 20% {
+    content: '.';
+  }
+  40% {
+    content: '..';
+  }
+  60%, 100% {
+    content: '...';
+  }
+}
+
+// Fluid sweep animation for error states
+@keyframes fluid-sweep {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+// Performance optimizations for fluid theme
+.theme-fluid {
+  // Optimize animations for better performance
+  will-change: transform, opacity, filter;
+  
+  // Reduce motion for users who prefer it
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+  
+  // High contrast mode support
+  @media (prefers-contrast: high) {
+    --color-primary: #e91e63;
+    --color-text: #ffffff;
+    --color-background: #000000;
+    --color-surface: #000000;
+    --color-border: #e91e63;
+  }
+  
+  // Dark mode preference support
+  @media (prefers-color-scheme: dark) {
+    --color-background: #0d1117;
+    --color-surface: #161b22;
+  }
+  
+  // Light mode preference support (override for fluid theme)
+  @media (prefers-color-scheme: light) {
+    --color-background: #0d1117;
+    --color-surface: #161b22;
+  }
+}
+
+// Print styles for fluid theme
+@media print {
+  .theme-fluid {
+    --color-background: #ffffff;
+    --color-surface: #f8f8f8;
+    --color-text: #000000;
+    --color-primary: #e91e63;
+    --color-border: #e91e63;
+    
+    * {
+      box-shadow: none !important;
+      text-shadow: none !important;
+      animation: none !important;
+    }
+    
+    background: none !important;
+  }
+}
+
+// Fluid theme scrollbar styling
+.theme-fluid {
+  ::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: var(--color-surface);
+    border-radius: var(--border-radius);
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--color-primary), var(--color-accent));
+    border-radius: var(--border-radius);
+    
+    &:hover {
+      background: linear-gradient(180deg, var(--color-accent), var(--color-secondary));
+      box-shadow: var(--shadow-small);
+    }
+  }
+  
+  // Firefox scrollbar styling
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-primary) var(--color-surface);
+  
+  // Selection styling
+  ::selection {
+    background: var(--color-primary);
+    color: var(--color-background);
+  }
+  
+  ::-moz-selection {
+    background: var(--color-primary);
+    color: var(--color-background);
+  }
+}
+
+.theme-dark {
+  --color-primary: #10b981;
+  --color-secondary: #6b7280;
+  --color-accent: #34d399;
+  --color-background: #111827;
+  --color-surface: #1f2937;
+  --color-text: #f9fafb;
+  --color-textSecondary: #d1d5db;
+  --color-text-muted: #d1d5db;
+  --color-border: #374151;
+  --color-borderLight: #4b5563;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  --color-metricBackground: #1f2937;
+  --color-metricBorder: #10b981;
+  --color-metricSuccess: #10b981;
+  --color-metricFailed: #ef4444;
+  
+  --border-radius: 8px;
+  --border-width: 1px;
+  --border-style: solid;
+  
+  --shadow-small: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-medium: 0 4px 6px rgba(0, 0, 0, 0.4);
+  --shadow-large: 0 10px 15px rgba(0, 0, 0, 0.5);
+  
+  // Dark theme font
+  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  
+  // Dark theme enhancements
+  font-family: var(--font-family);
+  
+  // Enhanced text rendering for dark theme
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "liga" 1, "calt" 1;
+  
+  // Add subtle depth with layered backgrounds
+  background: var(--color-background);
+}
+
+// Dark theme specific enhancements
+.theme-dark {
+  // Add subtle depth to surfaces
+  .depth-1 {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-small);
+  }
+  
+  .depth-2 {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-medium);
+  }
+  
+  .depth-3 {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-large);
+  }
+  
+  // Add subtle hover effects
+  .hover-lift {
+    transition: all 0.2s ease;
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-medium);
+    }
+  }
+  
+  // Add subtle focus effects
+  .focus-ring {
+    &:focus {
+      outline: 2px solid var(--color-accent);
+      outline-offset: 2px;
+      border-radius: var(--border-radius);
+    }
+  }
+}
+
+.theme-solarized-light {
+  --color-primary: #268bd2;
+  --color-secondary: #586e75;
+  --color-accent: #2aa198;
+  --color-background: #fdf6e3;
+  --color-surface: #eee8d5;
+  --color-text: #586e75;
+  --color-textSecondary: #839496;
+  --color-text-muted: #839496;
+  --color-border: #93a1a1;
+  --color-borderLight: #b58900;
+  --color-success: #859900;
+  --color-warning: #b58900;
+  --color-error: #dc322f;
+  --color-metricBackground: #eee8d5;
+  --color-metricBorder: #268bd2;
+  --color-metricSuccess: #859900;
+  --color-metricFailed: #dc322f;
+  
+  --border-radius: 6px;
+  --border-width: 1px;
+  --border-style: solid;
+  
+  --shadow-small: 0 1px 3px rgba(101, 123, 131, 0.1);
+  --shadow-medium: 0 2px 8px rgba(101, 123, 131, 0.15);
+  --shadow-large: 0 4px 16px rgba(101, 123, 131, 0.2);
+  
+  // Solarized Light theme font
+  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  
+  // Solarized Light theme enhancements
+  font-family: var(--font-family);
+  
+  // Enhanced text rendering for solarized theme
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "liga" 1, "calt" 1;
+  
+  // Add warm, paper-like background
+  background: var(--color-background);
+}
+
+// Solarized Light theme specific enhancements
+.theme-solarized-light {
+  // Add subtle texture to surfaces
+  .textured-surface {
+    background: var(--color-surface);
+    background-image: 
+      radial-gradient(circle at 1px 1px, rgba(101, 123, 131, 0.03) 1px, transparent 0);
+    background-size: 20px 20px;
+  }
+  
+  // Add warm accent borders
+  .warm-border {
+    border: 1px solid var(--color-borderLight);
+    border-radius: var(--border-radius);
+  }
+  
+  // Add subtle hover effects
+  .hover-warm {
+    transition: all 0.2s ease;
+    
+    &:hover {
+      border-color: var(--color-accent);
+      box-shadow: var(--shadow-medium);
+    }
+  }
+  
+  // Add focus effects with warm colors
+  .focus-warm {
+    &:focus {
+      outline: 2px solid var(--color-accent);
+      outline-offset: 2px;
+      border-radius: var(--border-radius);
+    }
+  }
+}

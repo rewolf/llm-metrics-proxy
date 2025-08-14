@@ -70,6 +70,74 @@ export const THEMES: Theme[] = [
     }
   },
   {
+    id: 'solarized-light',
+    name: 'Solarized Light',
+    description: 'Sophisticated light theme with warm, muted colors',
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
+    colors: {
+      primary: '#268bd2',
+      secondary: '#586e75',
+      accent: '#2aa198',
+      background: '#fdf6e3',
+      surface: '#eee8d5',
+      text: '#586e75',
+      textSecondary: '#839496',
+      border: '#93a1a1',
+      borderLight: '#b58900',
+      success: '#859900',
+      warning: '#b58900',
+      error: '#dc322f',
+      metricBackground: '#eee8d5',
+      metricBorder: '#268bd2',
+      metricSuccess: '#859900',
+      metricFailed: '#dc322f'
+    },
+    borders: {
+      radius: '6px',
+      width: '1px',
+      style: 'solid'
+    },
+    shadows: {
+      small: '0 1px 3px rgba(101, 123, 131, 0.1)',
+      medium: '0 2px 8px rgba(101, 123, 131, 0.15)',
+      large: '0 4px 16px rgba(101, 123, 131, 0.2)'
+    }
+  },
+  {
+    id: 'dark',
+    name: 'Dark',
+    description: 'Sleek dark theme with rounded corners and green accents',
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
+    colors: {
+      primary: '#10b981',
+      secondary: '#6b7280',
+      accent: '#34d399',
+      background: '#111827',
+      surface: '#161b22',
+      text: '#f9fafb',
+      textSecondary: '#c9d1d9',
+      border: '#30363d',
+      borderLight: '#21262d',
+      success: '#10b981',
+      warning: '#ffab00',
+      error: '#ff5252',
+      metricBackground: '#161b22',
+      metricBorder: '#10b981',
+      metricSuccess: '#10b981',
+      metricFailed: '#ff5252'
+    },
+    borders: {
+      radius: '8px',
+      width: '1px',
+      style: 'solid'
+    },
+    shadows: {
+      small: '0 1px 3px rgba(0, 0, 0, 0.3)',
+      medium: '0 4px 6px rgba(0, 0, 0, 0.4)',
+      large: '0 10px 15px rgba(0, 0, 0, 0.5)'
+    }
+  },
+  {
     id: 'terminal',
     name: 'Terminal',
     description: 'Dark terminal theme with Tron-like cyan accents',
@@ -102,6 +170,40 @@ export const THEMES: Theme[] = [
       medium: '0 0 10px rgba(0, 255, 255, 0.5)',
       large: '0 0 20px rgba(0, 255, 255, 0.7)'
     }
+  },
+  {
+    id: 'fluid',
+    name: 'Fluid',
+    description: 'Vibrant magenta and deep blue theme with flowing aesthetics',
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
+    colors: {
+      primary: '#e91e63',
+      secondary: '#9c27b0',
+      accent: '#ff4081',
+      background: '#0d1117',
+      surface: '#161b22',
+      text: '#ffffff',
+      textSecondary: '#c9d1d9',
+      border: '#30363d',
+      borderLight: '#21262d',
+      success: '#00e676',
+      warning: '#ffab00',
+      error: '#ff5252',
+      metricBackground: '#161b22',
+      metricBorder: '#e91e63',
+      metricSuccess: '#00e676',
+      metricFailed: '#ff5252'
+    },
+    borders: {
+      radius: '16px',
+      width: '2px',
+      style: 'solid'
+    },
+    shadows: {
+      small: '0 4px 12px rgba(233, 30, 99, 0.15)',
+      medium: '0 8px 24px rgba(233, 30, 99, 0.25)',
+      large: '0 16px 48px rgba(233, 30, 99, 0.35)'
+    }
   }
 ];
 
@@ -128,7 +230,7 @@ export function applyTheme(theme: Theme): void {
   const body = document.body;
   
   // Remove all existing theme classes
-  body.classList.remove('theme-light', 'theme-terminal');
+  body.classList.remove('theme-light', 'theme-solarized-light', 'theme-dark', 'theme-terminal', 'theme-fluid');
   
   // Add the current theme class
   body.classList.add(`theme-${theme.id}`);

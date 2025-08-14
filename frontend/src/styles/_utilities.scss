@@ -125,3 +125,294 @@
   }
 }
 
+// Fluid theme utility classes
+.theme-fluid {
+  // Fluid-specific text effects
+  .flowing-text {
+    background: linear-gradient(45deg, var(--color-primary), var(--color-accent), var(--color-secondary));
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: flowing-text-gradient 3s ease infinite;
+  }
+  
+  .fluid-glow {
+    text-shadow: 0 0 15px rgba(233, 30, 99, 0.4);
+  }
+  
+  .fluid-border {
+    border: 2px solid var(--color-primary);
+    border-radius: var(--border-radius);
+  }
+  
+  .fluid-shadow {
+    box-shadow: var(--shadow-medium);
+  }
+  
+  // Flowing border effect utility
+  .flowing-border {
+    position: relative;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: var(--border-radius);
+      padding: 2px;
+      background: linear-gradient(45deg, var(--color-primary), var(--color-accent), var(--color-secondary));
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask-composite: exclude;
+      animation: flowing-border-rotate 3s linear infinite;
+    }
+  }
+  
+  // Floating card effect utility
+  .floating-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    
+    &:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-large);
+    }
+  }
+  
+  // Ripple effect utility
+  .ripple-button {
+    position: relative;
+    overflow: hidden;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(233, 30, 99, 0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+    
+    &:active::after {
+      width: 300px;
+      height: 300px;
+    }
+  }
+  
+  // Gradient background utility
+  .gradient-bg {
+    background: linear-gradient(135deg, var(--color-background) 0%, #1a1f2e 100%);
+  }
+  
+  // Backdrop blur utility
+  .backdrop-blur {
+    backdrop-filter: blur(10px);
+    background: rgba(22, 27, 34, 0.8);
+  }
+}
+
+// Dark theme utility classes
+.theme-dark {
+  // Dark theme specific text effects
+  .clean-text {
+    color: var(--color-text);
+    font-weight: 500;
+  }
+  
+  .accent-text {
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+  
+  .muted-text {
+    color: var(--color-textSecondary);
+    font-weight: 400;
+  }
+  
+  // Depth utility classes for layered design
+  .depth-1 {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-small);
+  }
+  
+  .depth-2 {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-medium);
+  }
+  
+  .depth-3 {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-large);
+  }
+  
+  // Hover effects
+  .hover-lift {
+    transition: all 0.2s ease;
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-medium);
+    }
+  }
+  
+  // Focus effects
+  .focus-ring {
+    &:focus {
+      outline: 2px solid var(--color-accent);
+      outline-offset: 2px;
+      border-radius: var(--border-radius);
+    }
+  }
+  
+  // Border utilities
+  .border-primary {
+    border-color: var(--color-primary);
+  }
+  
+  .border-accent {
+    border-color: var(--color-accent);
+  }
+  
+  .border-subtle {
+    border-color: var(--color-border);
+  }
+  
+  // Background utilities
+  .bg-surface {
+    background: var(--color-surface);
+  }
+  
+  .bg-primary {
+    background: var(--color-primary);
+  }
+  
+  .bg-accent {
+    background: var(--color-accent);
+  }
+}
+
+// Solarized Light theme utility classes
+.theme-solarized-light {
+  // Solarized Light theme specific text effects
+  .warm-text {
+    color: var(--color-text);
+    font-weight: 500;
+  }
+  
+  .accent-text {
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+  
+  .muted-text {
+    color: var(--color-textSecondary);
+    font-weight: 400;
+  }
+  
+  .primary-text {
+    color: var(--color-primary);
+    font-weight: 600;
+  }
+  
+  // Warm depth classes for layered design
+  .depth-1 {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-small);
+  }
+  
+  .depth-2 {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-medium);
+  }
+  
+  .depth-3 {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-large);
+  }
+  
+  // Hover effects with warm colors
+  .hover-warm {
+    transition: all 0.2s ease;
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-medium);
+      border-color: var(--color-accent);
+    }
+  }
+  
+  // Focus effects with teal accent
+  .focus-warm {
+    &:focus {
+      outline: 2px solid var(--color-accent);
+      outline-offset: 2px;
+      border-radius: var(--border-radius);
+    }
+  }
+  
+  // Border utilities with warm colors
+  .border-primary {
+    border-color: var(--color-primary);
+  }
+  
+  .border-accent {
+    border-color: var(--color-accent);
+  }
+  
+  .border-warm {
+    border-color: var(--color-borderLight);
+  }
+  
+  .border-subtle {
+    border-color: var(--color-border);
+  }
+  
+  // Background utilities
+  .bg-surface {
+    background: var(--color-surface);
+  }
+  
+  .bg-primary {
+    background: var(--color-primary);
+  }
+  
+  .bg-accent {
+    background: var(--color-accent);
+  }
+  
+  .bg-warm {
+    background: var(--color-background);
+  }
+  
+  // Paper-like texture utility
+  .paper-surface {
+    background: var(--color-surface);
+    background-image: 
+      radial-gradient(circle at 1px 1px, rgba(101, 123, 131, 0.03) 1px, transparent 0);
+    background-size: 20px 20px;
+  }
+  
+  // Warm accent border utility
+  .warm-border {
+    border: 1px solid var(--color-borderLight);
+    border-radius: var(--border-radius);
+  }
+}
+

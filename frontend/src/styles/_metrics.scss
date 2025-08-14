@@ -715,3 +715,406 @@
     }
   }
 }
+
+// Fluid theme enhancements for metrics
+.theme-fluid {
+  .tab-selector {
+    border-bottom: 2px solid var(--color-primary);
+    
+    .tab-button {
+      background: transparent;
+      color: var(--color-textSecondary);
+      border: 2px solid transparent;
+      border-bottom: none;
+      border-radius: var(--border-radius);
+      font-weight: 500;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      
+      &:hover {
+        background: rgba(233, 30, 99, 0.1);
+        color: var(--color-primary);
+        border-color: var(--color-primary);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-small);
+      }
+      
+      &.active {
+        background: var(--color-primary);
+        color: var(--color-background);
+        border-color: var(--color-primary);
+        box-shadow: var(--shadow-medium);
+        transform: translateY(-1px);
+      }
+      
+      .tab-icon {
+        svg {
+          filter: drop-shadow(0 0 5px rgba(233, 30, 99, 0.3));
+          transition: filter 0.3s ease;
+        }
+        
+        &:hover svg {
+          filter: drop-shadow(0 0 10px rgba(233, 30, 99, 0.6));
+        }
+      }
+    }
+  }
+  
+  .metric-section {
+    background: var(--color-surface);
+    border: 2px solid var(--color-border);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-small);
+    transition: all 0.3s ease;
+    
+    &:hover {
+      box-shadow: var(--shadow-medium);
+      transform: translateY(-2px);
+    }
+    
+    h2 {
+      color: var(--color-primary);
+      font-weight: 600;
+      border-bottom: 2px solid var(--color-primary);
+      text-shadow: 0 0 10px rgba(233, 30, 99, 0.2);
+      
+      svg {
+        color: var(--color-accent);
+        filter: drop-shadow(0 0 10px rgba(233, 30, 99, 0.3));
+        animation: fluid-icon-glow 3s ease-in-out infinite alternate;
+      }
+    }
+  }
+  
+  .metric {
+    background: var(--color-surface);
+    border: 2px solid var(--color-border);
+    border-radius: var(--border-radius);
+    border-left: 4px solid var(--color-metricBorder);
+    box-shadow: var(--shadow-small);
+    transition: all 0.3s ease;
+    
+    &:hover {
+      box-shadow: var(--shadow-medium);
+      transform: translateY(-2px);
+      border-left-color: var(--color-accent);
+    }
+    
+    h3 {
+      color: var(--color-text);
+      font-weight: 500;
+    }
+    
+    .value {
+      color: var(--color-primary);
+      font-weight: 600;
+      text-shadow: 0 0 10px rgba(233, 30, 99, 0.2);
+      transition: all 0.3s ease;
+      
+      &.success-rate-value {
+        // Success rate value will use dynamic colors set via inline styles
+        text-shadow: none;
+      }
+    }
+    
+    &.success {
+      border-left-color: var(--color-metricSuccess);
+      box-shadow: 0 0 15px rgba(0, 230, 118, 0.2);
+      
+      &:hover {
+        box-shadow: 0 0 20px rgba(0, 230, 118, 0.3);
+      }
+    }
+    
+    &.failed {
+      border-left-color: var(--color-metricFailed);
+      box-shadow: 0 0 15px rgba(255, 82, 82, 0.2);
+      
+      &:hover {
+        box-shadow: 0 0 20px rgba(255, 82, 82, 0.3);
+      }
+    }
+  }
+  
+  .chart-container {
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-small);
+    transition: all 0.3s ease;
+    
+    &:hover {
+      box-shadow: var(--shadow-medium);
+    }
+  }
+}
+
+// Fluid theme icon glow animation
+@keyframes fluid-icon-glow {
+  0% {
+    filter: drop-shadow(0 0 10px rgba(233, 30, 99, 0.3));
+  }
+  100% {
+    filter: drop-shadow(0 0 20px rgba(233, 30, 99, 0.6));
+  }
+}
+
+// Dark theme enhancements for metrics
+.theme-dark {
+  .tab-selector {
+    border-bottom: 1px solid var(--color-border);
+    
+    .tab-button {
+      background: transparent;
+      color: var(--color-textSecondary);
+      border: 1px solid transparent;
+      border-bottom: none;
+      border-radius: var(--border-radius) var(--border-radius) 0 0;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      
+      &:hover {
+        background: var(--color-surface);
+        color: var(--color-primary);
+        border-color: var(--color-border);
+      }
+      
+      &.active {
+        background: var(--color-surface);
+        color: var(--color-primary);
+        border-color: var(--color-border);
+        border-bottom-color: var(--color-surface);
+        box-shadow: var(--shadow-small);
+      }
+      
+      .tab-icon {
+        svg {
+          filter: drop-shadow(0 0 2px rgba(16, 185, 129, 0.2));
+          transition: filter 0.2s ease;
+        }
+        
+        &:hover svg {
+          filter: drop-shadow(0 0 4px rgba(16, 185, 129, 0.4));
+        }
+      }
+    }
+  }
+  
+  .metric-section {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-small);
+    transition: all 0.2s ease;
+    
+    &:hover {
+      box-shadow: var(--shadow-medium);
+      border-color: var(--color-primary);
+    }
+    
+    h2 {
+      color: var(--color-primary);
+      font-weight: 600;
+      border-bottom: 1px solid var(--color-border);
+      padding-bottom: 8px;
+      
+      svg {
+        color: var(--color-accent);
+        filter: drop-shadow(0 0 2px rgba(16, 185, 129, 0.2));
+        transition: filter 0.2s ease;
+      }
+      
+      &:hover svg {
+        filter: drop-shadow(0 0 4px rgba(16, 185, 129, 0.4));
+      }
+    }
+  }
+  
+  .metric {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    border-left: 3px solid var(--color-metricBorder);
+    box-shadow: var(--shadow-small);
+    transition: all 0.2s ease;
+    
+    &:hover {
+      box-shadow: var(--shadow-medium);
+      border-color: var(--color-primary);
+      transform: translateY(-1px);
+    }
+    
+    h3 {
+      color: var(--color-text);
+      font-weight: 500;
+    }
+    
+    .value {
+      color: var(--color-primary);
+      font-weight: 600;
+      transition: all 0.2s ease;
+      
+      &.success-rate-value {
+        // Success rate value will use dynamic colors set via inline styles
+      }
+    }
+    
+    &.success {
+      border-left-color: var(--color-metricSuccess);
+      box-shadow: 0 0 8px rgba(16, 185, 129, 0.2);
+      
+      &:hover {
+        box-shadow: 0 0 12px rgba(16, 185, 129, 0.3);
+      }
+    }
+    
+    &.failed {
+      border-left-color: var(--color-metricFailed);
+      box-shadow: 0 0 8px rgba(239, 68, 68, 0.2);
+      
+      &:hover {
+        box-shadow: 0 0 12px rgba(239, 68, 68, 0.3);
+      }
+    }
+  }
+  
+  .chart-container {
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-small);
+    transition: all 0.2s ease;
+    
+    &:hover {
+      box-shadow: var(--shadow-medium);
+    }
+  }
+}
+
+// Solarized Light theme enhancements for metrics
+.theme-solarized-light {
+  .tab-selector {
+    border-bottom: 1px solid var(--color-border);
+    
+    .tab-button {
+      background: transparent;
+      color: var(--color-textSecondary);
+      border: 1px solid transparent;
+      border-bottom: none;
+      border-radius: var(--border-radius) var(--border-radius) 0 0;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      
+      &:hover {
+        background: var(--color-surface);
+        color: var(--color-primary);
+        border-color: var(--color-border);
+      }
+      
+      &.active {
+        background: var(--color-surface);
+        color: var(--color-primary);
+        border-color: var(--color-border);
+        border-bottom-color: var(--color-surface);
+        box-shadow: var(--shadow-small);
+      }
+      
+      .tab-icon {
+        svg {
+          filter: drop-shadow(0 0 2px rgba(38, 139, 210, 0.2));
+          transition: filter 0.2s ease;
+        }
+        
+        &:hover svg {
+          filter: drop-shadow(0 0 4px rgba(38, 139, 210, 0.4));
+        }
+      }
+    }
+  }
+  
+  .metric-section {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-small);
+    transition: all 0.2s ease;
+    
+    &:hover {
+      box-shadow: var(--shadow-medium);
+      border-color: var(--color-accent);
+    }
+    
+    h2 {
+      color: var(--color-primary);
+      font-weight: 600;
+      border-bottom: 1px solid var(--color-border);
+      padding-bottom: 8px;
+      
+      svg {
+        color: var(--color-accent);
+        filter: drop-shadow(0 0 2px rgba(42, 161, 152, 0.2));
+        transition: filter 0.2s ease;
+      }
+      
+      &:hover svg {
+        filter: drop-shadow(0 0 4px rgba(42, 161, 152, 0.4));
+      }
+    }
+  }
+  
+  .metric {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    border-left: 3px solid var(--color-metricBorder);
+    box-shadow: var(--shadow-small);
+    transition: all 0.2s ease;
+    
+    &:hover {
+      box-shadow: var(--shadow-medium);
+      border-color: var(--color-accent);
+      transform: translateY(-1px);
+    }
+    
+    h3 {
+      color: var(--color-text);
+      font-weight: 500;
+    }
+    
+    .value {
+      color: var(--color-primary);
+      font-weight: 600;
+      transition: all 0.2s ease;
+      
+      &.success-rate-value {
+        // Success rate value will use dynamic colors set via inline styles
+      }
+    }
+    
+    &.success {
+      border-left-color: var(--color-metricSuccess);
+      box-shadow: 0 0 8px rgba(133, 153, 0, 0.2);
+      
+      &:hover {
+        box-shadow: 0 0 12px rgba(133, 153, 0, 0.3);
+      }
+    }
+    
+    &.failed {
+      border-left-color: var(--color-metricFailed);
+      box-shadow: 0 0 8px rgba(220, 50, 47, 0.2);
+      
+      &:hover {
+        box-shadow: 0 0 12px rgba(220, 50, 47, 0.3);
+      }
+    }
+  }
+  
+  .chart-container {
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-small);
+    transition: all 0.2s ease;
+    
+    &:hover {
+      box-shadow: var(--shadow-medium);
+    }
+  }
+}
