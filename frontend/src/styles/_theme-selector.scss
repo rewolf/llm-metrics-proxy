@@ -142,6 +142,7 @@
   
   .theme-selector-item {
     border-bottom: 1px solid var(--color-borderLight);
+    color: var(--color-text); // Ensure text is visible
     
     &:last-child {
       border-bottom: none;
@@ -157,5 +158,9 @@
       color: var(--color-background);
       border-left: 4px solid var(--color-accent);
     }
+  }
+  
+  .theme-selector-item-description {
+    color: var(--color-textSecondary); // Ensure description text is also visible
   }
 }
