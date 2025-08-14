@@ -55,7 +55,6 @@ class Metrics:
     total_requests: int
     successful_requests: int
     failed_requests: int
-    recent_requests_24h: int
     
     # Success rate
     success_rate: float

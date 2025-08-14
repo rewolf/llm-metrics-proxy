@@ -26,7 +26,6 @@ Returns aggregated metrics for the system with optional date filtering.
   "total_requests": 150,
   "successful_requests": 145,
   "failed_requests": 5,
-  "recent_requests_24h": 25,
   "streaming_requests": 80,
   "non_streaming_requests": 70,
   "total_tokens_used": 15000,

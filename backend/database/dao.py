@@ -291,7 +291,6 @@ class CompletionRequestsDAO:
                 total_requests=total_requests,
                 successful_requests=successful_requests,
                 failed_requests=failed_requests,
-                recent_requests_24h=total_requests,  # TODO: Implement proper 24h filtering
                 success_rate=success_rate,
                 streaming_requests=streaming_requests,
                 non_streaming_requests=non_streaming_requests,
