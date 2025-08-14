@@ -4,7 +4,8 @@ This directory contains technical documentation for the LLM Metrics Proxy projec
 
 ## Contents
 
-- [API Documentation](api.md) - API endpoints and usage
+- [API Documentation](api-spec.md) - API endpoints and usage
+- [API Specification](api-spec.md) - Comprehensive API schemas and specifications
 - [Architecture Overview](architecture.md) - System architecture and design
 - [Frontend Architecture](frontend-architecture.md) - Frontend design and implementation
 - [Frontend Folder Structure](folder-structure.md) - Frontend code organization and architecture

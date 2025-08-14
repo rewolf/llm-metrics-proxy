@@ -157,19 +157,22 @@ export const aggregateRequestsByTime = <T>(
   requests.forEach(request => {
     // Convert UTC timestamp to local timezone before processing
     const localTimestamp = convertUTCToLocal(request.timestamp);
-    const bucketKey = Math.floor(localTimestamp.getTime() / bucketSize) * bucketSize;
-    const bucketTime = new Date(bucketKey);
-    const bucketISO = bucketTime.toISOString();
     
-    // Find the closest bucket (within half a bucket size)
-    const closestBucket = buckets.find(bucket => {
+    // Find the bucket that contains this timestamp
+    const requestTime = localTimestamp.getTime();
+    
+    // Find the bucket that contains this request time
+    const targetBucket = buckets.find(bucket => {
       const bucketDate = new Date(bucket);
-      const diff = Math.abs(bucketDate.getTime() - bucketKey);
-      return diff < bucketSize / 2;
+      const bucketStart = bucketDate.getTime();
+      const bucketEnd = bucketStart + bucketSize;
+      
+      // Check if request time falls within this bucket
+      return requestTime >= bucketStart && requestTime < bucketEnd;
     });
     
-    if (closestBucket && bucketData.has(closestBucket)) {
-      bucketData.get(closestBucket)!.push(request);
+    if (targetBucket && bucketData.has(targetBucket)) {
+      bucketData.get(targetBucket)!.push(request);
     }
   });
   

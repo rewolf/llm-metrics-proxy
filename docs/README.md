@@ -11,7 +11,7 @@ Documentation for human developers and users to understand the project architect
 
 - **Getting Started**: [Technical README](./technical/README.md)
 - **Architecture Overview**: [Technical Architecture](./technical/architecture.md)
-- **API Reference**: [Technical API](./technical/api.md)
+- **API Reference**: [Technical API](./technical/api-spec.md)
 
 ## 📖 Documentation Guidelines
 

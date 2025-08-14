@@ -83,7 +83,7 @@ The frontend includes a dynamic theming system:
 - **Light**: Clean, modern light theme (default)
 
 ### Adding Themes
-See `docs/ai-context/frontend-theming.md` for detailed implementation guide.
+See the theme system implementation in `src/core/themes/` for detailed examples and the `src/styles/README.md` for styling guidelines.
 
 ## Development
 
