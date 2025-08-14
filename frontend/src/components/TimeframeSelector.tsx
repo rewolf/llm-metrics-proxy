@@ -1,12 +1,7 @@
 import React from 'react';
-import { Language } from '../types';
+import { Language, Timeframe } from '../types';
 import { getTranslation } from '../core/i18n';
-
-export interface Timeframe {
-  id: string;
-  label: string;
-  hours: number;
-}
+import { AVAILABLE_TIMEFRAMES } from '../core/timeframes';
 
 interface TimeframeSelectorProps {
   currentTimeframe: string;
@@ -21,15 +16,10 @@ export const TimeframeSelector: React.FC<TimeframeSelectorProps> = ({
 }) => {
   const t = getTranslation(currentLanguage);
   
-  const timeframes: Timeframe[] = [
-    { id: '1h', label: t.timeframe1h, hours: 1 },
-    { id: '6h', label: t.timeframe6h, hours: 6 },
-    { id: '12h', label: t.timeframe12h, hours: 12 },
-    { id: '1d', label: t.timeframe1d, hours: 24 },
-    { id: '1w', label: t.timeframe1w, hours: 168 },
-    { id: '1mo', label: t.timeframe1mo, hours: 720 },
-    { id: 'all', label: t.timeframeAll, hours: 0 }
-  ];
+  const timeframes: Timeframe[] = AVAILABLE_TIMEFRAMES.map(tf => ({
+    ...tf,
+    label: t[`timeframe${tf.id.charAt(0).toUpperCase() + tf.id.slice(1)}` as keyof typeof t] || tf.label
+  }));
 
   return (
     <div className="timeframe-selector">

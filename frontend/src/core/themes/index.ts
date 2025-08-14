@@ -258,8 +258,119 @@ export function applyTheme(theme: Theme): void {
 }
 
 /**
- * Gets the default theme ID
+ * Detects the user's preferred color scheme from OS/browser settings
+ * Falls back to 'light' if no preference is detected
+ */
+export function detectUserColorScheme(): 'light' | 'dark' {
+  // Check if we're in a browser environment
+  if (typeof window === 'undefined' || typeof window.matchMedia === 'undefined') {
+    return 'light';
+  }
+
+  // Check if user prefers dark mode
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+  
+  if (prefersDark) return 'dark';
+  if (prefersLight) return 'light';
+  
+  // Default to light if no preference
+  return 'light';
+}
+
+/**
+ * Gets the stored theme preference from localStorage (if any)
+ */
+export function getStoredThemePreference(): string | null {
+  if (typeof localStorage !== 'undefined') {
+    try {
+      const stored = localStorage.getItem('llm-metrics-preferences');
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (parsed.theme && isValidTheme(parsed.theme)) {
+          return parsed.theme;
+        }
+      }
+    } catch (error) {
+      // Ignore errors
+    }
+  }
+  return null;
+}
+
+/**
+ * Checks if a theme ID is valid and supported
+ */
+function isValidTheme(themeId: any): themeId is string {
+  return typeof themeId === 'string' && THEMES.some(theme => theme.id === themeId);
+}
+
+/**
+ * Saves theme preference to localStorage
+ */
+export function saveThemePreference(themeId: string): void {
+  if (typeof localStorage !== 'undefined') {
+    try {
+      const stored = localStorage.getItem('llm-metrics-preferences');
+      const preferences = stored ? JSON.parse(stored) : {};
+      preferences.theme = themeId;
+      localStorage.setItem('llm-metrics-preferences', JSON.stringify(preferences));
+    } catch (error) {
+      console.error('Failed to save theme preference:', error);
+    }
+  }
+}
+
+/**
+ * Gets the default theme ID, prioritizing stored preferences over OS detection
  */
 export function getDefaultThemeId(): string {
-  return 'light';
+  // First, check if there's a stored theme preference
+  const storedTheme = getStoredThemePreference();
+  if (storedTheme) {
+    return storedTheme;
+  }
+  
+  // If no stored preference, use OS color scheme detection
+  const preferredScheme = detectUserColorScheme();
+  
+  // Map the preferred scheme to available themes
+  if (preferredScheme === 'dark') {
+    // Prefer the 'dark' theme for dark mode
+    return 'dark';
+  } else {
+    // Prefer the 'light' theme for light mode
+    return 'light';
+  }
+}
+
+/**
+ * Debug function to see what theme detection found
+ * Useful for development and troubleshooting
+ */
+export function debugThemeDetection(): {
+  prefersColorScheme: string | null;
+  detectedColorScheme: 'light' | 'dark';
+  availableThemes: string[];
+  storedThemePreference: string | null;
+  finalTheme: string;
+} {
+  let prefersColorScheme: string | null = null;
+  
+  if (typeof window !== 'undefined' && typeof window.matchMedia !== 'undefined') {
+    const darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const lightQuery = window.matchMedia('(prefers-color-scheme: light)');
+    
+    if (darkQuery.matches) prefersColorScheme = 'dark';
+    else if (lightQuery.matches) prefersColorScheme = 'light';
+    else prefersColorScheme = 'no-preference';
+  }
+
+  return {
+    prefersColorScheme,
+    detectedColorScheme: detectUserColorScheme(),
+    availableThemes: THEMES.map(theme => theme.id),
+    storedThemePreference: getStoredThemePreference(),
+    finalTheme: getDefaultThemeId()
+  };
 }

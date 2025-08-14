@@ -10,8 +10,9 @@ import {
   TimeframeSelector
 } from './components';
 import { OverviewTab, StreamedTab, NonStreamedTab } from './features';
-import { getAllThemes, applyTheme, getDefaultThemeId } from './core/themes';
+import { getAllThemes, applyTheme, getDefaultThemeId, saveThemePreference, getStoredThemePreference, debugThemeDetection } from './core/themes';
 import { getTranslation, getDefaultLanguage, saveLanguagePreference, debugLanguageDetection } from './core/i18n';
+import { getDefaultTimeframeId, saveTimeframePreference, debugTimeframeDetection } from './core/timeframes';
 import { 
   RobotIcon,
   DashboardIcon,
@@ -32,7 +33,7 @@ function App(): JSX.Element {
   const [currentThemeId, setCurrentThemeId] = useState<string>(getDefaultThemeId());
   const [currentLanguage, setCurrentLanguage] = useState<Language>(getDefaultLanguage());
   const [activeTab, setActiveTab] = useState<string>('overview');
-  const [currentTimeframe, setCurrentTimeframe] = useState<string>('all');
+  const [currentTimeframe, setCurrentTimeframe] = useState<string>(getDefaultTimeframeId());
   
   // Get current translations
   const t = getTranslation(currentLanguage);
@@ -49,6 +50,14 @@ function App(): JSX.Element {
     setCurrentLanguage(language);
     saveLanguagePreference(language);
   };
+
+  // Handle theme change and persist preference
+  const handleThemeChange = (themeId: string) => {
+    setCurrentThemeId(themeId);
+    saveThemePreference(themeId);
+  };
+
+
 
   const getTimeframeDates = (timeframe: string): { start?: string; end?: string } => {
     if (timeframe === 'all') {
@@ -101,6 +110,7 @@ function App(): JSX.Element {
 
   const handleTimeframeChange = (timeframe: string) => {
     setCurrentTimeframe(timeframe);
+    saveTimeframePreference(timeframe);
     setLoading(true);
   };
 
@@ -121,6 +131,12 @@ function App(): JSX.Element {
     // Log language detection results for debugging
     console.log('🌐 Language Detection Results:', debugLanguageDetection());
     
+    // Log theme detection results for debugging
+    console.log('🎨 Theme Detection Results:', debugThemeDetection());
+    
+    // Log timeframe detection results for debugging
+    console.log('⏰ Timeframe Detection Results:', debugTimeframeDetection());
+    
     return () => clearInterval(interval);
   }, [currentTimeframe]);
 
@@ -131,6 +147,23 @@ function App(): JSX.Element {
       applyTheme(theme);
     }
   }, [currentThemeId]);
+
+  // Listen for OS theme changes and update if no stored preference
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    
+    const handleThemeChange = (e: MediaQueryListEvent) => {
+      // Only auto-update if user hasn't set a stored preference
+      if (!getStoredThemePreference()) {
+        const newThemeId = e.matches ? 'dark' : 'light';
+        setCurrentThemeId(newThemeId);
+      }
+    };
+
+    mediaQuery.addEventListener('change', handleThemeChange);
+    
+    return () => mediaQuery.removeEventListener('change', handleThemeChange);
+  }, []);
 
   if (loading) {
     return <div className="App loading">{t.loadingMetrics}</div>;
@@ -228,7 +261,7 @@ function App(): JSX.Element {
             />
             <ThemeSelector
               currentThemeId={currentThemeId}
-              onThemeChange={setCurrentThemeId}
+              onThemeChange={handleThemeChange}
             />
           </div>
         </div>

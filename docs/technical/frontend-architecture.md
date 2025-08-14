@@ -67,6 +67,41 @@ The styles are organized using SCSS partials for better maintainability and scal
 - **Functions**: CSS custom property fallbacks
 - **Import System**: Modular file organization
 
+## User Preferences System
+
+### LocalStorage Persistence
+
+The application stores user preferences in LocalStorage under the key `llm-metrics-preferences`:
+
+```json
+{
+  "language": "en",
+  "theme": "dark",
+  "timeframe": "1d"
+}
+```
+
+### Theme Persistence
+
+- **Stored Preferences**: User-selected themes are saved to LocalStorage
+- **OS Detection**: Automatically detects `prefers-color-scheme` media query
+- **Fallback Logic**: Stored preference > OS preference > default theme
+- **Dynamic Updates**: Listens for OS theme changes when no stored preference exists
+
+### Timeframe Persistence
+
+- **Stored Preferences**: User-selected timeframes are saved to LocalStorage
+- **Default Logic**: Stored preference > default timeframe ('all')
+- **Available Timeframes**: 1h, 6h, 12h, 1d, 1w, 1mo, all
+- **Smart Defaults**: 'all' provides comprehensive data view for new users
+
+### Language Persistence
+
+- **Stored Preferences**: User-selected languages are saved to LocalStorage
+- **Browser Detection**: Uses `navigator.languages` and `navigator.language`
+- **Fallback Logic**: Stored preference > browser language > English
+- **Supported Languages**: EN, ES, FR, DE, JA, ZH, RU, KO
+
 ## Theming System
 
 ### Architecture
@@ -77,6 +112,7 @@ The theming system uses CSS custom properties applied at the document root:
 2. **CSS Application**: Properties applied via `document.documentElement.style`
 3. **Fallback Values**: SCSS variables provide default values
 4. **Dynamic Switching**: Themes can be changed without page reload
+5. **Persistence**: User preferences saved to LocalStorage
 
 ### Theme Structure
 
