@@ -27,26 +27,22 @@ export const fr: Translation = {
   streamingRequests: 'Requêtes en Streaming',
   nonStreamingRequests: 'Requêtes Non-Streaming',
   streamingPercentage: 'Pourcentage de Streaming',
-  totalTokensUsed: 'Total des Tokens Utilisés',
-  avgTokensPerRequest: 'Moyenne des Tokens par Requête',
+  totalTokensUsed: 'Total des Jetons Utilisés',
+  avgTokensPerRequest: 'Moyenne des Jetons par Demande',
   avgResponseTime: 'Temps de Réponse Moyen',
-  avgTokensPerSecond: 'Moyenne des Tokens par Seconde',
-  lastUpdated: 'Dernière Mise à Jour',
+  avgTokensPerSecond: 'Moyenne des Jetons par Seconde',
   
   // Streaming-specific metrics
-  timeToFirstToken: 'Temps jusqu\'au Premier Token',
-  timeToLastToken: 'Temps jusqu\'au Dernier Token',
+  timeToFirstToken: 'Temps jusqu\'au Premier Jeton',
+  timeToLastToken: 'Temps jusqu\'au Dernier Jeton',
   completionDuration: 'Durée de Complétion',
-  streamedRequestsCount: 'Requêtes en Streaming',
+  streamedRequestsCount: 'Demandes en Streaming',
   streamedRequestsPercent: 'Pourcentage du Total',
   
   // Non-streaming specific metrics
-  nonStreamedRequestsCount: 'Requêtes Non-Streaming',
+  nonStreamedRequestsCount: 'Demandes Non-Streaming',
   nonStreamedRequestsPercent: 'Pourcentage du Total',
-  tokensPerRequest: 'Tokens par Requête',
-  
-  // Button text
-  refreshNow: 'Actualiser Maintenant',
+  tokensPerRequest: 'Jetons par Demande',
   
   // Footer
   footerText: 'Proxy de Métriques LLM',
@@ -62,9 +58,10 @@ export const fr: Translation = {
   korean: '한국어',
   
   // Notes and warnings
-  tokenUsageNote: '⚠️ L\'utilisation des tokens n\'est disponible que pour les requêtes non-streaming. Les requêtes en streaming affichent des métriques de temps à la place.',
-  performanceNote: '📊 Le temps de réponse inclut à la fois les requêtes en streaming et non-streaming. Le temps jusqu\'au premier token montre la performance du streaming.',
-  streamingPerformanceNote: '📊 Ces métriques ne sont disponibles que pour les requêtes demandant explicitement des métriques d\'utilisation.',
+  tokenUsageNote: 'L\'utilisation des tokens n\'est disponible que pour les requêtes non-streaming. Les requêtes en streaming affichent des métriques de temps à la place.',
+  performanceNote: 'Le temps de réponse inclut à la fois les requêtes en streaming et non-streaming. Le temps jusqu\'au premier token montre la performance du streaming.',
+  streamingPerformanceNote: 'Ces métriques ne sont disponibles que pour les requêtes demandant explicitement des métriques d\'utilisation.',
+  usageStatsNote: 'Les statistiques d\'utilisation peuvent être activées par les clients lors de l\'appel à /v1/chat/messages en ajoutant "stream_options": {"include_usage":true} à leur payload.',
   requests: 'requêtes',
   times: 'fois',
   tokensPerSecond: 'tokens/s',

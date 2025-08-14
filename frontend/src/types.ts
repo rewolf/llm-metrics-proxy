@@ -73,7 +73,6 @@ export interface Translation {
   avgTokensPerRequest: string;
   avgResponseTime: string;
   avgTokensPerSecond: string;
-  lastUpdated: string;
   
   // Streaming-specific metrics
   timeToFirstToken: string;
@@ -86,9 +85,6 @@ export interface Translation {
   nonStreamedRequestsCount: string;
   nonStreamedRequestsPercent: string;
   tokensPerRequest: string;
-  
-  // Button text
-  refreshNow: string;
   
   // Footer
   footerText: string;
@@ -107,6 +103,7 @@ export interface Translation {
   tokenUsageNote: string;
   performanceNote: string;
   streamingPerformanceNote: string;
+  usageStatsNote: string;
   requests: string;
   times: string;
   tokensPerSecond: string;

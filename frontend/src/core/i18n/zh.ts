@@ -31,7 +31,7 @@ export const zh: Translation = {
   avgTokensPerRequest: '每个请求的平均令牌数',
   avgResponseTime: '平均响应时间',
   avgTokensPerSecond: '每秒平均令牌数',
-  lastUpdated: '最后更新',
+
   
   // Streaming-specific metrics
   timeToFirstToken: '到第一个令牌的时间',
@@ -45,8 +45,7 @@ export const zh: Translation = {
   nonStreamedRequestsPercent: '占总数的百分比',
   tokensPerRequest: '每个请求的令牌数',
   
-  // Button text
-  refreshNow: '立即刷新',
+
   
   // Footer
   footerText: 'LLM 指标代理',
@@ -62,9 +61,10 @@ export const zh: Translation = {
   korean: '한국어',
   
   // Notes and warnings
-  tokenUsageNote: '⚠️ 令牌使用量仅适用于非流式请求。流式请求显示时间指标。',
-  performanceNote: '📊 响应时间包括流式和非流式请求。到第一个令牌的时间显示流式性能。',
-  streamingPerformanceNote: '📊 这些指标仅适用于明确请求使用指标的请求。',
+  tokenUsageNote: '令牌使用量仅适用于非流式请求。流式请求显示时间指标。',
+  performanceNote: '响应时间包括流式和非流式请求。到第一个令牌的时间显示流式性能。',
+  streamingPerformanceNote: '这些指标仅适用于明确请求使用指标的请求。',
+  usageStatsNote: '使用统计可以通过客户端在调用 /v1/chat/messages 时在有效载荷中添加 "stream_options": {"include_usage":true} 来启用。',
   requests: '请求',
   times: '次',
   tokensPerSecond: '令牌/秒',

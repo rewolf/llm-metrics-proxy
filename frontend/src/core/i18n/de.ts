@@ -31,7 +31,7 @@ export const de: Translation = {
   avgTokensPerRequest: 'Durchschnittliche Tokens pro Anfrage',
   avgResponseTime: 'Durchschnittliche Antwortzeit',
   avgTokensPerSecond: 'Durchschnittliche Tokens pro Sekunde',
-  lastUpdated: 'Zuletzt aktualisiert',
+
   
   // Streaming-specific metrics
   timeToFirstToken: 'Zeit bis zum ersten Token',
@@ -45,8 +45,7 @@ export const de: Translation = {
   nonStreamedRequestsPercent: 'Prozent der Gesamten',
   tokensPerRequest: 'Tokens pro Anfrage',
   
-  // Button text
-  refreshNow: 'Jetzt aktualisieren',
+
   
   // Footer
   footerText: 'LLM Metriken Proxy',
@@ -62,9 +61,10 @@ export const de: Translation = {
   korean: '한국어',
   
   // Notes and warnings
-  tokenUsageNote: '⚠️ Token-Verbrauch ist nur für Nicht-Streaming-Anfragen verfügbar. Streaming-Anfragen zeigen stattdessen Zeitmetriken.',
-  performanceNote: '📊 Antwortzeit umfasst sowohl Streaming- als auch Nicht-Streaming-Anfragen. Zeit bis zum ersten Token zeigt Streaming-Leistung.',
-  streamingPerformanceNote: '📊 Diese Metriken sind nur für Anfragen verfügbar, die explizit Nutzungsmetriken anfordern.',
+  tokenUsageNote: 'Token-Verbrauch ist nur für Nicht-Streaming-Anfragen verfügbar. Streaming-Anfragen zeigen stattdessen Zeitmetriken.',
+  performanceNote: 'Antwortzeit umfasst sowohl Streaming- als auch Nicht-Streaming-Anfragen. Zeit bis zum ersten Token zeigt Streaming-Leistung.',
+  streamingPerformanceNote: 'Diese Metriken sind nur für Anfragen verfügbar, die explizit Nutzungsmetriken anfordern.',
+  usageStatsNote: 'Nutzungsstatistiken können von Clients aktiviert werden, wenn sie /v1/chat/messages aufrufen, indem sie "stream_options": {"include_usage":true} zu ihrer Payload hinzufügen.',
   requests: 'Anfragen',
   times: 'mal',
   tokensPerSecond: 'Tokens/s',

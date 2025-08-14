@@ -321,6 +321,10 @@ function App(): JSX.Element {
         <div className="metric-note">
           <small>{t.streamingPerformanceNote}</small>
         </div>
+        
+        <div className="metric-note">
+          <small>{t.usageStatsNote}</small>
+        </div>
       </div>
     </>
   );
@@ -418,16 +422,7 @@ function App(): JSX.Element {
       
       <div className="metrics">
         {renderTabContent()}
-        
-        <div className="metric">
-          <h3>{t.lastUpdated}</h3>
-          <div className="value">{metrics.timestamp}</div>
-        </div>
       </div>
-      
-      <button onClick={fetchMetrics} className="refresh-btn">
-        {t.refreshNow}
-      </button>
       
       <footer className="app-footer">
         <div className="footer-content">

@@ -31,7 +31,7 @@ export const ja: Translation = {
   avgTokensPerRequest: 'リクエストあたりの平均トークン数',
   avgResponseTime: '平均応答時間',
   avgTokensPerSecond: '1秒あたりの平均トークン数',
-  lastUpdated: '最終更新',
+
   
   // Streaming-specific metrics
   timeToFirstToken: '最初のトークンまでの時間',
@@ -45,8 +45,7 @@ export const ja: Translation = {
   nonStreamedRequestsPercent: '総数に対する割合',
   tokensPerRequest: 'リクエストあたりのトークン数',
   
-  // Button text
-  refreshNow: '今すぐ更新',
+
   
   // Footer
   footerText: 'LLM メトリクスプロキシ',
@@ -62,9 +61,10 @@ export const ja: Translation = {
   korean: '한국어',
   
   // Notes and warnings
-  tokenUsageNote: '⚠️ トークン使用量は非ストリーミングリクエストでのみ利用可能です。ストリーミングリクエストでは時間メトリクスが表示されます。',
-  performanceNote: '📊 応答時間にはストリーミングと非ストリーミングの両方のリクエストが含まれます。最初のトークンまでの時間はストリーミングのパフォーマンスを示します。',
-  streamingPerformanceNote: '📊 これらのメトリクスは、使用量メトリクスを明示的に要求するリクエストでのみ利用可能です。',
+  tokenUsageNote: 'トークン使用量は非ストリーミングリクエストでのみ利用可能です。ストリーミングリクエストでは時間メトリクスが表示されます。',
+  performanceNote: '応答時間にはストリーミングと非ストリーミングの両方のリクエストが含まれます。最初のトークンまでの時間はストリーミングのパフォーマンスを示します。',
+  streamingPerformanceNote: 'これらのメトリクスは、使用量メトリクスを明示的に要求するリクエストでのみ利用可能です。',
+  usageStatsNote: '使用統計は、クライアントが/v1/chat/messagesを呼び出す際に、ペイロードに"stream_options": {"include_usage":true}を追加することで有効にできます。',
   requests: 'リクエスト',
   times: '回',
   tokensPerSecond: 'トークン/秒',
