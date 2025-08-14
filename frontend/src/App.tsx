@@ -1,25 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import './styles/main.scss';
 import { Metrics, Language, CompletionRequestData, Timeframe } from './types';
-import { calculatePercentage, formatNumber, formatResponseTime, getTimeframeRange } from './utils';
-import { ThemeSelector } from './components/ThemeSelector';
-import { LanguageSelector } from './components/LanguageSelector';
-import { TabSelector, Tab } from './components/TabSelector';
-import { TimeframeSelector } from './components/TimeframeSelector';
-import { RequestCountChart } from './components/RequestCountChart';
-import { ResponseTimeChart } from './components/ResponseTimeChart';
+import { getTimeframeRange } from './utils';
+import { 
+  ThemeSelector,
+  LanguageSelector,
+  TabSelector, 
+  Tab,
+  TimeframeSelector
+} from './components';
+import { OverviewTab, StreamedTab, NonStreamedTab } from './features';
 import { getAllThemes, applyTheme, getDefaultThemeId } from './core/themes';
 import { getTranslation, getDefaultLanguage, saveLanguagePreference, debugLanguageDetection } from './core/i18n';
 import { 
-  DashboardIcon, 
-  StreamingIcon, 
-  DocumentIcon, 
-  PerformanceIcon, 
-  RobotIcon, 
-  GlobeIcon, 
-  FinishIcon, 
-  ErrorIcon,
-  TokenIcon
+  RobotIcon,
+  DashboardIcon,
+  StreamingIcon,
+  DocumentIcon
 } from './assets/icons';
 
 // Use environment variable or default to localhost since browser runs on host
@@ -145,272 +142,47 @@ function App(): JSX.Element {
     return <div className="App">{t.noMetricsData}</div>;
   }
 
-  // Render Overview Tab Content
-  const renderOverviewTab = () => (
-    <>
-      {/* Basic Stats */}
-      <div className="metric-section">
-        <h2><DashboardIcon /> {t.basicStatistics}</h2>
-        <div className="metric-split-layout">
-          <div className="metric-left">
-            <div className="metric-grid">
-              <div className="metric">
-                <h3>{t.totalCompletionRequests}</h3>
-                <div className="value">{metrics.total_requests}</div>
-              </div>
-              
-              <div className="metric">
-                <h3>{t.successRate}</h3>
-                <div 
-                  className="value success-rate-value"
-                  style={{
-                    color: (() => {
-                      const successRate = (metrics.successful_requests / metrics.total_requests) * 100;
-                      if (successRate === 100) return 'var(--color-metricSuccess, #28a745)';
-                      if (successRate >= 90) return 'var(--color-success, #28a745)';
-                      if (successRate >= 80) return 'var(--color-warning, #ffc107)';
-                      return 'var(--color-metricFailed, #dc3545)';
-                    })()
-                  }}
-                >
-                  {calculatePercentage(metrics.successful_requests, metrics.total_requests)}
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="metric-right">
-            <RequestCountChart
-              requests={completionRequests}
-              timeframe={currentTimeframe}
-              height={300}
-            />
-          </div>
-        </div>
-      </div>
 
-      {/* Response Time Information */}
-      <div className="metric-section">
-        <h2><PerformanceIcon /> {t.performanceMetrics}</h2>
-        <div className="metric-split-layout">
-          <div className="metric-left">
-            <div className="metric-grid">
-              <div className="metric">
-                <h3>{t.avgResponseTime}</h3>
-                <div className="value">{formatResponseTime(metrics.avg_response_time_ms)}</div>
-              </div>
-              
-              {metrics.avg_time_to_first_token_ms && (
-                <div className="metric">
-                  <h3>{t.timeToFirstToken}</h3>
-                  <div className="value">{formatResponseTime(metrics.avg_time_to_first_token_ms)}</div>
-                </div>
-              )}
-            </div>
-          </div>
-          <div className="metric-right">
-            <ResponseTimeChart
-              requests={completionRequests}
-              timeframe={currentTimeframe}
-              height={300}
-            />
-          </div>
-        </div>
-        <div className="metric-note">
-          <small>{t.performanceNote}</small>
-        </div>
-      </div>
 
-      {/* Model Usage */}
-      {metrics.model_distribution && Object.keys(metrics.model_distribution).length > 0 && (
-        <div className="metric-section">
-          <h2><RobotIcon /> {t.modelUsage}</h2>
-          <div className="metric-list">
-            {Object.entries(metrics.model_distribution)
-              .sort(([,a], [,b]) => b - a) // Sort by count descending
-              .map(([model, count], index) => (
-                <div key={index} className="metric-item">
-                  <span className="model-name">{model}</span>
-                  <span className="model-count">{count} {t.requests}</span>
-                </div>
-              ))}
-          </div>
-        </div>
-      )}
 
-      {/* Request Sources */}
-      {metrics.origin_distribution && Object.keys(metrics.origin_distribution).length > 0 && (
-        <div className="metric-section">
-          <h2><GlobeIcon /> {t.requestSources}</h2>
-          <div className="metric-list">
-            {Object.entries(metrics.origin_distribution).map(([origin, count], index) => (
-              <div key={index} className="metric-item">
-                <span className="origin-name">{origin}</span>
-                <span className="origin-count">{count} {t.requests}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
 
-      {/* Completion Analysis */}
-      {metrics.finish_reasons && metrics.finish_reasons.length > 0 && (
-        <div className="metric-section">
-          <h2><FinishIcon /> {t.completionAnalysis}</h2>
-          <div className="metric-list">
-            {metrics.finish_reasons.map((reason, index) => (
-              <div key={index} className="metric-item">
-                <span className="reason-name">{reason.reason}</span>
-                <span className="reason-count">{reason.count} {t.times}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
 
-      {/* Error Analysis */}
-      {metrics.error_types && metrics.error_types.length > 0 && (
-        <div className="metric-section">
-          <h2><ErrorIcon /> {t.errorAnalysis}</h2>
-          <div className="metric-list">
-            {metrics.error_types.map((error, index) => (
-              <div key={index} className="metric-item">
-                <span className="error-name">{error.type}</span>
-                <span className="error-count">{error.count} {t.times}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-    </>
-  );
-
-  // Render Streamed Requests Tab Content
-  const renderStreamedTab = () => (
-    <>
-      {/* Streamed Requests Overview */}
-      <div className="metric-section">
-        <h2><StreamingIcon /> {t.streamedRequests}</h2>
-        <div className="metric-grid">
-          <div className="metric">
-            <h3>{t.streamedRequestsCount}</h3>
-            <div className="value">{metrics.streaming_requests}</div>
-          </div>
-          
-          <div className="metric">
-            <h3>{t.streamedRequestsPercent}</h3>
-            <div className="value">
-              {calculatePercentage(metrics.streaming_requests, metrics.total_requests)}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Streaming Performance Metrics */}
-      <div className="metric-section">
-        <h2><PerformanceIcon /> {t.performanceMetrics}</h2>
-        <div className="metric-grid">
-          {metrics.avg_time_to_first_token_ms && (
-            <div className="metric">
-              <h3>{t.timeToFirstToken}</h3>
-              <div className="value">{formatResponseTime(metrics.avg_time_to_first_token_ms)}</div>
-            </div>
-          )}
-          
-          {metrics.avg_time_to_last_token_ms && (
-            <div className="metric">
-              <h3>{t.timeToLastToken}</h3>
-              <div className="value">{formatResponseTime(metrics.avg_time_to_last_token_ms)}</div>
-            </div>
-          )}
-          
-          {metrics.avg_completion_duration_ms && (
-            <div className="metric">
-              <h3>{t.completionDuration}</h3>
-              <div className="value">{formatResponseTime(metrics.avg_completion_duration_ms)}</div>
-            </div>
-          )}
-        </div>
-        <div className="metric-note">
-          <small>
-            {t.streamingPerformanceNote}
-            <br />
-            {t.usageStatsNote}
-          </small>
-        </div>
-      </div>
-    </>
-  );
-
-  // Render Non-streamed Requests Tab Content
-  const renderNonStreamedTab = () => (
-    <>
-      {/* Non-streamed Requests Overview */}
-      <div className="metric-section">
-        <h2><DocumentIcon /> {t.nonStreamedRequests}</h2>
-        <div className="metric-grid">
-          <div className="metric">
-            <h3>{t.nonStreamedRequestsCount}</h3>
-            <div className="value">{metrics.non_streaming_requests}</div>
-          </div>
-          
-          <div className="metric">
-            <h3>{t.nonStreamedRequestsPercent}</h3>
-            <div className="value">
-              {calculatePercentage(metrics.non_streaming_requests, metrics.total_requests)}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Token Usage */}
-      {metrics.total_tokens_used && metrics.total_tokens_used > 0 && (
-        <div className="metric-section">
-          <h2><TokenIcon /> {t.tokenUsage}</h2>
-          <div className="metric-grid">
-            <div className="metric">
-              <h3>{t.totalTokensUsed}</h3>
-              <div className="value">{formatNumber(metrics.total_tokens_used)}</div>
-            </div>
-            
-            <div className="metric">
-              <h3>{t.tokensPerRequest}</h3>
-              <div className="value">{metrics.avg_tokens_per_request || 0}</div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Performance Metrics */}
-      <div className="metric-section">
-        <h2><PerformanceIcon /> {t.performanceMetrics}</h2>
-        <div className="metric-grid">
-          <div className="metric">
-            <h3>{t.avgResponseTime}</h3>
-            <div className="value">{formatResponseTime(metrics.avg_response_time_ms)}</div>
-          </div>
-          
-          <div className="metric">
-            <h3>{t.tokensPerSecond}</h3>
-            <div className="value">
-              {metrics.avg_tokens_per_second ? `${metrics.avg_tokens_per_second.toFixed(2)} ${t.tokensPerSecond}` : t.naStreaming}
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
-  );
 
   // Render content based on active tab
   const renderTabContent = () => {
     switch (activeTab) {
       case 'overview':
-        return renderOverviewTab();
+        return (
+          <OverviewTab
+            metrics={metrics}
+            completionRequests={completionRequests}
+            currentTimeframe={currentTimeframe}
+            t={t}
+          />
+        );
       case 'streamed':
-        return renderStreamedTab();
+        return (
+          <StreamedTab
+            metrics={metrics}
+            t={t}
+          />
+        );
       case 'non-streamed':
-        return renderNonStreamedTab();
+        return (
+          <NonStreamedTab
+            metrics={metrics}
+            t={t}
+          />
+        );
       default:
-        return renderOverviewTab();
+        return (
+          <OverviewTab
+            metrics={metrics}
+            completionRequests={completionRequests}
+            currentTimeframe={currentTimeframe}
+            t={t}
+          />
+        );
     }
   };
 

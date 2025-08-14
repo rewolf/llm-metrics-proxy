@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ChartOptions } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-import { formatChartTimestamp, convertUTCToLocal } from '../utils';
+import { formatChartTimestamp, convertUTCToLocal } from '../../utils';
 
 // Register Chart.js components
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);

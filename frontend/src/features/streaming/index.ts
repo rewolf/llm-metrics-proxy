@@ -1,0 +1,1 @@
+export { StreamedTab } from './StreamedTab';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { BaseChart, ChartDataPoint } from './BaseChart';
-import { CompletionRequestData } from '../types';
-import { aggregateRequestsByTime } from '../utils';
+import { CompletionRequestData } from '../../types';
+import { aggregateRequestsByTime } from '../../utils';
 
 export interface RequestCountChartProps {
   requests: CompletionRequestData[];
