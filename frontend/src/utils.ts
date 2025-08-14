@@ -56,6 +56,24 @@ export const getPresetBucketSize = (timeframe: string): number => {
 };
 
 /**
+ * Convert UTC timestamp to local timezone
+ * @param utcTimestamp - ISO timestamp string in UTC
+ * @returns Date object in local timezone
+ */
+export const convertUTCToLocal = (utcTimestamp: string): Date => {
+  // Create a Date object from the UTC timestamp
+  const utcDate = new Date(utcTimestamp);
+  
+  // Get the local timezone offset in minutes
+  const localOffset = utcDate.getTimezoneOffset();
+  
+  // Create a new Date object adjusted to local timezone
+  const localDate = new Date(utcDate.getTime() - (localOffset * 60 * 1000));
+  
+  return localDate;
+};
+
+/**
  * Get timeframe start and end dates
  * @param timeframe - The selected timeframe
  * @returns Object with start and end dates
@@ -94,7 +112,7 @@ export const getTimeframeRange = (timeframe: string): { start: Date; end: Date }
 /**
  * Generate all buckets for a timeframe, including empty ones
  * @param timeframe - The selected timeframe
- * @returns Array of bucket timestamps
+ * @returns Array of bucket timestamps in local timezone
  */
 export const generateTimeBuckets = (timeframe: string): string[] => {
   const { start, end } = getTimeframeRange(timeframe);
@@ -104,7 +122,8 @@ export const generateTimeBuckets = (timeframe: string): string[] => {
   let currentTime = new Date(start.getTime());
   
   while (currentTime <= end) {
-    buckets.push(currentTime.toISOString());
+    // Generate buckets in local timezone to match the converted request timestamps
+    buckets.push(currentTime.toLocaleString('sv-SE').replace(' ', 'T'));
     currentTime = new Date(currentTime.getTime() + bucketSize);
   }
   
@@ -136,8 +155,9 @@ export const aggregateRequestsByTime = <T>(
   
   // Group requests into buckets
   requests.forEach(request => {
-    const timestamp = new Date(request.timestamp);
-    const bucketKey = Math.floor(timestamp.getTime() / bucketSize) * bucketSize;
+    // Convert UTC timestamp to local timezone before processing
+    const localTimestamp = convertUTCToLocal(request.timestamp);
+    const bucketKey = Math.floor(localTimestamp.getTime() / bucketSize) * bucketSize;
     const bucketTime = new Date(bucketKey);
     const bucketISO = bucketTime.toISOString();
     
@@ -169,6 +189,7 @@ export const aggregateRequestsByTime = <T>(
  * @returns Formatted timestamp string
  */
 export const formatChartTimestamp = (timestamp: string, timeframe: string): string => {
+  // Use the timestamp as-is since it's already been processed for timezone during bucketing
   const date = new Date(timestamp);
   
   switch (timeframe) {
@@ -195,10 +216,8 @@ export const formatChartTimestamp = (timestamp: string, timeframe: string): stri
       }).replace(',', '');
     case '1w':
       return date.toLocaleDateString('en-US', { 
-        month: 'short', 
-        day: 'numeric',
-        hour: '2-digit',
-        hour12: false
+        month: 'numeric',
+        day: 'numeric'
       });
     case '1mo':
       return date.toLocaleDateString('en-US', { 
@@ -207,7 +226,7 @@ export const formatChartTimestamp = (timestamp: string, timeframe: string): stri
       });
     default:
       return date.toLocaleDateString('en-US', { 
-        month: 'short', 
+        month: 'numeric', 
         day: 'numeric',
         year: 'numeric'
       });

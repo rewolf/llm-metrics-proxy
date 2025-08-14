@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ChartOptions } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import { formatChartTimestamp, convertUTCToLocal } from '../utils';
 
 // Register Chart.js components
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
@@ -116,7 +117,7 @@ export const BaseChart: React.FC<BaseChartProps> = ({
           title: (tooltipItems) => {
             const index = tooltipItems[0].dataIndex;
             return data[index]?.timestamp ? 
-              new Date(data[index].timestamp).toLocaleString() : 
+              convertUTCToLocal(data[index].timestamp).toLocaleString() : 
               tooltipItems[0].label;
           },
         },
@@ -258,50 +259,5 @@ const getLabelInterval = (timeframe: string): number => {
       return 4; // Show every 4th label (every 1 day)
     default:
       return 10; // Default to every 10th label
-  }
-};
-
-// Helper function to format chart timestamps with improved formatting
-const formatChartTimestamp = (timestamp: string, timeframe: string): string => {
-  const date = new Date(timestamp);
-  
-  switch (timeframe) {
-    case '1h':
-      return date.toLocaleTimeString('en-US', { 
-        hour: '2-digit', 
-        minute: '2-digit',
-        hour12: false 
-      });
-    case '6h':
-    case '12h':
-      return date.toLocaleTimeString('en-US', { 
-        hour: '2-digit', 
-        minute: '2-digit',
-        hour12: false 
-      });
-    case '1d':
-      return date.toLocaleDateString('en-US', { 
-        month: 'numeric',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false
-      }).replace(',', '');
-    case '1w':
-      return date.toLocaleDateString('en-US', { 
-        month: 'numeric', 
-        day: 'numeric'
-      });
-    case '1mo':
-      return date.toLocaleDateString('en-US', { 
-        month: 'short', 
-        day: 'numeric' 
-      });
-    default:
-      return date.toLocaleDateString('en-US', { 
-        month: 'numeric', 
-        day: 'numeric',
-        year: 'numeric'
-      });
   }
 };

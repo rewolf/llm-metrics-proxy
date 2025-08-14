@@ -60,7 +60,6 @@ function App(): JSX.Element {
     const { start, end } = getTimeframeRange(timeframe);
     
     const startISO = start.toISOString();
-    console.log(`Timeframe: ${timeframe}, Start (UTC): ${startISO}, End (UTC): ${end.toISOString()}`);
     
     return { start: startISO };
   };
