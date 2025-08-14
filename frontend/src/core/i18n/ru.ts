@@ -30,7 +30,7 @@ export const ru: Translation = {
   totalTokensUsed: 'Общее количество использованных токенов',
   avgTokensPerRequest: 'Среднее количество токенов на запрос',
   avgResponseTime: 'Среднее время ответа',
-  avgTokensPerSecond: 'Скорость вывода',
+  avgTokensPerSecond: 'Средняя скорость вывода',
 
   
   // Streaming-specific metrics

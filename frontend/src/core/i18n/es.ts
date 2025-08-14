@@ -30,7 +30,7 @@ export const es: Translation = {
   totalTokensUsed: 'Total de Tokens Utilizados',
   avgTokensPerRequest: 'Promedio de Tokens por Solicitud',
   avgResponseTime: 'Tiempo de Respuesta Promedio',
-  avgTokensPerSecond: 'Velocidad de Inferencia',
+  avgTokensPerSecond: 'Velocidad Promedio de Inferencia',
 
   
   // Streaming-specific metrics

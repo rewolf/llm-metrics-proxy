@@ -27,26 +27,45 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({
 }) => {
   return (
     <>
-      {/* Completion Requests Overview */}
+      {/* Basic Stats */}
       <MetricSection title={t.basicStatistics} icon={<DashboardIcon />} tooltip={t.tooltipCompletionRequests}>
-        <MetricGrid>
-          <MetricItem
-            title={t.totalCompletionRequests}
-            value={metrics.requests.total.total}
-          />
-          <MetricItem
-            title={t.successfulRequests}
-            value={metrics.requests.total.successful}
-          />
-          <MetricItem
-            title={t.failedRequests}
-            value={metrics.requests.total.failed}
-          />
-          <MetricItem
-            title={t.successRate}
-            value={calculatePercentage(metrics.requests.total.successful, metrics.requests.total.total)}
-          />
-        </MetricGrid>
+        <MetricSplitLayout
+          leftContent={
+            <MetricGrid>
+              <MetricItem
+                title={t.totalCompletionRequests}
+                value={metrics.requests.total.total}
+              />
+              <MetricItem
+                title={t.successRate}
+                value={
+                  <span 
+                    className="success-rate-value"
+                    style={{
+                      color: (() => {
+                        const successRate = (metrics.requests.total.successful / metrics.requests.total.total) * 100;
+
+                        if (successRate === 100) return 'var(--color-metricSuccess, #28a745)';
+                        if (successRate >= 90) return 'var(--color-success, #28a745)';
+                        if (successRate >= 80) return 'var(--color-warning, #ffc107)';
+                        return 'var(--color-metricFailed, #dc3545)';
+                      })()
+                    }}
+                  >
+                    {calculatePercentage(metrics.requests.total.successful, metrics.requests.total.total)}
+                  </span>
+                }
+              />
+            </MetricGrid>
+          }
+          rightContent={
+            <RequestCountChart
+              requests={completionRequests}
+              timeframe={currentTimeframe}
+              height={300}
+            />
+          }
+        />
       </MetricSection>
 
       {/* Response Time Information */}

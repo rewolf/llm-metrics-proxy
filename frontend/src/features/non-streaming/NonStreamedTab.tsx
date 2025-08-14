@@ -45,7 +45,7 @@ export const NonStreamedTab: React.FC<NonStreamedTabProps> = ({ metrics, t }) =>
           />
           {metrics.requests.non_streamed.tokens.reported_count > 0 && (
             <MetricItem
-              title={t.tokensPerSecond}
+              title={t.avgTokensPerSecond}
               value={
                 (() => {
                   const totalTokens = metrics.requests.non_streamed.tokens.total;

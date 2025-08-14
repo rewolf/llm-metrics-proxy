@@ -30,7 +30,7 @@ export const ko: Translation = {
   totalTokensUsed: '사용된 토큰 총수',
   avgTokensPerRequest: '요청당 평균 토큰 수',
   avgResponseTime: '평균 응답 시간',
-  avgTokensPerSecond: '추론 속도',
+  avgTokensPerSecond: '평균 추론 속도',
 
   
   // Streaming-specific metrics

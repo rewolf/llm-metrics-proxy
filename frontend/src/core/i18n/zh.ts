@@ -30,7 +30,7 @@ export const zh: Translation = {
   totalTokensUsed: '使用令牌总数',
   avgTokensPerRequest: '每个请求的平均令牌数',
   avgResponseTime: '平均响应时间',
-  avgTokensPerSecond: '推理速度',
+  avgTokensPerSecond: '平均推理速度',
 
   
   // Streaming-specific metrics

@@ -61,7 +61,7 @@ export const StreamedTab: React.FC<StreamedTabProps> = ({ metrics, t }) => {
           
           {metrics.requests.streamed.tokens.reported_count > 0 && (
             <MetricItem
-              title={t.tokensPerSecond}
+              title={t.avgTokensPerSecond}
               value={
                 (() => {
                   const totalTokens = metrics.requests.streamed.tokens.total;

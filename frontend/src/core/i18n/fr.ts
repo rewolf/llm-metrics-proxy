@@ -30,7 +30,7 @@ export const fr: Translation = {
   totalTokensUsed: 'Total des Jetons Utilisés',
   avgTokensPerRequest: 'Moyenne des Jetons par Demande',
   avgResponseTime: 'Temps de Réponse Moyen',
-  avgTokensPerSecond: 'Vitesse d\'Inférence',
+  avgTokensPerSecond: 'Vitesse Moyenne d\'Inférence',
   
   // Streaming-specific metrics
   timeToFirstToken: 'Temps jusqu\'au Premier Jeton',

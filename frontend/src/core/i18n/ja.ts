@@ -30,7 +30,7 @@ export const ja: Translation = {
   totalTokensUsed: '使用トークン総数',
   avgTokensPerRequest: 'リクエストあたりの平均トークン数',
   avgResponseTime: '平均応答時間',
-  avgTokensPerSecond: '推論速度',
+  avgTokensPerSecond: '平均推論速度',
 
   
   // Streaming-specific metrics
