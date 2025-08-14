@@ -207,7 +207,7 @@ export const formatChartTimestamp = (timestamp: string, timeframe: string): stri
         hour12: false 
       });
     case '1d':
-      return date.toLocaleDateString('en-US', { 
+      return date.toLocaleTimeString('en-US', { 
         month: 'numeric',
         day: 'numeric',
         hour: '2-digit',
@@ -231,4 +231,14 @@ export const formatChartTimestamp = (timestamp: string, timeframe: string): stri
         year: 'numeric'
       });
   }
+};
+
+/**
+ * Format timestamp for tooltip display with proper timezone handling
+ * @param timestamp - ISO timestamp string
+ * @returns Formatted timestamp string for tooltip
+ */
+export const formatTooltipTimestamp = (timestamp: string): string => {
+  const date = new Date(timestamp);
+  return date.toLocaleString();
 };

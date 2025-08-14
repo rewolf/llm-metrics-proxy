@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ChartOptions } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-import { formatChartTimestamp, convertUTCToLocal } from '../../utils';
+import { formatChartTimestamp, formatTooltipTimestamp } from '../../utils';
 
 // Register Chart.js components
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
@@ -117,7 +117,7 @@ export const BaseChart: React.FC<BaseChartProps> = ({
           title: (tooltipItems) => {
             const index = tooltipItems[0].dataIndex;
             return data[index]?.timestamp ? 
-              convertUTCToLocal(data[index].timestamp).toLocaleString() : 
+              formatTooltipTimestamp(data[index].timestamp) : 
               tooltipItems[0].label;
           },
         },
