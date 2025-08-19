@@ -34,7 +34,8 @@ export const ResponseTimeChart: React.FC<ResponseTimeChartProps> = ({
       );
       
       return Math.round(totalTime / requestsWithTime.length);
-    }
+    },
+    'bar' // Bar chart for response times
   );
 
   return (

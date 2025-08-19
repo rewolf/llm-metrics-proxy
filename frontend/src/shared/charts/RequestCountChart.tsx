@@ -25,13 +25,15 @@ export const RequestCountChart: React.FC<RequestCountChartProps> = ({
   const successfulData = aggregateRequestsByTime(
     successfulRequests,
     timeframe,
-    (bucketRequests) => bucketRequests.length
+    (bucketRequests) => bucketRequests.length,
+    'bar' // Bar chart for request counts
   );
 
   const failedData = aggregateRequestsByTime(
     failedRequests,
     timeframe,
-    (bucketRequests) => bucketRequests.length
+    (bucketRequests) => bucketRequests.length,
+    'bar' // Bar chart for request counts
   );
 
   // Get computed CSS custom properties for theme-aware colors

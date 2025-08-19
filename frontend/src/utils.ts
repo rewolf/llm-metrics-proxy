@@ -31,27 +31,51 @@ export const formatResponseTime = (ms: number): string => {
 };
 
 /**
- * Get preset bucket size based on timeframe
+ * Get preset bucket size based on timeframe and chart type
  * @param timeframe - The selected timeframe (e.g., '1h', '6h', '1d')
+ * @param chartType - The chart type ('line' or 'bar'), defaults to 'bar'
  * @returns Bucket size in milliseconds
  */
-export const getPresetBucketSize = (timeframe: string): number => {
-  switch (timeframe) {
-    case '1h':
-      return 30 * 1000; // 30 seconds
-    case '6h':
-      return 2 * 60 * 1000; // 2 minutes
-    case '12h':
-      return 5 * 60 * 1000; // 5 minutes
-    case '1d':
-      return 10 * 60 * 1000; // 10 minutes
-    case '1w':
-      return 60 * 60 * 1000; // 1 hour
-    case '1mo':
-      return 6 * 60 * 60 * 1000; // 6 hours
-    default:
-      // For 'all' or unknown timeframes, use 1 hour buckets
-      return 60 * 60 * 1000;
+export const getPresetBucketSize = (timeframe: string, chartType: 'line' | 'bar' = 'bar'): number => {
+  if (chartType === 'line') {
+    switch (timeframe) {
+      case '1h':
+        return 30 * 1000; // 30 seconds
+      case '6h':
+        return 2 * 60 * 1000; // 2 minutes
+      case '12h':
+        return 5 * 60 * 1000; // 5 minutes
+      case '1d':
+        return 10 * 60 * 1000; // 10 minutes
+      case '1w':
+        return 60 * 60 * 1000; // 1 hour
+      case '1mo':
+        return 6 * 60 * 60 * 1000; // 6 hours
+      default:
+        // For 'all' or unknown timeframes, use 1 hour buckets
+        return 60 * 60 * 1000;
+    }
+  } else {
+    // Bar chart bucket sizes
+    switch (timeframe) {
+      case '1h':
+        return 60 * 1000; // 60 seconds
+      case '6h':
+        return 2 * 60 * 1000; // 2 minutes
+      case '12h':
+        return 10 * 60 * 1000; // 10 minutes
+      case '1d':
+        return 20 * 60 * 1000; // 20 minutes
+      case '2d':
+        return 30 * 60 * 1000; // 30 minutes
+      case '1w':
+        return 2 * 60 * 60 * 1000; // 2 hours
+      case '1mo':
+        return 12 * 60 * 60 * 1000; // 12 hours
+      default:
+        // For 'all' or unknown timeframes, use 1 hour buckets
+        return 60 * 60 * 1000;
+    }
   }
 };
 
@@ -111,17 +135,25 @@ export const getTimeframeRange = (timeframe: string): { start: Date; end: Date }
 
 /**
  * Generate all buckets for a timeframe, including empty ones
+ * Aligns bucket boundaries with natural time divisions for better readability
  * @param timeframe - The selected timeframe
+ * @param chartType - The chart type ('line' or 'bar'), defaults to 'bar'
  * @returns Array of bucket timestamps in local timezone
  */
-export const generateTimeBuckets = (timeframe: string): string[] => {
+export const generateTimeBuckets = (timeframe: string, chartType: 'line' | 'bar' = 'bar'): string[] => {
   const { start, end } = getTimeframeRange(timeframe);
-  const bucketSize = getPresetBucketSize(timeframe);
+  const bucketSize = getPresetBucketSize(timeframe, chartType);
   const buckets: string[] = [];
   
-  let currentTime = new Date(start.getTime());
+  // Round start time UP to next bucket boundary for clean alignment
+  const roundedStart = new Date(Math.ceil(start.getTime() / bucketSize) * bucketSize);
   
-  while (currentTime <= end) {
+  // Round end time DOWN to current bucket boundary
+  const roundedEnd = new Date(Math.floor(end.getTime() / bucketSize) * bucketSize);
+  
+  let currentTime = new Date(roundedStart.getTime());
+  
+  while (currentTime <= roundedEnd) {
     // Generate buckets in local timezone to match the converted request timestamps
     buckets.push(currentTime.toLocaleString('sv-SE').replace(' ', 'T'));
     currentTime = new Date(currentTime.getTime() + bucketSize);
@@ -135,15 +167,17 @@ export const generateTimeBuckets = (timeframe: string): string[] => {
  * @param requests - Array of completion request data
  * @param timeframe - The selected timeframe
  * @param aggregateFunction - Function to aggregate values in each bucket
+ * @param chartType - The chart type ('line' or 'bar'), defaults to 'bar'
  * @returns Array of aggregated data points including empty buckets
  */
 export const aggregateRequestsByTime = <T>(
   requests: any[],
   timeframe: string,
-  aggregateFunction: (bucketRequests: any[]) => T
+  aggregateFunction: (bucketRequests: any[]) => T,
+  chartType: 'line' | 'bar' = 'bar'
 ): Array<{ timestamp: string; value: T }> => {
-  const bucketSize = getPresetBucketSize(timeframe);
-  const buckets = generateTimeBuckets(timeframe);
+  const bucketSize = getPresetBucketSize(timeframe, chartType);
+  const buckets = generateTimeBuckets(timeframe, chartType);
   
   // Create a map of bucket data
   const bucketData = new Map<string, any[]>();
