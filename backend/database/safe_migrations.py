@@ -366,6 +366,11 @@ def run_safe_migrations() -> bool:
     try:
         logger.info("Starting safe migration process...")
         
+        # Debug: Show what migrations are available
+        logger.info(f"Migration manager has {len(migration_manager.migrations)} migrations:")
+        for i, migration in enumerate(migration_manager.migrations):
+            logger.info(f"  {i+1}. Version {migration.version}: {migration.description}")
+        
         # Check if migrations are needed
         if not schema_needs_migration():
             logger.info("No migrations needed")
