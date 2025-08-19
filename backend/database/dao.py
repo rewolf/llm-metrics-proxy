@@ -394,7 +394,7 @@ class CompletionRequestsDAO:
                 if date_filter:
                     cursor.execute(f"""
                         SELECT AVG(tokens_per_second) FROM {self.table_name} 
-                        WHERE is_streaming = 0 AND tokens_per_second IS NOT NULL AND {date_filter}
+                        {date_filter} AND is_streaming = 0 AND tokens_per_second IS NOT NULL
                     """, params)
                 else:
                     cursor.execute(f"""
@@ -410,7 +410,7 @@ class CompletionRequestsDAO:
                 if date_filter:
                     cursor.execute(f"""
                         SELECT AVG(tokens_per_second) FROM {self.table_name} 
-                        WHERE is_streaming = 1 AND tokens_per_second IS NOT NULL AND {date_filter}
+                        {date_filter} AND is_streaming = 1 AND tokens_per_second IS NOT NULL
                     """, params)
                 else:
                     cursor.execute(f"""
