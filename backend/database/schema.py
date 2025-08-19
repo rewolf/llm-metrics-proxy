@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS completion_requests (
     time_to_first_token_ms INTEGER,
     time_to_last_token_ms INTEGER,
     tokens_per_second REAL,
+    app_version TEXT DEFAULT '1.0.0',
     error_type TEXT,
     error_message TEXT
 )

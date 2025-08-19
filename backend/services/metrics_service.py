@@ -55,7 +55,7 @@ def record_request(
             'time_to_first_token_ms': time_to_first_token_ms,
             'time_to_last_token_ms': time_to_last_token_ms,
             'tokens_per_second': tokens_per_second,
-            'schema_version': 2,  # Current version using response_time based calculation
+            'app_version': '2.0.0',  # Current app version using response_time based calculation
             'error_type': error_type,
             'error_message': error_message
         }

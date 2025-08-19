@@ -37,7 +37,7 @@ class CompletionRequest:
     tokens_per_second: Optional[float] = None
     
     # Schema version for data migration tracking
-    schema_version: int = 1
+    app_version: str = "1.0.0"
     
     # Error details
     error_type: Optional[str] = None
@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS completion_requests (
     tokens_per_second REAL,
     
     -- Schema version for data migration tracking
-    schema_version INTEGER DEFAULT 1,
+    app_version TEXT DEFAULT '1.0.0',
     
     -- Error details
     error_type TEXT,

@@ -17,6 +17,12 @@ The migration system ensures database schema changes are safe and reversible:
 - **Version Table**: `schema_version` table stores current database version
 - **Migration Detection**: System automatically detects when migrations are needed
 
+#### App Versioning
+- **Data Version Tracking**: `app_version` field in each record tracks which app version created the data
+- **Semantic Versioning**: Uses MAJOR.MINOR.PATCH format (e.g., '2.0.0')
+- **Data Migration**: System knows what data transformations are needed for each app version
+- **Version Discipline**: Clear guidelines for when to increment versions
+
 #### Migration Safety Features
 - **Automatic Backups**: File and table backups created before any migration
 - **Rollback Capability**: Failed migrations can be automatically rolled back
@@ -95,6 +101,7 @@ CREATE TABLE completion_requests (
     time_to_first_token_ms INTEGER,
     time_to_last_token_ms INTEGER,
     tokens_per_second REAL,
+    app_version TEXT DEFAULT '1.0.0',
     error_type TEXT,
     error_message TEXT
 );
@@ -162,6 +169,12 @@ python run_tests.py test_backup.py
 - **Rollback Strategy**: Automatic rollback on migration failure
 - **Schema Validation**: Post-migration schema integrity checks
 - **Startup Requirements**: System won't start with incomplete migrations
+
+### Versioning Strategy
+- **App Version Tracking**: Each record tracks which app version created it
+- **Data Migration**: Automatic data transformations based on version differences
+- **Version Discipline**: Clear guidelines for when and how to increment versions
+- **Documentation**: Comprehensive versioning strategy documented in [versioning-strategy.md](versioning-strategy.md)
 
 ### Performance Considerations
 - **Connection Pooling**: Efficient database connection management

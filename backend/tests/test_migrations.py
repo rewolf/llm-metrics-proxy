@@ -60,6 +60,7 @@ class TestSafeMigrationManager(unittest.TestCase):
                     time_to_first_token_ms INTEGER,
                     time_to_last_token_ms INTEGER,
                     tokens_per_second REAL,
+                    app_version TEXT DEFAULT '1.0.0',
                     error_type TEXT,
                     error_message TEXT
                 )
@@ -240,7 +241,7 @@ class TestSafeMigrationManager(unittest.TestCase):
                     CREATE TABLE completion_requests_backup AS SELECT id, timestamp, success, status_code, 
                     response_time_ms, model, origin, is_streaming, max_tokens, temperature, top_p, 
                     message_count, prompt_tokens, completion_tokens, total_tokens, finish_reason, 
-                    time_to_first_token_ms, time_to_last_token_ms, tokens_per_second, error_type, error_message 
+                    time_to_first_token_ms, time_to_last_token_ms, tokens_per_second, app_version, error_type, error_message 
                     FROM completion_requests
                 """)
                 cursor.execute("DROP TABLE completion_requests")
@@ -424,7 +425,7 @@ class TestMigrationFunctions(unittest.TestCase):
                 'model', 'origin', 'is_streaming', 'max_tokens', 'temperature',
                 'top_p', 'message_count', 'prompt_tokens', 'completion_tokens',
                 'total_tokens', 'finish_reason', 'time_to_first_token_ms',
-                'time_to_last_token_ms', 'tokens_per_second', 'error_type',
+                'time_to_last_token_ms', 'tokens_per_second', 'app_version', 'error_type',
                 'error_message'
             ]
             
@@ -462,6 +463,7 @@ class TestMigrationFunctions(unittest.TestCase):
                     time_to_first_token_ms INTEGER,
                     time_to_last_token_ms INTEGER,
                     tokens_per_second REAL,
+                    app_version TEXT DEFAULT '1.0.0',
                     error_type TEXT,
                     error_message TEXT
                 )
