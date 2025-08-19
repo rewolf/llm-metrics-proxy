@@ -86,17 +86,22 @@ class SafeMigrationManager:
                 # Create backup table for the main table
                 backup_table = create_backup_table("completion_requests")
                 self.backup_tables.append(backup_table)
+                logger.info(f"Created backup table: {backup_table}")
                 
                 # Run the migration
+                logger.info(f"Executing migration function for step {migration.version}")
                 migration.migration_func()
+                logger.info(f"Migration function completed for step {migration.version}")
             
             # Validate the result
+            logger.info(f"Validating schema after migration {migration.version}")
             is_valid, errors = validate_schema()
             if not is_valid:
                 logger.error(f"Schema validation failed after migration {migration.version}: {errors}")
                 return False
             
             # Update schema version
+            logger.info(f"Updating schema version to {migration.version}")
             if set_schema_version(migration.version, migration.description):
                 logger.info(f"Migration {migration.version} completed successfully")
                 return True
@@ -151,11 +156,15 @@ class SafeMigrationManager:
         try:
             # Run each pending migration
             for migration in self.migrations:
+                logger.info(f"Checking migration {migration.version}: {migration.description}")
                 if migration.version > current_version:
+                    logger.info(f"Running migration {migration.version}: {migration.description}")
                     if not self.run_migration_step(migration):
                         logger.error(f"Migration {migration.version} failed, rolling back...")
                         self.rollback_all()
                         return False
+                else:
+                    logger.info(f"Skipping migration {migration.version} (already at version {current_version})")
             
             logger.info("All migrations completed successfully")
             return True
