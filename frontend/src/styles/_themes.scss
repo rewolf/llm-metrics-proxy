@@ -83,11 +83,11 @@
   --color-borderLight: #008080;
   --color-success: #00ff00;
   --color-warning: #ffff00;
-  --color-error: #ff0000;
+  --color-error: #ff0088;
   --color-metricBackground: #1a1a1a;
   --color-metricBorder: #00ffff;
   --color-metricSuccess: #00ff00;
-  --color-metricFailed: #ff0000;
+  --color-metricFailed: #ff0088;
   
   --border-radius: 0px;
   --border-width: 2px;
@@ -222,8 +222,8 @@
     border: 2px solid var(--color-error);
     border-radius: 0;
     padding: 20px;
-    background: rgba(255, 0, 0, 0.1);
-    box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+    background: rgba(255, 0, 136, 0.1);
+    box-shadow: 0 0 20px rgba(255, 0, 136, 0.3);
   }
   
   // Success state

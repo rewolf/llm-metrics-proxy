@@ -12,12 +12,21 @@ export interface ChartDataPoint {
 }
 
 export interface BaseChartProps {
-  data: ChartDataPoint[];
+  data: ChartDataPoint[] | {
+    datasets: Array<{
+      label: string;
+      data: Array<{ x: string; y: number }>;
+      backgroundColor: string;
+      borderColor: string;
+      borderWidth: number;
+    }>;
+  };
   title: string;
   yAxisLabel?: string;
   timeframe: string;
   height?: number;
   className?: string;
+  showLegend?: boolean;
 }
 
 export const BaseChart: React.FC<BaseChartProps> = ({
@@ -26,7 +35,8 @@ export const BaseChart: React.FC<BaseChartProps> = ({
   yAxisLabel,
   timeframe,
   height = 300,
-  className = ''
+  className = '',
+  showLegend = true,
 }) => {
   const chartRef = useRef<ChartJS<'bar', { x: string; y: number }[]> | null>(null);
 
@@ -73,7 +83,7 @@ export const BaseChart: React.FC<BaseChartProps> = ({
   const gridColor = applyOpacityToColor(borderColor, 0.3);
 
   const chartData = {
-    datasets: [{
+    datasets: Array.isArray(data) ? [{
       label: yAxisLabel || 'Value',
       data: data.map(point => ({
         x: point.timestamp,
@@ -82,7 +92,7 @@ export const BaseChart: React.FC<BaseChartProps> = ({
       backgroundColor: 'rgba(54, 162, 235, 0.6)',
       borderColor: 'rgba(54, 162, 235, 1)',
       borderWidth: 1,
-    }],
+    }] : data.datasets,
   };
 
   const options: ChartOptions<'bar'> = {
@@ -90,7 +100,7 @@ export const BaseChart: React.FC<BaseChartProps> = ({
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        display: false, // Hide legend for single dataset
+        display: showLegend,
       },
       title: {
         display: true,
@@ -112,9 +122,18 @@ export const BaseChart: React.FC<BaseChartProps> = ({
         callbacks: {
           title: (tooltipItems: any) => {
             const index = tooltipItems[0].dataIndex;
-            return data[index]?.timestamp ? 
-              new Date(data[index].timestamp).toLocaleString() : 
-              tooltipItems[0].label;
+            if (Array.isArray(data)) {
+              return data[index]?.timestamp ? 
+                new Date(data[index].timestamp).toLocaleString() : 
+                tooltipItems[0].label;
+            } else {
+              // For multi-dataset data, use the first dataset's data
+              const firstDataset = data.datasets[0];
+              if (firstDataset && firstDataset.data[index]) {
+                return new Date(firstDataset.data[index].x).toLocaleString();
+              }
+              return tooltipItems[0].label;
+            }
           },
         },
       },
@@ -209,7 +228,8 @@ export const BaseChart: React.FC<BaseChartProps> = ({
     }
   }, [data, timeframe]); // Re-run when data or timeframe changes
 
-  if (data.length === 0) {
+  if ((Array.isArray(data) && data.length === 0) || 
+      (!Array.isArray(data) && data.datasets.every(dataset => dataset.data.length === 0))) {
     return (
       <div className={`chart-container empty ${className}`} style={{ height }}>
         <div className="chart-placeholder">

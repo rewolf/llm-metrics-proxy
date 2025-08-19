@@ -95,6 +95,12 @@ export const ja: Translation = {
   errorLoadingMetrics: 'メトリクスの読み込みエラー:',
   noMetricsData: 'メトリクスデータが利用できません',
   
+  // Chart labels
+  successfulRequestsLabel: '成功したリクエスト',
+  failedRequestsLabel: '失敗したリクエスト',
+  requestsChartTitle: 'リクエスト',
+  requestsChartYAxisLabel: 'リクエスト数',
+  
   // Timeframe selector
   selectTimeframe: '期間を選択',
   timeframe1h: '1時間',

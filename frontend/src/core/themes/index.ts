@@ -154,11 +154,11 @@ export const THEMES: Theme[] = [
       borderLight: '#008080',
       success: '#00ff00',
       warning: '#ffff00',
-      error: '#ff0000',
+      error: '#ff0088',
       metricBackground: '#1a1a1a',
       metricBorder: '#00ffff',
       metricSuccess: '#00ff00',
-      metricFailed: '#ff0000'
+      metricFailed: '#ff0088'
     },
     borders: {
       radius: '0px',

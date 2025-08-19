@@ -91,9 +91,15 @@ export const ko: Translation = {
   naStreaming: 'N/A (스트리밍)',
   
   // Loading and error states
-  loadingMetrics: '메트릭을 로딩 중...',
+  loadingMetrics: '메트릭 로딩 중...',
   errorLoadingMetrics: '메트릭 로딩 오류:',
   noMetricsData: '사용 가능한 메트릭 데이터가 없습니다',
+  
+  // Chart labels
+  successfulRequestsLabel: '성공한 요청',
+  failedRequestsLabel: '실패한 요청',
+  requestsChartTitle: '요청',
+  requestsChartYAxisLabel: '요청 수',
   
   // Timeframe selector
   selectTimeframe: '기간 선택',

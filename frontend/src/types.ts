@@ -140,6 +140,12 @@ export interface Translation {
   errorLoadingMetrics: string;
   noMetricsData: string;
   
+  // Chart labels
+  successfulRequestsLabel: string;
+  failedRequestsLabel: string;
+  requestsChartTitle: string;
+  requestsChartYAxisLabel: string;
+  
   // Timeframe selector
   selectTimeframe: string;
   timeframe1h: string;

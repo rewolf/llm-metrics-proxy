@@ -95,6 +95,12 @@ export const ru: Translation = {
   errorLoadingMetrics: 'Ошибка загрузки метрик:',
   noMetricsData: 'Данные метрик недоступны',
   
+  // Chart labels
+  successfulRequestsLabel: 'Успешные запросы',
+  failedRequestsLabel: 'Неудачные запросы',
+  requestsChartTitle: 'Запросы',
+  requestsChartYAxisLabel: 'Количество запросов',
+  
   // Timeframe selector
   selectTimeframe: 'Выбрать Период',
   timeframe1h: '1 Час',

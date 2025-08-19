@@ -79,14 +79,15 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({
                 tooltip={t.tooltipResponseTime}
               />
               {(() => {
-                const totalTokens = (metrics.requests.streamed.tokens.total || 0) + (metrics.requests.non_streamed.tokens.total || 0);
-                const avgResponseTime = metrics.requests.total.avg_response_time_ms;
-                if (totalTokens > 0 && avgResponseTime > 0) {
-                  const tps = (totalTokens / avgResponseTime) * 1000;
+                // Use corrected API values for inference speed
+                const nonStreamedTPS = metrics.requests.non_streamed.tokens.avg_tokens_per_second;
+                const streamedTPS = metrics.requests.streamed.tokens.avg_tokens_per_second;
+                
+                if (nonStreamedTPS !== null && nonStreamedTPS !== undefined) {
                   return (
                     <MetricItem
                       title={t.avgTokensPerSecond}
-                      value={`${tps.toFixed(2)} ${t.tokensPerSecond}`}
+                      value={`${nonStreamedTPS.toFixed(2)} ${t.tokensPerSecond}`}
                       tooltip={t.tooltipInferenceSpeed}
                     />
                   );

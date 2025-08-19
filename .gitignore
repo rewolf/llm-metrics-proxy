@@ -41,7 +41,6 @@ ENV/
 *.log
 logs/
 
-# IDE
 .vscode/
 .idea/
 *.swp
@@ -72,5 +71,4 @@ frontend/npm-debug.log*
 frontend/yarn-debug.log*
 frontend/yarn-error.log*
 
-# IDE
-.cursor/
+future-enhancement-ideas.md

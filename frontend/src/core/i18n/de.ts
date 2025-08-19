@@ -95,6 +95,12 @@ export const de: Translation = {
   errorLoadingMetrics: 'Fehler beim Laden der Metriken:',
   noMetricsData: 'Keine Metrikdaten verfügbar',
   
+  // Chart labels
+  successfulRequestsLabel: 'Erfolgreiche Anfragen',
+  failedRequestsLabel: 'Fehlgeschlagene Anfragen',
+  requestsChartTitle: 'Anfragen',
+  requestsChartYAxisLabel: 'Anzahl der Anfragen',
+  
   // Timeframe selector
   selectTimeframe: 'Zeitraum Auswählen',
   timeframe1h: '1 Stunde',

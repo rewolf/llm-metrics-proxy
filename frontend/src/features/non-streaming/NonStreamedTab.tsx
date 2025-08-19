@@ -43,20 +43,11 @@ export const NonStreamedTab: React.FC<NonStreamedTabProps> = ({ metrics, t }) =>
             value={formatResponseTime(metrics.requests.total.avg_response_time_ms)}
             tooltip={t.tooltipResponseTime}
           />
-          {metrics.requests.non_streamed.tokens.reported_count > 0 && (
+          {metrics.requests.non_streamed.tokens.avg_tokens_per_second !== null && 
+           metrics.requests.non_streamed.tokens.avg_tokens_per_second !== undefined && (
             <MetricItem
               title={t.avgTokensPerSecond}
-              value={
-                (() => {
-                  const totalTokens = metrics.requests.non_streamed.tokens.total;
-                  const avgResponseTime = metrics.requests.total.avg_response_time_ms;
-                  if (totalTokens > 0 && avgResponseTime > 0) {
-                    const tps = (totalTokens / avgResponseTime) * 1000;
-                    return `${tps.toFixed(2)} ${t.tokensPerSecond}`;
-                  }
-                  return t.naStreaming;
-                })()
-              }
+              value={`${metrics.requests.non_streamed.tokens.avg_tokens_per_second.toFixed(2)} ${t.tokensPerSecond}`}
               tooltip={t.tooltipInferenceSpeed}
             />
           )}

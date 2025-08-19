@@ -59,20 +59,11 @@ export const StreamedTab: React.FC<StreamedTabProps> = ({ metrics, t }) => {
             />
           )}
           
-          {metrics.requests.streamed.tokens.reported_count > 0 && (
+          {metrics.requests.streamed.tokens.avg_tokens_per_second !== null && 
+           metrics.requests.streamed.tokens.avg_tokens_per_second !== undefined && (
             <MetricItem
               title={t.avgTokensPerSecond}
-              value={
-                (() => {
-                  const totalTokens = metrics.requests.streamed.tokens.total;
-                  const avgResponseTime = metrics.requests.streamed.avg_response_time_ms;
-                  if (totalTokens > 0 && avgResponseTime > 0) {
-                    const tps = (totalTokens / avgResponseTime) * 1000;
-                    return `${tps.toFixed(2)} ${t.tokensPerSecond}`;
-                  }
-                  return t.naStreaming;
-                })()
-              }
+              value={`${metrics.requests.streamed.tokens.avg_tokens_per_second.toFixed(2)} ${t.tokensPerSecond}`}
               tooltip={t.tooltipInferenceSpeed}
             />
           )}

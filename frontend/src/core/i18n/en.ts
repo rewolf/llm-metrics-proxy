@@ -92,6 +92,12 @@ export const en: Translation = {
   errorLoadingMetrics: 'Error loading metrics:',
   noMetricsData: 'No metrics data available',
   
+  // Chart labels
+  successfulRequestsLabel: 'Successful Requests',
+  failedRequestsLabel: 'Failed Requests',
+  requestsChartTitle: 'Requests',
+  requestsChartYAxisLabel: 'Number of Requests',
+  
   // Timeframe selector
   selectTimeframe: 'Select Timeframe',
   timeframe1h: '1 Hour',

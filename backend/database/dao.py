@@ -388,15 +388,37 @@ class CompletionRequestsDAO:
                 """)
             origin_distribution = dict(cursor.fetchall())
             
-            # Calculate non-streaming tokens per second
+            # Calculate non-streaming tokens per second - use average of individual TPS values
             non_streaming_avg_tokens_per_second = None
-            if non_streaming_avg_response_time and non_streaming_total_tokens:
-                non_streaming_avg_tokens_per_second = non_streaming_total_tokens / (non_streaming_avg_response_time / 1000)
+            if non_streaming_total > 0:
+                if date_filter:
+                    cursor.execute(f"""
+                        SELECT AVG(tokens_per_second) FROM {self.table_name} 
+                        WHERE is_streaming = 0 AND tokens_per_second IS NOT NULL AND {date_filter}
+                    """, params)
+                else:
+                    cursor.execute(f"""
+                        SELECT AVG(tokens_per_second) FROM {self.table_name} 
+                        WHERE is_streaming = 0 AND tokens_per_second IS NOT NULL
+                    """)
+                result = cursor.fetchone()
+                non_streaming_avg_tokens_per_second = result[0] if result and result[0] is not None else None
             
-            # Calculate streaming tokens per second
+            # Calculate streaming tokens per second - use average of individual TPS values
             streaming_avg_tokens_per_second = None
-            if streaming_avg_response_time and streaming_total_tokens:
-                streaming_avg_tokens_per_second = streaming_total_tokens / (streaming_avg_response_time / 1000)
+            if streaming_total > 0:
+                if date_filter:
+                    cursor.execute(f"""
+                        SELECT AVG(tokens_per_second) FROM {self.table_name} 
+                        WHERE is_streaming = 1 AND tokens_per_second IS NOT NULL AND {date_filter}
+                    """, params)
+                else:
+                    cursor.execute(f"""
+                        SELECT AVG(tokens_per_second) FROM {self.table_name} 
+                        WHERE is_streaming = 1 AND tokens_per_second IS NOT NULL
+                    """)
+                result = cursor.fetchone()
+                streaming_avg_tokens_per_second = result[0] if result and result[0] is not None else None
             
             # Build the new metrics structure
             from shared.types import TokenMetrics, StreamedRequests, NonStreamedRequests, RequestsSummary, Requests, Metrics

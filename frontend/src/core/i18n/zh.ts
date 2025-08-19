@@ -95,6 +95,12 @@ export const zh: Translation = {
   errorLoadingMetrics: '加载指标时出错:',
   noMetricsData: '没有可用的指标数据',
   
+  // Chart labels
+  successfulRequestsLabel: '成功的请求',
+  failedRequestsLabel: '失败的请求',
+  requestsChartTitle: '请求',
+  requestsChartYAxisLabel: '请求数量',
+  
   // Timeframe selector
   selectTimeframe: '选择时间段',
   timeframe1h: '1小时',

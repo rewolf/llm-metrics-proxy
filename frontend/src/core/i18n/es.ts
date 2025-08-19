@@ -95,6 +95,12 @@ export const es: Translation = {
   errorLoadingMetrics: 'Error al cargar métricas:',
   noMetricsData: 'No hay datos de métricas disponibles',
   
+  // Chart labels
+  successfulRequestsLabel: 'Solicitudes Exitosas',
+  failedRequestsLabel: 'Solicitudes Fallidas',
+  requestsChartTitle: 'Solicitudes',
+  requestsChartYAxisLabel: 'Número de Solicitudes',
+  
   // Timeframe selector
   selectTimeframe: 'Seleccionar Período',
   timeframe1h: '1 Hora',

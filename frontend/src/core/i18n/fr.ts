@@ -89,8 +89,14 @@ export const fr: Translation = {
   
   // Loading and error states
   loadingMetrics: 'Chargement des métriques...',
-  errorLoadingMetrics: 'Erreur lors du chargement des métriques :',
+  errorLoadingMetrics: 'Erreur lors du chargement des métriques:',
   noMetricsData: 'Aucune donnée de métriques disponible',
+  
+  // Chart labels
+  successfulRequestsLabel: 'Requêtes Réussies',
+  failedRequestsLabel: 'Requêtes Échouées',
+  requestsChartTitle: 'Requêtes',
+  requestsChartYAxisLabel: 'Nombre de Requêtes',
   
   // Timeframe selector
   selectTimeframe: 'Sélectionner la Période',
