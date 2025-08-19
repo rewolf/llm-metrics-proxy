@@ -151,9 +151,9 @@ def validate_schema() -> Tuple[bool, List[str]]:
                 ('time_to_first_token_ms', 'INTEGER', 0, None, 0),
                 ('time_to_last_token_ms', 'INTEGER', 0, None, 0),
                 ('tokens_per_second', 'REAL', 0, None, 0),
-                ('app_version', 'TEXT', 0, '1.0.0', 0),
                 ('error_type', 'TEXT', 0, None, 0),
-                ('error_message', 'TEXT', 0, None, 0)
+                ('error_message', 'TEXT', 0, None, 0),
+                ('app_version', 'TEXT', 0, '1.0.0', 0)  # Added at the end by ALTER TABLE
             ]
             
             # Check column count
