@@ -254,6 +254,7 @@ def create_initial_schema():
                     time_to_first_token_ms INTEGER,
                     time_to_last_token_ms INTEGER,
                     tokens_per_second REAL,
+                    schema_version INTEGER DEFAULT 1,
                     error_type TEXT,
                     error_message TEXT
                 )
@@ -295,9 +296,61 @@ def add_origin_column():
         else:
             logger.info("Origin column already exists")
 
+
+def add_schema_versioning():
+    """Add schema versioning and recalculate old tokens_per_second values."""
+    with get_db_connection() as conn:
+        cursor = conn.cursor()
+        
+        # Check if schema_version column already exists
+        cursor.execute("PRAGMA table_info(completion_requests)")
+        columns = [col[1] for col in cursor.fetchall()]
+        
+        if 'schema_version' not in columns:
+            # Add schema_version column
+            cursor.execute("""
+                ALTER TABLE completion_requests 
+                ADD COLUMN schema_version INTEGER DEFAULT 1
+            """)
+            logger.info("Added schema_version column to completion_requests table")
+        else:
+            logger.info("schema_version column already exists")
+        
+        # Set all existing records to version 1 (old calculation logic)
+        cursor.execute("""
+            UPDATE completion_requests 
+            SET schema_version = 1 
+            WHERE schema_version IS NULL OR schema_version = 0
+        """)
+        logger.info(f"Set existing records to schema version 1")
+        
+        # Recalculate tokens_per_second for old records using new logic
+        # New logic: total_tokens / (response_time_ms / 1000)
+        cursor.execute("""
+            UPDATE completion_requests 
+            SET 
+                tokens_per_second = CASE 
+                    WHEN response_time_ms > 0 AND total_tokens > 0 
+                    THEN (total_tokens * 1000.0) / response_time_ms
+                    ELSE NULL
+                END,
+                schema_version = 2
+            WHERE schema_version = 1 
+                AND response_time_ms > 0 
+                AND total_tokens > 0
+        """)
+        
+        updated_count = cursor.rowcount
+        logger.info(f"Recalculated tokens_per_second for {updated_count} records to schema version 2")
+        
+        conn.commit()
+        logger.info("Schema versioning migration completed successfully")
+
+
 # Add migrations to the manager
 migration_manager.add_migration(MigrationStep(1, "Create initial schema", create_initial_schema))
 migration_manager.add_migration(MigrationStep(2, "Add origin column", add_origin_column))
+migration_manager.add_migration(MigrationStep(3, "Add schema versioning and recalculate metrics", add_schema_versioning))
 
 def run_safe_migrations() -> bool:
     """Run migrations with full safety measures."""

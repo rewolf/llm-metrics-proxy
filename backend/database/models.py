@@ -36,6 +36,9 @@ class CompletionRequest:
     time_to_last_token_ms: Optional[int] = None
     tokens_per_second: Optional[float] = None
     
+    # Schema version for data migration tracking
+    schema_version: int = 1
+    
     # Error details
     error_type: Optional[str] = None
     error_message: Optional[str] = None
@@ -69,6 +72,9 @@ CREATE TABLE IF NOT EXISTS completion_requests (
     time_to_first_token_ms INTEGER,
     time_to_last_token_ms INTEGER,
     tokens_per_second REAL,
+    
+    -- Schema version for data migration tracking
+    schema_version INTEGER DEFAULT 1,
     
     -- Error details
     error_type TEXT,
