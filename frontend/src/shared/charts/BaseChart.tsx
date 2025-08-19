@@ -19,6 +19,7 @@ export interface BaseChartProps {
       backgroundColor: string;
       borderColor: string;
       borderWidth: number;
+      stack?: string;
     }>;
   };
   title: string;
@@ -27,6 +28,7 @@ export interface BaseChartProps {
   height?: number;
   className?: string;
   showLegend?: boolean;
+  stacked?: boolean;
 }
 
 export const BaseChart: React.FC<BaseChartProps> = ({
@@ -37,6 +39,7 @@ export const BaseChart: React.FC<BaseChartProps> = ({
   height = 300,
   className = '',
   showLegend = true,
+  stacked = false,
 }) => {
   const chartRef = useRef<ChartJS<'bar', { x: string; y: number }[]> | null>(null);
 

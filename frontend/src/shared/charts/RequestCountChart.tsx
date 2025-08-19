@@ -9,6 +9,7 @@ export interface RequestCountChartProps {
   height?: number;
   className?: string;
   t?: any; // Translation object
+  stacked?: boolean; // Enable stacked bars for failed/successful requests
 }
 
 export const RequestCountChart: React.FC<RequestCountChartProps> = ({
@@ -16,7 +17,8 @@ export const RequestCountChart: React.FC<RequestCountChartProps> = ({
   timeframe,
   height = 300,
   className = '',
-  t
+  t,
+  stacked = true
 }) => {
   // Aggregate successful and failed requests separately
   const successfulRequests = requests.filter(req => req.success);
@@ -63,6 +65,7 @@ export const RequestCountChart: React.FC<RequestCountChartProps> = ({
         backgroundColor: 'rgba(54, 162, 235, 0.6)', // Default blue with opacity
         borderColor: successColor,
         borderWidth: 1,
+        stack: stacked ? 'stack1' : undefined, // Enable stacking when prop is true
       },
       // Only include failed requests dataset if there are any
       ...(hasFailedRequests ? [{
@@ -74,6 +77,7 @@ export const RequestCountChart: React.FC<RequestCountChartProps> = ({
         backgroundColor: `${failureColor}80`, // Theme color with 50% opacity
         borderColor: failureColor,
         borderWidth: 1,
+        stack: stacked ? 'stack1' : undefined, // Enable stacking when prop is true
       }] : [])
     ],
   };
@@ -87,6 +91,7 @@ export const RequestCountChart: React.FC<RequestCountChartProps> = ({
       height={height}
       className={className}
       showLegend={hasFailedRequests}
+      stacked={stacked}
     />
   );
 };
