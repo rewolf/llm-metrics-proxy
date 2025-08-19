@@ -264,7 +264,8 @@ class CompletionRequestsDAO:
                     SELECT 
                         COUNT(*) as total,
                         SUM(CASE WHEN success = 1 THEN 1 ELSE 0 END) as successful,
-                        SUM(CASE WHEN success = 0 THEN 1 ELSE 0 END) as failed
+                        SUM(CASE WHEN success = 0 THEN 1 ELSE 0 END) as failed,
+                        AVG(response_time_ms) as avg_response_time
                     FROM {self.table_name} 
                     {date_filter} AND is_streaming = 0
                 """, params)
@@ -273,7 +274,8 @@ class CompletionRequestsDAO:
                     SELECT 
                         COUNT(*) as total,
                         SUM(CASE WHEN success = 1 THEN 1 ELSE 0 END) as successful,
-                        SUM(CASE WHEN success = 0 THEN 1 ELSE 0 END) as failed
+                        SUM(CASE WHEN success = 0 THEN 1 ELSE 0 END) as failed,
+                        AVG(response_time_ms) as avg_response_time
                     FROM {self.table_name} 
                     WHERE is_streaming = 0
                 """)
@@ -282,6 +284,7 @@ class CompletionRequestsDAO:
             non_streaming_total = non_streaming_stats[0] or 0
             non_streaming_successful = non_streaming_stats[1] or 0
             non_streaming_failed = non_streaming_stats[2] or 0
+            non_streaming_avg_response_time = non_streaming_stats[3] or 0
             
             # Non-streaming token metrics
             if date_filter:
@@ -387,8 +390,13 @@ class CompletionRequestsDAO:
             
             # Calculate non-streaming tokens per second
             non_streaming_avg_tokens_per_second = None
-            if non_streaming_avg_completion_duration and non_streaming_completion_tokens:
-                non_streaming_avg_tokens_per_second = non_streaming_completion_tokens / (non_streaming_avg_completion_duration / 1000)
+            if non_streaming_avg_response_time and non_streaming_total_tokens:
+                non_streaming_avg_tokens_per_second = non_streaming_total_tokens / (non_streaming_avg_response_time / 1000)
+            
+            # Calculate streaming tokens per second
+            streaming_avg_tokens_per_second = None
+            if streaming_avg_response_time and streaming_total_tokens:
+                streaming_avg_tokens_per_second = streaming_total_tokens / (streaming_avg_response_time / 1000)
             
             # Build the new metrics structure
             from shared.types import TokenMetrics, StreamedRequests, NonStreamedRequests, RequestsSummary, Requests, Metrics
@@ -408,7 +416,8 @@ class CompletionRequestsDAO:
                     reported_count=streaming_reported_count,
                     total=streaming_total_tokens,
                     prompt_total=streaming_prompt_tokens,
-                    completion_total=streaming_completion_tokens
+                    completion_total=streaming_completion_tokens,
+                    avg_tokens_per_second=streaming_avg_tokens_per_second
                 ),
                 error_types=streaming_error_types,
                 avg_response_time_ms=streaming_avg_response_time,

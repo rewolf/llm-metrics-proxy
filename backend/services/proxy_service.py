@@ -310,8 +310,8 @@ class ProxyService:
         
         # Calculate tokens per second if we have the data
         tokens_per_second = None
-        if completion_tokens and time_to_last_token_ms:
-            tokens_per_second = (completion_tokens / (time_to_last_token_ms / 1000))
+        if total_tokens and time_to_last_token_ms:
+            tokens_per_second = (total_tokens / (time_to_last_token_ms / 1000))
         
         request = CompletionRequest(
             success=True,
@@ -354,8 +354,8 @@ class ProxyService:
         time_to_last_token_ms = response_time_ms
         
         tokens_per_second = None
-        if completion_tokens and time_to_last_token_ms:
-            tokens_per_second = (completion_tokens / time_to_last_token_ms) * 1000
+        if total_tokens and response_time_ms:
+            tokens_per_second = (total_tokens / response_time_ms) * 1000
         
         request = CompletionRequest(
             success=True,
